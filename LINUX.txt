@@ -1,0 +1,1455 @@
+---------------------------------------------------------DAY 1----------------------------------------------------------------
+SDLC(SOFTWARE DEVELOPMENT LIFE CYCLE):
+Planning: Define the project scope, objectives, and resources. Establish a timeline and budget.
+Analysis: Gather and analyze requirements from stakeholders to understand what the software should do.
+Design: Create detailed architectural and design specifications, including user interfaces and system components.
+Development: Write and test the code based on the design specifications.
+Testing: Identify and fix defects by rigorously testing the software against requirements.
+Deployment: Release the software to users and ensure it is functioning in the intended environment.
+Maintenance: Provide ongoing support, fix issues, and make updates or enhancements as needed.
+
+->Operating System: Linux is an open-source operating system 
+    kernel originally developed by Linus Torvalds in 1991.
+->Open Source: Linux is free to use, modify, and distribute.
+->Multiuser and Multitasking: Linux supports multiple users simultaneously 
+  and allows several tasks
+->Security: Linux is known for its robust security features
+->Package Management: Linux distributions use package management systems (like apt, yum, pacman) 
+to install, update, and remove software packages.
+==========================================================================================================
+BASIC COMMANDS 
+--------------
+->pwd - Print Working Directory: Shows the current directory path
+   ex:enter->pwde
+   output->/home/shasi
+----------------------------------------------------------------------------------------
+->ls - List Directory Contents: Lists files and directories in the current directory
+     ex:ls
+	    ->it will shows the all directorys
+		ls -l 
+		->this command shows all data about directoery like size createion of date.
+		ls -a
+		->it will show all hidden data
+------------------------------------------------------------------------------------------
+-> cd - Change Directory: Moves you to another directory.
+     ex: cd Desktop
+         ->desktop foldeer will open
+		 cd ..
+		 ->it will go to back folder
+		 cd ~
+		 ->it will go directly to the home
+---------------------------------------------------------------------------------------------
+->mkdir - Make Directory: Creates a new directory.
+   ex:mkdir shasi
+      -> directory is created
+--------------------------------------------------------------------------------------------
+->rmdir - Remove Directory: Deletes an empty directory.
+    ex:rmdir shasi
+	   ->directory will be deleted
+-----------------------------------------------------------------------------------------
+->rm - Remove: Deletes files or directories.
+      ex: rm file1
+	  -> file will deleted 
+	  rm -r shasi(directrory)
+--------------------------------------------------------------------------------------
+->touch - Create Empty File: Creates a new empty file.
+     ex: touch file1
+	    -> file will created
+----------------------------------------------------------------------------------------
+->echo - Add content into the file
+      ex:echo "SHASIPRETHAM" >>file1(filename)
+	  -> content will be added to file
+-----------------------------------------------------------------------------------------
+->cat - Concatenate and Display: Outputs the contents of a file.
+      ex: cat file1(filename)
+	  -> it will show the data in the file
+	  ex; cat -n file1(filename)
+	  -> it will show the data with line numbers in the file
+----------------------------------------------------------------------------------------
+->head and tail - Output the beginning or end of files, respectively
+      ex: head file1(filename)
+	  --> it will show first 10lines content
+	  ex: head -20 file1(filename)
+	  --> it will show first 20lines content
+	  ex: tail file1(filename)
+	  -->it will show last 10lines content
+---------------------------------------------------------------------------------------
+->cp - Copy: Copies files or directories.
+        ex:cp file1 file2
+		-> data copeid from file 1 to file 2
+		cp -r shasi1 shasi2
+		-> data copied from shasi1 dir to shasi2 dir
+-------------------------------------------------------------------------------------
+->mv - Move: Moves or renames files or directories.
+       ex:mv file1 file2
+		-> data moved from file 1 to file 2
+		mv -r shasi1 shasi2
+		-> data moved from shasi1 dir to shasi2 dir
+----------------------------------------------------------------------------------------------
+->chmod -Change mode :it is used to change the mode like write ,read,excute permisitions
+       it represent that first rwx -owner,second rwx -group,third rwx -every one
+       ex:chmod 444 file1.txt
+	        ->read 4
+			->write 2
+			->excute 1
+		rwx (read, write, execute) is 7 (4 + 2 + 1)
+        rw- (read, write, no execute) is 6 (4 + 2)
+        r-x (read, no write, execute) is 5 (4 + 1)
+        r-- (read, no write, no execute) is 4 (4)
+		when we have give permisitions to all read write excute for owner 
+		but for group and others we have to give only read permmision
+		command:chmod 755 file.txt
+		
+	->Now we have to give permmisions to spefice members like owner ,group numbers
+	    + adds a permission.
+        - removes a permission.
+        = sets the exact permissions specified.
+       Permissions are represented by:
+
+       u for user (owner)
+       g for group
+       o for others (everyone else)
+       a for all (equivalent to ugo)
+	   ugo+w -> it will write permmison to excute write and read
+	   
+	   ex:sudo chmod u+x shasi.txt
+	   ex:sudo chmod 421 shasi.txt
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+0 - Nopermmision       ---
+1 - Excute permmision  --x
+2 - write permision    -w-
+3 - excute,write       -wx
+4 - read permmision    r--
+5 - read,excute        r-x
+6 - read,write         rw-
+7 - read,write,excute  rwx
+
+->sudo chmod 0666 filename-> it give base permmisions
+            -> base permmision nothing but it will give read and write permmsions for every one for file
+->sudo chmod 0777filename->to give base permmision to directory(read,write,excute)
+            ->base permmision nothing but it will give read,excuteand write permmsions for every one for directory
+->sudo chmod 0022 - assign permissions so that you only had read/write perssion for files & search access to your directories
+->sudo chmod 0002 - assign permissions you & other members also had read/write perssion for files & search access to your directories
+->umask-> is used to save your own chmod codes.
+			
+------------------------------SPECAIL COMMANDS BY MANJUNATH-----------------------------------------------------------------------------------------
+basic Shell scripting
+------------------------
+hellow world
+date
+cal
+echo "Shasi is here"
+read -p "ENTER YOUR NAME : " name
+read -p "ENTER YOUR AGE  : " age
+read -p "ENTER YOUR GENDER(M/F/OTHER) : " gender
+echo "Name :$name"
+echo "Age  :$age"
+echo "Gender :$gender"
+exit
+To see these code the command is ->cat file.txt
+./file.txt-> these command is used for excute the file.
+
+->free -m -> it will show the memory
+->fdisk -l /dev/sda ->it will show how much ram utilized
+->ifconfig(to display all network interfaces)->Running ifconfig without any arguments will display information about all active network interfaces on your system:
+     like Interface name (e.g., eth0, wlan0)
+IP address
+MAC address
+Network mask
+Broadcast address
+Interface status (up or down)
+Statistics like packets sent/received and errors
+
+->ip->it also displya network mask values
+->ip addr show (or) ip a-> it will show the ip address
+->ip -s link show
+->ip monitor->it will showes what ip adderss is running
+-> ip addr add ipadress username
+->Route->display route table
+->ping ->to check site it getting respose or not(it also displys the ip address)(ping google.com)to stop contol+c
+->ifconfig -> it will show the our ip address and loacal host adress also
+->ifconfig lo down(lo is nithing but host)-> we have to stoping the host
+->ifconfig lo up-> it will on the host
+->ifconfig -a-. it will show all the hosts
+->hostname-> it will show the present host name
+->hostname -i-> it used to seee presentipaddress
+->nslookup www.youtube.com->it will show the present ip address of thensite
+->telnet www.google.com 22(port nuber)->check the connectivy of remote server from our linux server
+       ->connect to another site through port number.
+->host [domain name](host facebook.com)->is used to to see other site ip adress.
+->telenet(telenet google.com 80)->user interface to telent protocal
+->wget->Non-intertive network downloader
+->curl->transfer the data with url
+-ssh-keygen->generate ,manage and convert athuntivcation keys 
+->cat /home/ec2-user/keyname.pub-> it will diplays the key
+->curl -I https://github.com(to see the website running in which port number
+->find . -type f -empty -> it is show all empty files-
+->find . -type d -empty -> it will empty folders or directory
+->chown (chown ec2-user filename)-> is used to chnage owner ship
+->groupadd grupname-> is used to create group
+->chgrp grpname file/dir-> is used to chnage gropu
+->grep   -> find . -type f -name '*.txt[0-9]*'->it is used to search a specific files
+->zip sample.zip file1.txt file2.txt file3.txt->zip the files
+->unzip -l sample.zip->unzip the files.
+--------------------------------------------------------------------------------------------------------------------
+USER COMMANDS
+-------------------
+sudo adduser unsername->to create a new user
+sudo passwd username-> to create password
+sudo chage -E 2024-09-25 usrname-> is used to set expire date for account
+sudo chage -M 30 shasii-> is used to password expiry date
+id username-> to check the user name is create or not
+sudo chage -i username-> we have to enter manualy expiry dates
+sudo chage -l username-. check the info of that user details
+sudo groupadd group name->to create a new group
+grep groupname /etc/group-> id used to see the group is created or not
+cat /ect/group-> it is also same
+grep usrmod -aG groupname username-> to add useer into that group
+gpasswd -M user1 user2 group name-. add multiple user.
+getnet group groupname -. it will show how many memmbers in gropu
+-------------------------------------------------------------------------------------------------------------------------------
+Swap memory allocation commands
+-------------------------------\
+swap-. it is nithing but ceated a vrutual tempraty ram.
+we have to check with 
+free -h->it will show the disk space
+
+sudo dd if=/dev/zero of=/shasi bs=1M count=1024(create swap file)
+dd(low level disk) if(input file) of(output file) bs(block size)
+sudo chmod 600 /shasi
+sudo mkswap /shasi
+sudo swapon /shasi
+swapon --show
+
+
+=================================================================================================================================================================
+EC2-INSTYANCES
+---------------
+types of instances
+
+On demand instance-> it will charges pay what you use
+Reserverd instances-> it wil charged like yealy or 3years,5yeras is will generate bill yearly bill(signficate discout)]
+Spot instances->it will charged by hourly bases
+dedicated instance->seperate host and irt will chatage region based complete control ot given.
+
+Ec2-familes
+-----------
+general purpose ->m1,m3
+compute optimizatiob->c1,cc2,c3
+Memory oti->m2,cr1,r3
+gpu-> gaming purpose ->cgi
+Micro-> t1,t2
+C->instance family 5d->generation .xlarge->instance size
+
+ipv4(internet protocall version 4) for 32bit
+ipv6 for 128 bit
+AMI-> vritual mechine templete
+NOTE: if you got any server issue then check routes table once
+===========================================================================================================================================================
+Diff between EC2 and Fargate
+-----------------------------
+Fargate is server less
+ec2 will chaegre total ec2 cost
+but in fatgate it will cost when we use only and it only runs in back groung
+in fargate it will not allow every cpu memory it will have some cpu memory only in default
+1vcpu->1024 cpus->faragte
+1vcpu->1000 cpu-> ec2 instace
+based on region in will charged
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+To mount the Volume :
+->dh -f ->to see disk storage
+->lsblk-(list information about block devices )> to see the attached volume storages.
+->sudo su->it is used to connect to root.
+->sudo mkfs -t ext4 /dev/ vlume address-> it is used to create a new excute file system on a disk partition in linux
+          ->mkfs->make file syatem
+		  ->-t-> text
+		  ->ext4->excute
+	->file -s /dev/vol nmae-> it i used to see file system excuted or not
+->sudo mount /dev/hahah directory name/ ->we have to mount the volume to specific directory.
+->sudo umount /dev/volume name-> we have to unmoumt the valume from here.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+================================================================================================================================
+--------------------------------------------------------DAY 3----------------------------------------------------------------
+EDITORS
+--------
+vi -> it is used to create a file at a time we have to write the content in these file.
+       ex: vi file.txt(filename)
+	   now it will open editior page
+	    -enter i
+		now it will go to insert mode
+		-after editing content
+		-to save the file click esc+:wq
+		- to close the file without editing we have to enter esc+:q!
+------------------------------------------------------------------------------------------------------------------------------
+vim -> it is also same like vi 
+----------------------------------------------------------------------------------------------------------------------------
+nano -> it is used to create file and at a time we have to add content.
+        ex:nano file.txt(filename)
+		 -it will go to directly editior page
+		 -to save enter ctrl+X to save.
+----------------------------------------------------------------------------------------------------------------------------
+cd ..-> it well go one step back folder
+cd .-> it will show the current directory
+-------------------------------------------------------------------------------------------------------------------------------
+Vritualization
+---------------
+-> simply we have to say work togeather from any ware. help of hypervisor.
+now i working in mac.at a time i have to use windows and linux also
+->for that we have us one techniqe that is HYPERVISOR
+->it will do diviede the config to other os 
+-> example: we have 1tb storage and 16gb ram
+           ->now it will divide 4gb ram for mac,4gb for windows,4gb for linux
+these called ya vritualization.
+->we have two type
+type1 natel/bare metal->it will install os from hardware-> windows ,linux
+type2 hosted->in these hardware->install mac os in that that os we have install->windows,linux	
+
+Now comming to AWS-> there have high config instance set update(physical server)
+like 1000gb ram,1000tb rom,60core proccers
+ -> when we create instase it will divided the space(space will alocate manualy)
+ like half for windows,half for linux.
+-> to divide that config aws will use hypervisor. in that they two software like xen(older),nitro(latest)
+HVM(hardware vritualization model)-> they didnt have any interartion between didvied OS's so it will provide more security
+PVM(para vritulization model)->they will have some intractions some times so security is not that much stable.
+==================================================================================================================================================================================
+AWS Core Services
+Compute Services:
+
+EC2 (Elastic Compute Cloud): Learn about instances, AMIs, instance types, and auto-scaling.
+Lambda: Explore serverless computing and how to run code without managing servers.
+Elastic Beanstalk: Understand how to deploy and manage applications.(Elastic Beanstalk is a fully managed service that simplifies deploying, managing, 
+and scaling web applications and services.)
+
+
+
+
+Storage Services:
+
+S3 (Simple Storage Service): Learn about buckets, objects, and storage classes.
+EBS (Elastic Block Store): Understand volumes, snapshots, and their use with EC2.
+Glacier: Explore archival storage options.
+Databases:
+
+RDS (Relational Database Service): Learn about setting up and managing databases like MySQL, PostgreSQL, etc.
+DynamoDB: Understand NoSQL databases and key-value stores.
+Aurora: Explore the high-performance, managed relational database.
+Networking:
+
+VPC (Virtual Private Cloud): Learn about subnets, route tables, NAT gateways, and security groups.
+Route 53: Understand DNS and routing.
+IAM (Identity and Access Management): Learn how to manage user access and permissions.
+
+
+==================================================================================================================================================================
+-------------------------------------------------DAY-4 AWS---------------------------------------------------------------------------------------------
+->To create a server we have now about some resources
+
+  -vpc(vritual private cloud) it is used for networking purpose. 
+     -The main use with vpc is to provide a vritual net work to dedicated AWS account.
+     -when create vrtitual meachine ec2 only not we have to create EBS and VPC
+	 -combination of ec2 ebs vpc then only we create vritual meachine
+	 -vpc is config in custoumer managed service.
+  -Subnets
+  -route tables
+  -Igw(Internet gate ways)
+  -Nacl's(Network Access Control)-> it is work in subnet.
+  -Security Group-> it is work in ec2.lamda,ebs
+  ->ii is acts as a vritul firewall for your instance to control inbound and outbound in any trafficchanges 
+    process->
+	 frist we have to create VPC
+	 after we have to create two subnets
+	 after we have to lunch ec2 instances for two subnets
+	 after we have to connect internet gate way to one subnet for connect through internet
+	 now we do in practically
+	 
+	 open AWs account
+	 -open vpc->select vpc only-> create vpc name->select ipv4->enter ipv4 cidr 10.0.0.0/16->put as it is and create vpc
+	 -Now we have to create subnets
+	 ->vpc-> subnet-> create subnet->select created vpc-> create vpc name->select avilability zone->cidr 10.0.0.24(put he range diff from vpc)->create
+	         -.create another one subnet also note:when we create another num of subnets we have to change number cidr like 10.0.1.0/24.
+	-> now we have to create a internet gateway for subnet to access through internet service activete
+	->vpc->internet gateways->craete gatewat name-> create->
+	    now attach gateway to vpc
+		->select create gate way-> click actions->attach vpc-> and select vpc->attached
+	Now we have do get internet to subnet through internet gate way now we have tp create route tables for that
+	 why we have to create route table?
+	 when we creaeted subnets for subnets routable id is same.then we have phase som problems that why we have create seperate route tables
+	->vpc->route table->enter routeble name-> select vpc-> create
+	-> now attach subnets routetable to subnet assocations
+	->select route table-> godown-> go to subnset assocuiation-> attach that.
+	-> after that we have to attach intergate way to subnet
+	->select route table-> go down select routez-.edit routes->add routes->enter port 0.0.0./0 for internet-> select what we created gateway in privoius->save cahnges
+	-> now we have to create ec2 instances
+	  -> go ec2->create instance-> create name->select aws linux->changes on networking settingd-> create instances
+	
+	
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ----------------------------------------------------------------------DAY - 5 ----------------------------------------------------------------------------------
+ -> AWS Reigios
+      ->every region have 3 avilabilty zones 
+	  ->every avilability zone have a one data center
+	  ex: mumbai(region)->mumbai-1a-lb-1c(avilabilty zones)
+ ->VPC: When we want any private network then we have to go with vpc.
+ ->Route:it specifying routes for different destination IP addresses.
+ ->Subnet:That allows you to logically isolate resources and control their network settings.
+ 
+ Why AWS?
+ ->AWS is best cloud provider compare to other cloud provider
+ ->it will offers multiple servers on diffierent domains
+ ->like computing networking security
+ ->combination iaas paas saas
+      cost benfites
+	  ->no upfrount cost
+	  -.pay as you go
+	  ->Automation options
+	  ->Global avilability
+ How to estimate the Cloud prices?
+   ->aws price calculator
+   ->requirement of client we have to select all options based on project
+   -. select a Teancy
+      ->shared instance(low cost)
+	  ->Dedicated instance
+	  ->Desdicated host(it will provide more security cost also high)
+Coming to offers
+     ->Compute saving plans-> it will be used to continouns intsance running for 1 year or 3year it willl be charged and offers may be applied
+	 ->ec2 save plans
+	 ->On demand->we have create instance and we have to terminate as my intrest
+	 ->spot instances-> biding the server.
+===============================================================================================================================================================
+-------------------------------------------------------------------DAY -6---------------------------------------------------------------------------------------
+INTER NET GATE WAY
+------------------
+ AWS is allows instance what we have in VPC to connect to the internet
+
+Subnets
+--------
+it is used to controle network settings.
+->in subnets nets we have to create two subnets
+one subnet form public uses because for that we have to connect internet
+one subnet for private to store the sesetive data like user credit card pan numbers adhhar._,
+-> we have to enter CIDR value with the help of CIDr.XYD..for vpc we have to enter CIDR BASE IP
+                                                            ->subnet one we have to enter FIRST USABLE IP
+															->subnet two we have to inter last usable ip along with netmask.
+DOCUKERS
+---------
+it is mainly used for compress the files
+
+How to estimate the price of project ?
+by using AWS pricing caculator we have enter client requirements than we have to finalize.
+===============================================================================================================================================================
+--------------------------------------------------------------DAY --7--------------------------------------------------------------------------------------------
+we have to use VISUAL SUBNET CONTROLLER for CIDR values
+->Route Tabels:it specifying routes for different destination IP addresses.
+    ->we have to give address were we have to go.
+Security Groups:
+--------------
+we have to set our permisions from here for who have to connet to server.
+->we have to give permmision for ec2
+->inbound rule is defines the application who have to access.
+->out bound rules is defines return response who to give
+-> if created inbound rules automatically out bound also created 
+->it will allow every rule
+
+NACL:(NETWORK ACCESS CONTROL LIST)
+----
+-> we have to give permison for subnet.
+->but in these have customze the rule will allow or deny
+->it these we have to edit both rules.
+-> in thses we have rule number we have given low number for any rule it will be the first prority
+-. in these we have to deny particular person also by useing ip address.
+=================================================================================================================================================================
+--------------------------------------------------------------DAY-8---------------------------------------------------------------
+ -.completed vpc creation
+ 
+ EBS(Elastic block storage)
+ ---------------------------
+ -> it mainly used for when we create a instance we save files.if istance is delted files will be delted
+ ->but in EBS we have see files in stop or start.when we  terminate it will be deleted
+ ->ebs->snapshot->ebs->instance ec2
+ -.it is raw,unformated data that you can attach a ec2 instance
+ ->EBS is attached to ec2 in aws networking like vritual hard drive.
+ -.multiple ebs volumes is attached to singel ec2
+ ->but at a time we can attach only one ebs to ec2
+ ->ebs and ec2 should have in same avilability zone.
+ two type valumes:
+ ->SSD and HDD
+ ->ebs->snapshots->ebs
+ snapshots in nothing but copies it will saved what is ebs.
+ -.when we export ebs volume to another region than we can create a snapshot and create a ebs from the snapshot in inteted avilabilty zone
+ Step to to do:
+ -create ec2 ->ans connect to server->add file
+ ->go volumes and create a volume attach to ec2.
+ ->and select that volume -> select actions-> create a snapshot
+ ->an dsee that ceated snapsot visible in-> snapshot folder
+ -.now create a another ebs volume from snapshot->actions->create a volume from snap shot
+ ->that volume is display in volumes folder->and create a another ec2-> attach that volume to that ec2.
+ 
+ -> to see route volume command is->lsblk
+ 
+ Note:Both ec2s are must be in same avilabilty zones,when we attaching volume ec2 must be in stopd stage.
+==================================================================================================================================================================
+-------------------------------------------------------------DAY-9--------------------------------------------------------------
+Nacl(Network Access control Lists):
+-----------------------------------
+it is used to give a security to VPC
+
+->vpc->nacl->create ->set name->select vpc-> create
+
+-> in here we have to give permmisoans and deny permmisions for any ip address here
+->for low rulw number have highest prority.(100>>200)
+=================================================================================================================================================================
+----------------------------------------------------------------DAY-10-----------------------------------------------------------------------------------
+Now we install the web server in main server
+web server ->it used to store the files and delivaery to clinet.
+  if client will search for some then web server will give a respose to client.
+->now we install new httpd web server.
+   the command to install the web server in Main Server
+        ->sudo yum -y install httpd
+	To create the system link->
+        -> sudo systemctl enable httpd.
+	To see the status of server  
+        ->sudo systemctl status httpd
+    To start the web server   
+       -> sudo systemctl start httpd
+	TO stop the server
+	   ->sudo systemctl stop httpd
+	 to see the port range
+	   -. sudo netstat -ntpl
+	   -> Web servrs have a document route directory we have to deply the code there is folder is  /var/www/html/
+	to pust the code from git to server
+	   ->sudo git clone (git file location url).
+ httpd->Prefork uses processes for isolation and handles one connection per process, while 
+ nginx->worker uses threads for efficient concurrency handling with shared resources within each process.
+ 
+ ->to use webserver we have take http port for that.
+ 
+ -> to Directoryies in HTTPD-> ls /etc/httpd/
+ -> to see directory in nginx->ls /usr/share/nginx/
+ ->we have to create a depoled file in /var/www/html/
+ ===============================================================================================================================================================
+ ----------------------------------------------DAY -11(preparation of basic web server and deploy-------------------------------------------------------
+ ==============================================================================================================================================================
+ -----------------------------------------------------------DAY-12---------------------------------------------------------------------------------------------
+ Bash Scripting in User date
+ ----------------------------
+ it is used to we have install same servers in more instances  at a time then go to bash scripting
+ 
+ -> create ec2->select num of instances-> asusual formalites->advanced setteing ->user date -. enter the Bash code.
+ 
+ #!/bin/bash
+yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo yum install git -y
+cd /var/www/html/
+sudo git clone https://github.com/Akiranred/food.git
+
+EX:
+#!/bin/bash
+yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo yum install git -y
+cd /var/www/html/
+sudo git clone https://github.com/Akiranred/food.git
+cd /var/www/html/food/
+sudo mv * /var/www/html/
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Shell Scripting
+----------------
+Shell is unix term interface between user and os
+it is a open source computer desughed to run by unix/linux
+it is used to write a bynch of commands in one file excute at a time.
+i real time we have daily uses commands we hace add into one file and excute bunch of commands at atime
+
+Open create instance-> connect-> create a file with .sh extention-> now write all commands in that .sh file
+-. to excute that .sh file ->
+command is 
+   -> sh  file.sh
+   -> it well be excute at a time by using that shell scripting
+==================================================================================================================================================================
+_---------------------------------------------------------------------------DAY - 13----------------------------------------------------------------------------
+EBS--
+Volumes:it is nothing but create storage in server
+       -> it will be created automatically that volume is called route volume
+	   ->by ebs we create avolume then we attached t volume
+	   ->we hav to delete a server we can retrive the data
+-> if the automatic created volume is full the we ceate a additional volume at that time.
+->thatb additional volume is called a EBS volume
+->EBS stands for ELASTIC BLOCK STORAGE.
+
+->create a ec2->go to ebs-> select volume->create a volume-> and attach a volume to ec2.
+Sure!
+
+- **Instance Type**: Defines the computing capacity (CPU, memory, etc.) of a virtual machine.
+- **Volumes**: Provide persistent storage for data and can be attached/detached from instances as needed.
+->we cab backup in s3 buckets in any reagiion on in ebs it is not possible.
+==================================================================================================================================================================
+------------------------------------------------------------DAY-14----------------------------------------------------------------------------------------------
+How to mount a volume to the instance
+=>creaete new volume and attach to ec2 then do process
+->them make file system(sudo mkfs -t ext4 /dev/volume add)
+      -> is used to do disk partition
+->check volume(lsblk(List block devices))-> is used to check volume in server
+->go to root(sudo su)
+->sudo mount /dev/vol add directory name)-> it is used to mount the volume
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+->first create ec2->
+connect -> server->check volume(lsblk)->go to root(sudo su)->them make file system(sudo mkfs -t ext4 /dev/volume add)
+->now check partions done after done-> we have to mount the vloume to instanc e(sudo mount /dev/vol add directory name)/
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+=================================================================================================================================================================
+------------------------------------------------------------------DAY-15----------------------------------------------------------------------------------------------
+->how to unmouth volume
+  ->sudo umount /dev/volume name
+-> wWhat is snap shot and how it will be created 
+   ->Snapshot is used to back a point of data in ebs volume.and captures the data.
+   ->create ec2-> create volume and attach->go snap shot->select volume(when want volume snapshot  than got o volume)
+   selct intance(when we want ec2 intsance snapshot )-> create.
+==============================================================================================================================================================
+==================================================================DAY-16=====================================================================================
+How to create AMI through snapshot 
+-> snapshot->actions-> create a ami->create
+how to create intance from AMI
+->ami-> click lunch instance..
+AMI-> AMZON VRITUAL MAICHNE-> it nothimg like operating system.
+
+Today task-:Create a snapshot from volume
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================================================DAY-17------------------------------------------------------------------------------------
+EFS(Elastic file System)
+-> it is used to share the data to one server top another server.
+_.reason it take same storage to both servers so we have pay for only once.
+->it is acceced by NFS protocol port number 2049.
+->create two ec2 instances.
+->we have two create security group for efs with nfs port and add security group address to provide more security.
+->now goto efs and create and customize network->secirty group ->add created nfs securiy group->
+->now open the serevr1 instanvce->install sudo yum install amazon-efs-util-> create folder efs-> ad paste the url provide by efs->
+
+if create with default meanse its ok 
+Note: When we create own own vpc from that we doing work with that efs.When it shows failed then go to vpc settings and enble that dns hostnames.
+->we have to create two ec2 instance same vpc but avilibilty zone will be different.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+=========================================================================DAY-18===============================================================================
+S3(Simple storage service)
+--------------------------
+->it is one of the storage servies.
+->it is used to store the backup data like google cloud.
+
+->we cant use any server to use thses servivce.
+->Global wide servive
+Bucket
+--------
+-> if you create root level folder its call buckaet
+->create a bucket we can accesse any were
+->it is scalable
+-> it is object level storage object nothing like file(pdf,jpg,dox)
+->One bucket contains 5tb
+->it will maintain 3 copies of data that is called avilability.
+-> it will take more storage how much you want it will charged for that only that is call scalability,
+-> we can delete bucket we can put it empty firt
+->s3->create bucket->enter name->
+  _.object ownership(we give pemmistions who to access0
+  ->to block access-> bucket versioning enable(make copy of that)->
+ using s3 bucketa
+ ------------------
+ Backup and storage
+ disat\ster recovery
+ arcgive 
+ hybride cloud storage-> we have to use in muiltiple ways
+ Application hosting
+ media hosting
+ big data analysis
+ software delivary
+ static websites->fixed websites 
+ 
+ AWS GRACIER SERVEIS
+ --------------------
+ it is long term secure durable storage class data storing at low cost millon seconds accesee
+ we can store infrequent data
+ s3 we cant store data long time because it bill per momth
+ in glacier it will be low cost 10times cheper than s3
+ but the the thing is we can retrvinung the data frequently meanse it will take retrive chamrges.
+ ->it will store in the form of Archives(video files,images or documants).
+ _.40tb
+  -> in s3 we stored in buckets
+  -> in galicer we can stored in valuts(nothing like container)
+  ->it slow to retrive the data compiring to s3
+  ->it will store multilple replics it used to we can retrive the data.
+  ->we can also share the data from s3 to glacier.
+ ACL:->gibe a permmison to s3 bucket to other aws account.
+ ARN(Amzon-Resourse name)-example
+ arn;aws:<service name:<region>:<Avilibilty zone>:name
+ arn:aws:s3:::areeebucket
+ ->Identify the aws resourse uniqly.
+ Stroage classs:
+ --------------
+ standerd ->for general use
+ RRS->non critical data and aduplicate date can store here it low cost
+ glacier service:ir is used to store long term data.\\
+ S3 Intelligent-Tiering (IA) storage class automatically moves objects between two access tiers (frequent and infrequent)
+ based on changing access patterns to optimize costs.
+ Object: not possible to move data from one storge to another storage classes before 30days of data added
+  we can move data after the 30 days.
+ how to do?
+ open object and open that files and go down threre is option storage class.
+ 
+  
+  -.when we can move 1000files at a time we have too go for life cycle method
+ -> by using life cycle configiration:
+ ->Life cycle rule actions-
+ ->it is used to rrules can apply to to which versions.
+ 
+ ->in storage classes which we can choose one by one
+ -.but in life cycle we can do that create a rule like move 1st 30days satandae to iA-. after 60 days move to glacier
+ _.by createing rule it will move automatically.
+ -.and also we can enter specific days also and specific num of versions also
+ -.for every file
+ ->and also craeted when the versions will expires 
+ -> also created foe how many days it will be perminently delete
+ ->after that review the rules and cob=nfirm that
+ name->select all or only one object to applya->prefixname->mention minium and max size of objeect->
+ ->select rule actions->give the rule to files->expire date->permiently delete date-> create.
+ 
+ 
+  
+ 
+ 
+
+  
+-----------------------------------------********_---------------------------------------------------------------------------
+Now we have to add policy in bucket meainae we have to go to that permmision edit bucket policy write a code there
+ex:i need to give permmison for public(i need to public accsess in s3 bucket)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+=============================================================================DAY=19========================================================================
+How to add files in to the buckets
+->go to s3->create bucket->select upload-> and upload a files-> copy url-> paste i google the data we be showen.
+->give a permmision go to ALC and give the permmisions there.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+=============================================================================DAY-20=======================================================================
+ow to activate versions 
+->it is nothing like we have enble versions then we upload a file it will make another file for back update
+->Life cycle of s3 rules
+--> it is used for maintain the uploaded file like how many days it is to use .
+======================================================================================================================================================================
+-----------------------------------------------------------------DAY-21-------------------------------------------------------------------------------
+IAM (Identitiy and Access MAnagements)
+--------------------------------------
+IAM user:it is used to give permmisionns to user what have to access.with a credenitials acsess a one account.
+IAm group:it is nothing like collection of IAM users
+IAM roles :it is similar to iam users
+  it is divided to two types
+  ->identies
+      -user
+	  -group
+	  -roles
+	  -crenditials
+  ->permmisions
+ ---Iam user---
+->we can create 5 users at atime
+->bill will pay the parent account only
+->for any iam user we have to assign some things
+   ->like user and password to accsses aws console
+   ->each iam user is associated only one aws account.
+ --iam group-----
+->it is a collection of iam users.
+-> it is use to give a permmisons and policiey multiple user at a time.
+->it os used to give permmisons for more than one user.
+-.if you atttach a policy to group than it will be accessed to all group users.
+---IAM ROLES-----
+it is similar to iam user
+->in thse we didnot have any credantials.
+->it user to give a permmisions for in specifc time it avilable in IAM ROLE.
+========================================================================================================================================================================================
+------------------------------------------------------------------------------------------DAY-22-------------------------------------------------------------------------------------
+MFA(Multi factor Authintication)
+---------------------------------
+it is nothing but double layer protection for aws Account.
+3 type of authentication
+------------------------
+->One USB based
+->One mobile scan through Authantivation application
+->one is TOTP type.
+Bills And Management:
+---------------------
+From we have to check our montly bills
+_. we have anayise the cost cutting from there.
+Elastic IP add
+========================================================================================================================================================================================
+---------------------------------------------------------------------------------------------------DAY-23--------------------------------------------------------------------------------
+LOAD BALANCERS
+---------------
+-> it is nothing but it well balanced the load for servers
+  ex: When getting a more traffic from user then load balancee is disrubute the load for other servers
+     it is most expencive
+	 types of load balancer-
+	 1)Application load balancer->its used for http and https protocol or used for web server acess.
+	 2)Network Load BALANCERS->it is used for RDS service and transfer protocol like TCP,TDL
+	 3)Gateway load balancer-> it is used tovpc protaction for efs and nfs protocol.
+Application Load Balancers (ALBs) distribute HTTP/HTTPS traffic based on application-layer (Layer 7) data, Network Load Balancers (NLBs) handle TCP/UDP 
+traffic at the transport layer (Layer 4) with low latency, and Gateway Load Balancers combine the functionality 
+of a load balancer with advanced network services and transparency.
+	 
+Process:go to load balancer->create->Select the load balacer type->give load balacer name-> select the subnet->ipv4->select vpc and security group
+_.create target group and assign->open target group-> select service-> select vpc ->select port-> if register any instance select->create
+->after the copy the DNS like  and search i n google then it will give responcse from any one instanse server what you registerd in target group.
+->
+---->Target group:Target groups are created for load balancers to define and manage the specific instances or services 
+that the load balancer routes traffic to, ensuring proper distribution and health monitoring.
+
+Easy-> it used to give route access oonly regiserd targets only.like which instance you give only work on that instance only.
+
+
+
+
+Auto Scaling Groups
+------------------
+it is used to when we server is crash or stopes automatically or terminated.then it will
+be create another server as like that and it continous that flow.
+============================================================================================================================================================================================
+--------------------------------------------------------------------------------------DAY-24---------------------------------------------------------------------------------------------
+We can phase some proble like
+ when we lauch server 
+we fixed 100  users for 2core 2gb ram but 
+next month user increased to 200 then we want extra storage then we have to change config
+after that decreses to 50 but storage is more and it is cost efficence 
+for that problem we have to go for Auto Scaling.
+
+Auto scaling meance it will manage the decreae and increace the storagre as per our requirement.
+
+orizental Scaling-> it is nothind bur we get load on server it add same capacity server will addeed.
+Verical Scaling->in thses get a load on server it will be upgared the capity in on server only-
+
+
+Before creation of Auto Scaling we have to Create a templet
+What is templet?
+In auto scalling it lounches more instance the intances capacity we have to mention in templet
+ like intance type,AMI.security group,subnet configirtions. instance lunch settings all done by here.
+_.ec dasbord->click lunch templet->create liunch templet->select created AMI->subnet will select in auto scalling->create.
+ now we created a LOunch templet
+ 
+ before createing Auto scaling make sure that we have to create load balancers.
+ 
+ ->open Auto scaling->create a auto scaling->Selec lunch templet->add loadd create dload balacer->select vpc->slect desire value->create and check
+ 
+ Desire value ->it is nothing like how many instances run at aa time.
+ ==============================================================================================================================================
+ -----------------------------------------------------------------DAY-25----------------------------------------------------------------------
+ RECYCLE BIN:
+ ------------
+ it will stored deleted data like AMIs
+===============================================================================================================================================================
+------------------------------------------------------------DAY-26--------------------------------------------------------------------------------------
+RDS:(Relational Data Service)
+=============================
+it used to store the consumers data in these rdb
+when we lunch a instance and we have one private subnet to store private data for that
+->goto to rds and create subnet group for DB and connect private subnet here.
+->now open rdb->database>select standerd->selext sql engin->select templet free ->DB settings self manged create password->select vpc config-> create.
+===============================================================================================================================================================
+------------------------------------------------------------DAY-27-----------------------------------------------------------------------------------------------
+->NAT gate way(network address translation)-> it is used to connect private subnet to public subnet for provide a internet.for adding the consumers data.
+ parameter group ->it used to add users to single databases.when we create database form 4group members 
+ than we have to add 5th member then we have to gowith parameter.
+ ==================================================================================================================================================================
+ ------------------------------------------------------DAY-28----------------------------------------------------------------------------------------------------
+ CLOUD FORMATION
+ ------------------
+ it is nothing but we have create resourses like vpc,s3 alla services from here through write a yaml code.
+ 
+How to find a Yaml code for resoursees?
+go to google and enter create vpc using cloud formation then you find a link aws.
+open that and copy that code.
+And go to editor and alingn that code
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This is a template for vpc
+
+Resources:
+  ashokVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+       - Key: stack
+         Value: production
+
+  ashokInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: stack
+        Value: Production
+And open cloudfornt formatiom and you can upload thayaml code file and run.
+-=============================================================================================================================================================
+-------------------------------------------------------------------DAY-29-------------------------------------------------------------------------------
+Lambda
+----------
+itis serverless arcitucture.
+AWS Lamda is AWS serverless computing system that runs and automaticlly manage.undelying computing resoursed
+->serverless is nothing but we have to do only write a code by developent non other than all will be manges byr the aws only
+   like Runtime,container engen,os,hypervisore,pysical server.
+   
+ ->go to lamda->create a function
+=================================================================================================================================================================
+---------------------------------------------------------------DAY-30(TRAINER -MANJUNATH(04-09-2024)----------------------------------------------------------------------------- 
+ Branching Stetagy
+ -----------------
+ Development system
+ Test
+ quality
+ prod
+ When we developed some code we can check in our own syatem it will fine.
+ When we deploy the code directity to the production management we dont know how it will work
+ Thats why we have to test with some tools.
+ Now we go to test it not working no problem we have enhance that
+ after enhacing we can move again it will work
+ Now we pull that code into QA branceh and deploy here
+ after that QA we have to move to production aa deploy
+ note:every app have some updates one version will be realesed the it will deployes from back side they will
+ work on another version on that time they will test if that verion is ok only they will move version2 till there version1 will only run.
+ -------------------------------------------------------------------------
+ What is branch?
+ Every git repositry have a defult branch like master/main
+ Brances Allow the developers to work on diff feautures bug fixing with out distrubing main code.
+ Why we create new branch?
+ when we work on master branch we have to face some problems thats why we have to create our own branch.
+ Every brach have some stsrategy accor=ding to company
+ 
+ -----------------------------------------------------------------------------------------------------------------------
+ What is git?
+ it is source code management
+ -it is used to track the changes in files
+ ->git is software and github is website
+ Repositry:
+ ->it is used store the all all project related data.
+ -.it contains the collection of file and also history changes made those files.
+ ->Local repo -> we have to create files commit files and another edit it
+ ->central repo->create a app we have write code by couple of mumber all the members code will stored in centeal repo
+ ->remote repo-> it used to share a code seperately a specific person.
+ To see branch command
+ ->git init -> (empty repositry/local repositry)is used to create default branch like master/main
+ ->touch filename-> ceate a file
+ -> git status-> to check file status it is tracking or untrack
+ ->git add filename-> it is used to change untrack to track.
+ ->git commit -m "Message" filename-> it is used give a msg when we done upgration in it.
+ -.git log -> it is used to commited messge here.
+ ->git branch -> to see brachnes
+ ->git branch name-> to create branch
+ ->git checkout branch name-> to change to specific branch
+ ->git checkout -b name->it will create new branch at time it move to that branch
+ ->git mearge branch name ->we have opened one branch we have mearge another branch with these than goto merge command
+ ->git branch -d branch name-> it is used to delete branch
+ Note:Branch will generate after the commit the file
+ ===============================================================================================================================================================
+---------------------------------------------------------------DAY-31--------------------------------------------------------------------------------------
+Route 53:
+==========
+->it is DNS(DOMAIN NAMEING SERVICE) service
+   ->DNS nothing but when we open website google.com it will open but back end it will be linked with ipaddress.
+   -.we have to purchase that domain and it will be uniqe
+   -> to puchase that we have some sites like godaddy,namecheap.(we have create aws also by usinf registerd domian
+now got o route53 
+    ->open hostzones
+	-> create enter that domain name here
+	->select public or private(it is avilibilty zone based)
+	->and create .
+Now the point is i have delopyed one ec2 serevr by ip addersss i want to sharee my site to friend then 
+-> iwnat share a domine.i have to link my ip address to domin name copy that ip
+-> go to route53->hostzone->create record_>past thta ip address in value option->create record
+->we have to attach multiple ec2 than load balancer meance we go to create load balancer 
+->create record->select alies->select load balancer avilability zone->select loadbalancer-> create
+
+->check that the command is ->nslookup domin name-> it will show ip address we attached
+->                                             -.when we link with load balacer it will show multiple ipaddress
+->simpe routing policy->we can use only one load balacer than go to simple 
+->the point is i have access singgle domin name with 2 loadbalcers with diff avilabilty zones.
+    ->than go to weighted routing policy and add the record.
+	->Now the the doute is from which load balacer it will work?
+	->according to the weight you given it will be access give the traffic between 0 - 255.
+	->traffic will divide by that weight we have given.
+	->now i want to reach that server by the latancy than ?
+	->Latancy routing policy it will redirect that based on the latancy.
+	->it will connect to nearest avilibity zone
+	->example we have mumbai and us the server will conect to mumbai because nearest one is mumbai server.
+	->Now we only share that traffc indian people to us server.us people to indiam server.
+	->Geo loaction routing policy.
+	->Another problem is when we have 2servers one primary and one secoundry if primarty server is problem?
+	->go to failover routing policy it will divert user to secoundry server if primary server facing any problem.
+	->when that primary server will healty agian trffic will move to primary server
+Note:We have no chance to do multple routing policy at a time.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+=================================================================================DAY _ 39--------------------------------------------------------
+VPC PEERING
+------------
+->it is net working concept it is used to build a connection between two vpcs.
+how to connect
+first we have to create two vpcs
+->than we have to lauch instacrs by using those ec2 instances
+->goto vpc dashboard->click peering-> create peering ->ecter both vpc details->click create then vpcs are connecte.
+->now we have to connect subents by using route tables
+->goto vpc1 route table->goto add routes->enter cider value of oppsite subnet->select peeering connection->and click sve changes.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Cloud Front Distubution
+----------------------
+it is a fastest content delivary network service that securely serve the data,low latancy and high data transfer speed
+Content delivary network is used for to over com the latancy problem
+Why cloud front
+------------------
+When we deployed some project near by location  like mumubai
+it will be the quick action to end user near the mubai location
+->but i can accsess the from the another country meance it will take some time to delivery
+->to avoid that problem we have to create cloud front distubution
+->HOW IT WILL WORK?
+  we have some edge loactions in every country we have to connect load balacers through cloud fornt 
+  -and it is we have to use these DNS name to connect than it will work without delay
+ Special feature
+ ->we have to block countiees also 
+ ->eample we have blocked UK the site will not work in that UK county.
+=============================================================================================================================================================
+How to write s3 bucket policies
+we can apply resource level permissions using these policies
+look into one senario
+we created one IAM user for that user we give the full accesee of S3 bucket but
+i dont want to give right to delete that specifc bucket
+then we have to for bucket policyes.
+
+now i am createing one iam user and he assess full acess of S3
+but my point is he can accses but they didt have any right to delete.
+and also i want to disable uploading new files also
+
+now open that
+s3->open that bucket->permmisions->bucket policy edit->
+policy generator
+if you give acces goto allow other than deny
+prinipal :iam user ARN
+select actions
+select s3 arn , again arn end of that /*
+generate 
+copy that and past in bucket policy
+and check that.
+=========================================================================================================================
+Event notification in S3
+=============================
+it is used to when and issuce found is s3 bucket like
+delects or uploaded it will be trigger some actions like lambda trigger or any notifictaion througn gmail
+
+to trigger that go with simple notification sevice 
+how to creat that sns (Simple nitification service)
+go to sns
+select stanadand(fifo only for sqs)
+Acess policy
+give both every one tag
+create topic
+now we have to add subscribers
+create subsribe
+select email
+give email and add
+now when check that mail conformation message recived or not.
+
+now goto s3 bucket-.goto properties->select event notification
+give the name
+and select options are thete
+created object and deleted object
+ther will get the notification
+and select sns
+select created sns what you created
+after that once check
+if file will be deleted immediatly email was generated.
+===================================================================================================================
+SQS(SIMPKE QUAUED SEVICE)
+-------------------------------
+Amazon SNS (Simple Notification Service) is a pub/sub messaging service that pushes messages to subscribers,
+ while Amazon SQS (Simple Queue Service) 
+is a message queue service that stores and retrieves messages for later processing.
+how to create SQS
+sqs->create queuse->standard quesue->name->defult option->create
+https://github.com/avizway1/sns-project-repo
+===============================================================================================================
+to install node js 
+step->we have to create repo first
+curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -
+step-2->sudo yum install -y nodejs
+step=-3 verfity version:->node -v
+npm -v
+steo-4-.instalice the node project->npm init -y
+    then it will generate the package.json file
+step-5->we have to install the dependicess
+     npm install express aws-sdk body-parser
+step-6->.now take that code and customis with sns ARN app.js code
+step-7-.index code
+step-8 npm install -g pm2->install node js app
+step-9 pm2 list to check
+step-10 to start that app ->pm2 start app.js --name "my-app1"
+now check with ip address add port 3000
+send the sms and check the mail was recived or not
+now create role->aws service->ec2->
+
+===================================================================================================================
+Object Lock In S3
+==================
+it is nothing but we to provide extra security for importnt file is is usifule
+after creating a bucket we cannot enble these feauture..if enble costomuer care formalites fallows
+now how to create
+create s3->must enable bucket versioning-> goto advanced settings enable object lock-.create
+to activete object lock we have to do some config
+open bucket->properties->object lock->edit-.open and set the time or days
+it cannot delete till the date you entered
+check it deleted or not
+first select file and delete it will deleted
+but in versioning there will be the another copy.
+=================================================================================================
+Snow family in S3
+--------------------
+it is uesed to we have move tb's of data from one s3 to loacl disk or local to s3
+open snow family->select export or import data->select storgr-.price
+=================================================================================================
+s3 Replications
+================
+when we have to move data from mumbai region to another region to we have to store the data from both regions
+then it is usefull
+we can move to same bucket or we can move on s3 bucket region to another s3 bucket region or one accunt s3 to another accout
+
+create two buckets inf different locations
+must enable bucket versions
+now my point is
+ iwant to replicate my data mumbai to sedny
+ goto managenment ->replication create->.prefix(specicr folder data)select what type of data->and selcect same account or diff acount->
+ 
+->Iam role for permmissions create role->select exisiting ->s3 full access->cretes
+now you can create or uploade a file into the bucket it will automatically stored in another region bucket also
+
+goto that properties and see that it is in peding stage or copleted stage.
+
+=======================================================================================================
+Static website hosting with s3
+=================================
+to do this we want one domain name
+create a bucket name with that domain name
+create bucket with defualt actions
+(we can download html templets in google)
+upload all the files into that s3 bucket
+now-properties->statis website hsting->ebable->eneter default file->also give error page also-. save chamges
+and open thtaa file and copy url and paste it google search.
+===================================================================================================
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html?icmpid=docs_amazons3_console
+=============================================================================================================
+s3 CORS(CROSS ORIGIN RESORCE SHARING
+======================================
+it is used to share the resources between two s3 bucket
+now we can see in practically
+
+create two s3 buckets
+->now download some html templates from google html5 free templets
+->now copy index file and assets and images to Cors-1 bucket
+
+now goto 1st bucket and select all objects and goto action and make it public
+now once check that index file is acessing or not through object url.
+now stay on that page and enter ctrl+shift+i it will go to inpect mode and goto network
+->now we company the index file in cors-2 bucket
+-.smae index file also make public
+->goto index file object url and see what the matter it will disply broken 
+->now inspect these page it will get 403 error to over come that
+-.we have to take cors-1 images and asssets to cors-2
+->how can i share
+->open core-2 folde index file open that code in head tag we have to add base tag
+  ex:<base href="https://shasi-cors-1.s3.ap-south-1.amazonaws.com/" target="_blank">
+  that link is nothing but cors -1 URL
+ now re uplode the index file in cors-2
+one cors-2 object url once check it will get some chnage but broken
+problem is all files and imges was loaing from cors-1 but proble in main.css
+to rectfy that we have to write base tag brfore main.css.
+now agail upload and refresh the link
+now see the request url was getting from cors-1
+
+once incpect cors-1 and cors-2
+in cors - 2 getting a CORS error
+to fix that cors error
+we have to add some corse policy
+now goto cors-1 bucket
+open cors-1 ->permmiosons->do down and see cors policy->
+write these
+[
+    {
+        "AllowedOrigins":["https://shasi-cors-2.s3.ap-south-1.amazonaws.com"],
+        "AllowedMethods":[
+            "GET"
+            ],
+        "AllowedHeaders":[
+            
+            "*"
+            ]
+        
+    }
+    
+]
+
+now the crose permmisons are accepted
+=========================================================================================================================================
+ClOUD FRONT WIT S3
+===================
+create on s3 bucket launch static website on that s3.
+open cloud front distubution
+->select origin domin
+->select origin path(index.html or any other folder)
+->go with origin access control(it will block object url of s3bucket it will run on cloudfornt role)
+->create one origin cesses control
+->set all default
+->in settings use all edge loactions
+->set default and create after creting aws will give one policy for s3 bucket copy that and paste it in 
+s3 bucket policy
+{
+        "Version": "2008-10-17",
+        "Id": "PolicyForCloudFrontPrivateContent",
+        "Statement": [
+            {
+                "Sid": "AllowCloudFrontServicePrincipal",
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "cloudfront.amazonaws.com"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::shasi-bucket-1/*",
+                "Condition": {
+                    "StringEquals": {
+                      "AWS:SourceArn": "arn:aws:cloudfront::867344451892:distribution/E2VHZUQAM6QG6"
+                    }
+                }
+            }
+        ] 
+      }
+now that copy that domain name and paste in google and check it
+if you can find any access denined error
+add /index.html end oof the domain name. then will work
+--------------------------------------------------------------------------------
+Cloud front with ec2
+--------------------
+create ec2 instance and deploy on website
+open cloud front
+in origin domin enter that ec2 public domain
+set all default
+and after deploying select that doman name and check in google
+it will work.
+======================================================================================================
+IAM(INDENTITY ACESSE MANAEMENT)
+==============================
+open aws->iam role->create user-.name
+->programatic access it will provide a key for terraform
+->mnagement console it will provide in aws account
+->password selection
+create user
+open sign in console goto iam user provide username
+once check any service it accesee or not if it is not accesee
+then go back to iam user open attach existing policy or we can also create our own policy
+-.select s3 full access 
+->refresh iam login page once check s3 will get full acceses
+->now once check another service like iam service accesseing or not.
+->will show not accesseble.
+-> now we can geaerate acess key and scret key
+->goto iam roles annd got o security creditials and generate assecc key.
+-.we can download that .csv file all the access detaile will be there.
+How to connect through access key 
+->open terminal-> we have to enter so e commands
+->aws configure
+->enter accesee key secret key
+->to check from which account these access key was generated.
+->aws sts get-caller-identity
+-.aws s3 ls
+->aws ec2 describe-instances
+note: we can only create two access key.if we have to create another one must we have to deactivate on accsess key.
+
+those are aws managed policies
+===================================================================================================================
+IAM(CUSTOMER MANAGED POLICYIES)
+=================================
+We have to select customized policies and we also take use add permmissions or add inline policy
+my point is 
+i have to a permmission for only one bucket in s3.but in default policy there no option
+that whay i have to create a pocily using create policy option. 
+write s3
+click list-.list all my bukets
+it will show only bucket names it doest show inside the bucket contetnt add our customized perrmissions
+->once check json tab also
+-.give name to that policy and create
+->now select that constomized policy and  add that permission 
+-.now once check and it was showing list of buckets or not
+-.we have to full permmision for bucket
+->it will show the option like specific resource than we have to add bucket arn
+===================================================================================================================
+IAM ROLES(cross aacc role)
+=========
+it nothing but we have to give permission to accsess our service using with another 3rd party account
+-.role->3rd party->give acount id->role name-> create
+-.but they didnt give user name and password
+how can i  accesse
+we have to create a custom policy for sts(siple token service)
+we have to login with iam role->click on name-.>action assume role->resources all
+now open that iam role->switch role->enter account id->enter role->name->open 
+================================================================================================================
+IAM PERMMISION BOUNDRIES
+=========================
+permmsission policy is nothing but giving access to specfic service
+permmision boundry meanse when we added a full access of adminstration in  permmision policy
+in permmision boundry we can add s3 full access if he have all access but it will run only s3 access only
+->it will be added on click a set boundryy.
+then it will give access to only that s3 service
+=================================================================================================================
+IAM Groups
+=============
+to create group
+->user group->create group->group name->select users->attach policy-.create group
+
+==================================================================================================================
+ECS(ELASTIC CONTAINER SERVICE)
+================================
+it is used to run a docker containers
+it will be work pay as you go model
+service in aws to run containers at scale.
+when get a more load on server it will add some other server with the help og autoScaling,
+it will be operated in two ways
+1)Ec2 lunch type (manage your own servers)
+2)Serverless(fargate)
+
+now how to to create ECS
+->goto ecs->create cluster->cluster name->select serverless or ec2 instance->
+->net work setting select vpc and subnets security group->monerting optional if give access
+it will be show in cloud watch->create.
+now we have to run the container than go to task definations
+(it is avilabel in left side optios)
+create task definations->we can create two ways using jason and config
+->now create with config->task name->add docker container image url
+->mention the port number ->selct where contaire have to run ec2 instance->
+->selec max cpu and memory according to project capacity->add default ->create.
+now select that task defination->deploy option->run task
+or-.create service->select ecs cluster we created ->select vpc->SUBNET SECUROTY->selectload balancer->cretes
+after deploying it will added in service in ecs cluster.
+now we have to create task definatinon thon JSON formate
+->
+=====================================================================================================================
+ECR(ELASTIC CONTAINER REPOSITRY)
+==================================
+it is fully managed docker container registery
+it is used to devop devloper to store,manage and deploy the docker images.
+aws is support both public and private repositry.
+using aws IAM you can provide access to specific user.
+two types of repositry:
+-----------------------
+public repositry:we can push the images in public reposiyry any one can access and dowloads images
+private repositry:we can push the images in private repositry,we have to give accese  specfic user to access docker file.
+Components of AWS ECR
+----------------------
+ we can created private reposity we can create one or more repositories in your restry and store the images them.
+Authorization Token:
+--------------------
+your client must authenticate to aws ecr rigistries as an aws user before it can push and pull images.
+Repositry
+----------
+aws reposiry will contain docker images,open contentive images.
+Repositry policy
+-----------------
+you can control access to your repositrywe have to write repositry policy.
+
+Now we have to move a docker image to ecr repositry.
+->ecr->select public or private->give name -.create repositry
+now create ec2 instance
+now open that reposity
+open that repositry copy that url
+first it will give error
+then now  create iam role and add that
+open iam create role->aws service->select ec2->add ec2 container full access->
+->create role 
+after creation of that role 
+->select ec2 -.actions->security-.modify iam role->selevct that created role. 
+now install docker and paste that link
+->sudo yum install docker
+->paste that ecr repositry command
+->it will display loginned sucessfully
+->sudo systemctl start docker->start that docker
+->docker images->command is used to show the images
+->now we can build the docker image
+->enter that 2nd command
+->sudo docker buildx build -t mt-repo
+->docker image is created
+->now we have to create docker tag ->enter 3rd command
+->to create tag docker service can must be in start
+->check docker.sock created or not
+->ls -l /var/run/docker.sock
+->then enter that tag command
+->sudo docker images
+->
+
+DOCKER CONTAINER
+=================
+=================================================================================================================================
+Cloud Watch
+------------
+when we lauch any instance it will provide a basic cloud watch report
+cloud watch is nothing but it will montret cpu perfoemance,storage performancs but it
+will not show memory usage
+to that we have to ceate seperate cloud watch we can
+why cloud watch?
+if we are maintaina no of instances ,s3 and load balancer it is hard to monitor all the services
+thats why we have to create these cloud watcn all the service wii monitor i the same page onle
+with the help of dashboards
+->create dasboard->select graph pattern->select service which you can watch->we also add and watch all service at asame time->
+->alarms-.it will alerts to your mail
+->alarms->select sns->select cpu ranges->
+to check stress
+command->stress --cpu 1 --timeout 300
+nproc->to see how many cpus are there
+=====================================================================================================================================
+CLoud trail
+============
+it is nothing but what activity we have done in aws it will be stored in cloud trail last 90days data well be uploaded.
+till alst 90 days it will be create by default
+if i want more than a 90days then we have to create cloud trail.
+to see that activity log 
+open cloud trail->event history-> it will show all the history.
+we cant delete or modify that logs.
+create trail->lake->trails->create trail->name->enble all account->select s3->enable cloud watch->create.
+=========================================================================================================================================
+Lambda
+---------
+Why we have to use lamda
+when we deployed some project with high config
+but the site will be use in rare times then remeaing time it will be cost
+so eleiminate that problem it will over come by the Lambda serviceless technology.
+it will suppoert 6 programming lanuguage
+.net
+golang
+python
+java
+ruby
+node.js
+to create lambda
+->lamda->create function->une a blue print->cringe(python 3.10)->name->create role basic lamda permmisons->to trigger specific time-
+->event bridge_.create event bridge role->name->shedule expre(rate(5 minites))->environment->give site->expected word->create function
+now created a function
+and open that and we can test->we can test at onetimr
+->we have to create test to test every specific time.
+->all the logs will be created in cloud watch log groups.
+serverless IN AWs
+--------------------
+AWS Lamda
+DynamoDB
+AWS cognito
+AWS AOI Gateway
+Amazon s3
+SNS & SQS
+AWS KINESIS DATA Fire Hose.
+Fatgate
+step functions
+Aurora
+------------   --------------------------------------------------------------- 
+
