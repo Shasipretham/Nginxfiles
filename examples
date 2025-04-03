@@ -1,0 +1,2040 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/spydtech/Spyd-main.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir('Spyd-main') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                dir('Spyd-main') {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Restart Nginx') {
+            steps {
+                sh 'sudo systemctl restart nginx'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}
+==========================================================================================================
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/spydtech/Spyd-main.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir('Spyd-main') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                dir('Spyd-main') {
+                    sh 'npm run build'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    
+}
+===============================================================================================
+/var/lib/jenkins/secrets/initialAdminPassword
+git branch: 'main', url: 'https://github.com/spydtech/Spyd-main.git '
+=================================================================================================
+pipeline {
+    agent any
+
+    stages {
+        stage('Move to EC2-User to Root User') {
+            steps {
+                script {
+                    // Switching user from ec2-user to root
+                    sh 'sudo su -'
+                }
+            }
+        }
+        
+        stage('Clone Git Repository') {
+            steps {
+                script {
+                    // Clone the Git repository
+                    sh 'sudo git clone https://github.com/spydtech/Spyd-main.git /home/ec2-user/Spyd-main'
+                }
+            }
+        }
+        
+        
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install npm dependencies
+                    dir('Spyd-main') {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    // Run npm build
+                    dir('Spyd-main') {
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+
+        stage('Copy Build Files to Nginx') {
+            steps {
+                script {
+                    // Copy dist directory files to Nginx's html directory
+                    dir('Spyd-main'){
+                    sh 'sudo cp -r dist/* /usr/share/nginx/html/'
+                    }
+                }
+            }
+        }
+
+        stage('Restart Nginx') {
+            steps {
+                script {
+                    // Restart Nginx service
+                    sh 'sudo systemctl restart nginx'
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo 'The pipeline has failed!'
+        }
+        success {
+            echo 'The pipeline was successful!'
+        }
+    }
+}
+=======================================================================
+
+server { 
+
+        listen       80; 
+
+        server_name  _; 
+
+ 
+
+        location / { 
+
+            root   /usr/share/nginx/html; 
+
+            index  index.html index.html; 
+
+            try_files $uri /index.html; 
+
+        } 
+
+ 
+
+        error_page  404              /404.html; 
+
+        location = /40x.html { 
+
+        } 
+
+ 
+
+        error_page   500 502 503 504  /50x.html; 
+
+        location = /50x.html { 
+
+        } 
+============================================================================================
+#!/bin/bash
+
+# Update system packages and install prerequisites
+echo "Updating system and installing prerequisites..."
+sudo yum update -y
+
+# Install Node.js 16.x
+echo "Installing Node.js 16.x..."
+curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+sudo yum install -y nodejs
+
+
+# Enable and start Nginx
+echo "Enabling and starting Nginx..."
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+# Install Git
+echo "Installing Git..."
+sudo yum install -y git
+
+# Clone the repository from GitHub
+echo "Cloning Spyd-main repository..."
+sudo git clone https://github.com/spydtech/Spyd-main.git
+
+# Navigate into the project directory
+echo "Navigating into Spyd-main directory..."
+cd Spyd-main
+
+# Install project dependencies
+echo "Installing npm dependencies..."
+sudo npm install
+
+# Fix any security vulnerabilities if possible
+echo "Running npm audit fix..."
+sudo npm audit fix
+
+# Build the project
+echo "Building the project..."
+sudo npm run build
+
+# Copy the build output to Nginx HTML directory
+echo "Copying the build output to Nginx's HTML directory..."
+sudo cp -r dist/* /usr/share/nginx/html/
+
+# Final message
+echo "Setup completed successfully!"
+======================================================================================================================
+pipeline {
+    agent any  // You can specify a particular agent or label here if needed.
+
+    stage('Install Node.js') {
+    steps {
+        script {
+            sh '''
+            curl -sL https://deb.nodesource.com/setup_16.x | bash -
+            sudo yum install -y nodejs
+			sudo yum install git -y
+			sudo yum install nginx -y
+			sudo systemctl enable nginx
+			sudo systemctl start nginx
+			
+            '''
+        }
+     }
+  }
+
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Checkout the repository from GitHub or your source control
+                git branch: 'main', url: 'https://github.com/spydtech/Spyd-main.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install Node.js dependencies using npm or yarn
+                script {
+                    // Assuming npm is being used; change to `yarn` if using yarn.
+                    sh 'sudo npm install'
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                // Run Vite build to create the dist directory
+                script {
+                    sh 'sudo npm run build'
+                }
+            }
+        }
+
+        stage('Archive Dist Folder') {
+            steps {
+                // Archive the dist folder for use in deployment or other purposes
+                archiveArtifacts artifacts: 'dist/**/*', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed.'
+        }
+    }
+}
+===============================================================================================================================
+DATE:17012025\
+---------------------
+pipeline { 
+
+    agent any 
+
+ 
+
+    stages { 
+        stage('Install NodeJs'){
+            
+            steps{
+                script{
+                    sh '''
+                     curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash - 
+                     sudo yum install -y nodejs 
+                     sudo yum install nginx -y
+                     sudo yum install git -y
+                     sudo systemctl enable nginx
+                     sudo systemctl start nginx
+                    '''
+                }
+            }
+        }
+
+        stage('Clone Repository') { 
+
+            steps { 
+
+                // Clone the repository from GitHub 
+
+                git branch: 'main', url: 'https://github.com/spydtech/Spyd-main.git' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Install Dependencies') { 
+
+            steps { 
+
+                // Navigate to the correct directory and run npm install 
+
+                dir('/var/lib/jenkins/workspace/Spyd-main') { 
+
+                    sh 'sudo npm install' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Build Project') { 
+
+            steps { 
+
+                // Navigate to the correct directory and run npm run build 
+
+                dir('/var/lib/jenkins/workspace/Spyd-main') { 
+
+                    sh 'sudo npm run build' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Copy to Nginx') { 
+
+            steps { 
+
+                // Copy the contents of the dist folder to the Nginx HTML directory 
+
+                dir('/var/lib/jenkins/workspace/Spyd-main') { 
+
+                    sh 'sudo cp -r dist/* /usr/share/nginx/html/' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Restart Nginx') { 
+
+            steps { 
+
+                // Restart the Nginx service to apply changes 
+
+                sh 'sudo systemctl restart nginx' 
+
+            } 
+
+        } 
+        stage{
+            steps{
+                archiveArtifacts artifacts: '*/**', followSymlinks: false, onlyIfSuccessful: true
+            }
+        }
+
+    } 
+
+ 
+
+    post { 
+
+        success { 
+
+            echo 'Pipeline executed successfully.' 
+
+        } 
+
+        failure { 
+
+            echo 'Pipeline failed.' 
+
+        } 
+
+    } 
+
+} 
+===================================================================================================================================
+/home/ec2-user/Spyd-main-Backend/SPYD/target/SPYD-0.0.1-SNAPSHOT.jar
+spyd-backend.service
+https://13.233.168.18
+sudo nano /etc/systemd/system/spyd.service
+/home/ec2-user/Spyd-main-Backend/SPYD/target/SPYD-0.0.1-SNAPSHOT.jar
+sudo systemctl stop spyd
+==============================================================================================================================================
+pipeline {
+    agent any
+
+    stages {
+        // Stage 1: Pull the code from Git
+        stage('Pull Code from Git') {
+            steps {
+                echo 'Pulling code from Git repository...'
+                git branch: 'main', url: 'https://github.com/spydtech/Spyd-main.git'
+            }
+        }
+
+        // Stage 2: Pull the Docker image from Docker Hub
+        stage('Pull Docker Image') {
+            steps {
+                echo 'Pulling Docker image from Docker Hub...'
+                sh 'docker pull sasipretham/jenkis-spyd:1.0'
+            }
+        }
+
+        // Stage 3: Create and run the Docker container
+        stage('Create and Run Docker Container') {
+            steps {
+                echo 'Creating and running Docker container...'
+                sh 'docker run -d --name spyd-main -p 80:80 sasipretham/jenkis-spyd:1.0'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution complete.'
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs for errors.'
+        }
+    }
+}
+
+Note: you have to give permmisons for docker
+sudo usermod -aG docker jenkins
+================================================================================================================================
+# Stage 1: Build the Node.js application
+FROM amazonlinux:2023 as builder
+
+# Install Node.js and npm
+RUN yum update -y
+RUN yum install -y nodejs npm
+
+# Set the working directory
+WORKDIR /Spyd-main
+
+# Copy package.json and package-lock.json first for caching
+COPY Spyd-main/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Add the rest of the application code
+COPY Spyd-main .
+
+# Build the application
+RUN npm run build
+
+# Debugging step: List the contents of /app to ensure dist exists
+RUN ls -alh /Spyd-main/dist
+
+# Stage 2: Set up Nginx to serve the application
+FROM nginx:latest
+
+# Copy the built app files from the builder stage
+COPY --from=builder /Spyd-main/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Run Nginx to serve the app
+CMD ["nginx", "-g", "daemon off;"]
+=============================================================================================================
+pipeline {
+    agent any
+
+    stages {
+        stage('Update System') {
+            steps {
+                script {
+                    sh 'sudo yum update -y'
+                }
+            }
+        }
+
+        stage('Install Git') {
+            steps {
+                script {
+                    sh 'sudo yum install git -y'
+                }
+            }
+        }
+
+        stage('Install NGINX') {
+            steps {
+                script {
+                    sh 'sudo yum install nginx -y'
+                }
+            }
+        }
+
+        stage('Enable and Start NGINX') {
+            steps {
+                script {
+                    sh 'sudo systemctl enable nginx'
+                    sh 'sudo systemctl start nginx'
+                }
+            }
+        }
+
+        stage('Install Node.js') {
+            steps {
+                script {
+                    sh 'sudo yum install nodejs -y'
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                script {
+                    // Clone the repository from GitHub, on the 'main' branch
+                    git branch: 'main', url: 'https://github.com/spydtech/E-education_WebSite.git'
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Navigate to the Jenkins workspace and install npm dependencies
+                       sh 'sudo npm install react-icons@latest'
+                    sh 'cd /var/lib/jenkins/workspace/Educ && sudo rm -rf node_modules package-lock.json'
+                    sh 'cd /var/lib/jenkins/workspace/Educ && sudo npm install'
+                }
+            }
+        }
+
+
+        stage('Build Application') {
+            steps {
+                script {
+                    // Run the build script (for React, Vue, Angular, etc.)
+                    sh 'cd /var/lib/jenkins/workspace/Educ && sudo npm run build'
+                }
+            }
+        }
+
+        stage('Restart NGINX') {
+            steps {
+                script {
+                    // Restart NGINX to serve the built files
+                    sh 'sudo systemctl restart nginx'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up or any actions to take after the pipeline finishes
+            echo 'Pipeline execution complete.'
+        }
+    }
+}
+=====================================================================================================================================
+29/01/2024
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone From Git') {
+            steps {
+                echo 'Hello World'
+                git branch: 'main', url: 'https://github.com/Shasipretham/Spyd-main.git'
+            }
+        }
+        stage('Build a docker Images') {
+            steps {
+                echo 'Createing a docker image'
+                sh 'docker build -t image2 /var/lib/jenkins/workspace/Spyd-main'
+            }
+        }
+        stage('Build a docker Container') {
+            steps {
+                echo 'Createing a docker image'
+                sh 'docker run -d --name spyd -p 80:80 image2'
+            }
+        }
+    }
+}
+============================================================================================================
+Create docker hub credentials
+click on profilr->account settings->security->token->
+it will genarate one docker user and password
+open jenkins->manage jenkins->credtials->global crediatals->add creditials->add user name passed provides by docker
+->give id ti use in jenkins pipeline.
+============================================================
+30/1/2025
+
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'Spyd'
+        IMAGE_NAME = 'image'          // Docker image name
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub)
+        DOCKER_REPO = 'sasipretham/spydmains' // Replace with your Docker Hub username/repository
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned)
+    }
+
+    stages {
+        stage('Clone From Git') {
+            steps {
+                echo 'Cloning repository from GitHub'
+                git branch: 'main', url: 'https://github.com/Shasipretham/Spyd-main.git'
+            }
+        }
+
+        stage('Build a Docker Image') {
+            steps {
+                echo 'Building Docker image'
+                sh 'docker build -t $DOCKER_REPO:$TAG .'
+            }
+        }
+
+        stage('Build a Docker Container') {
+            steps {
+                echo 'Running Docker container'
+                //sh 'docker stop $CONTAINER_NAME '
+                //sh 'docker rm $CONTAINER_NAME'
+                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub using the credentials
+                    withCredentials([usernamePassword(credentialsId: 'shasi-docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        // Login to Docker Hub
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
+
+                    // Push the Docker image to Docker Hub
+                    echo 'Pushing Docker image to Docker Hub'
+                    sh 'docker push $DOCKER_REPO:$TAG'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up Docker containers and images
+            sh 'docker rm -f $CONTAINER_NAME || true'
+            sh 'docker rmi $DOCKER_REPO:$TAG || true'
+            sh 'docker system prune -af || true'
+        }
+		
+
+        success {
+            echo "Pipeline succeeded!"
+        }
+
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}
+======================================================================================================================================
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'Spyd'
+		CONTAINER_NAME_N = 'spf'
+        IMAGE_NAME = 'image'          // Docker image name
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub)
+        DOCKER_REPO = 'sasipretham/spydmains' // Replace with your Docker Hub username/repository
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned)
+    }
+
+    stages {
+        stage('Clone From Git') {
+            steps {
+                echo 'Cloning repository from GitHub'
+                git branch: 'main', url: 'https://github.com/Shasipretham/Spyd-main.git'
+            }
+        }
+		
+
+        stage('Build a Docker Image') {
+            steps {
+                echo 'Building Docker image'
+                sh 'docker build -t $DOCKER_REPO:$TAG .'
+            }
+        }
+
+        stage('Build a Docker Container') {
+            steps {
+                echo 'Running Docker container'
+                //sh 'docker stop $CONTAINER_NAME '
+                //sh 'docker rm $CONTAINER_NAME'
+                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub using the credentials
+                    withCredentials([usernamePassword(credentialsId: 'shasi-docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        // Login to Docker Hub
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
+
+                    // Push the Docker image to Docker Hub
+                    echo 'Pushing Docker image to Docker Hub'
+                    sh 'docker push $DOCKER_REPO:$TAG'
+                }
+            }
+        }
+		stage('Deleting container and Images)
+		{
+			 sh 'docker rm -f $CONTAINER_NAME || true'
+             sh 'docker rmi $DOCKER_REPO:$TAG || true'
+             sh 'docker system prune -af || true'
+		    
+		}
+		stage('Pull the docker image'{
+		       echo 'pulling image .....'
+			   sh 'docker pull sasipretham/spydmains:1.0'
+		   
+		   }
+		stage('Create a continers'){
+		       echo 'creating container'
+			   sh 'docker run -d --name $CONTAINER_NAME_N -p 80:80 $DOCKER_REPO:$TAG'
+		   }
+    }
+
+    post {
+        
+        success {
+            echo "Pipeline succeeded!"
+        }
+
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}
+=======================================================================================================================================
+perfect script for Spyd-main front end
+--------------------------
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'Spyd'
+        CONTAINER_NAME_N = 'spf'
+        IMAGE_NAME = 'image'          // Docker image name
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub)
+        DOCKER_REPO = 'sasipretham/spydmains' // Replace with your Docker Hub username/repository
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned)
+    }
+
+    stages {
+        stage ('Installing dependices'){
+             steps {
+                echo 'Installing.....'
+                sh 'sudo yum install git -y'
+                sh 'sudo yum install docker -y'
+                sh 'sudo systemctl enable docker'
+                sh 'sudo systemctl start docker'
+                sh 'sudo usermod -aG docker jenkins'
+                //sh 'sudo systemctl restart jenkins'
+            }
+        }
+        stage('Clone From Git') {
+            steps {
+                echo 'Cloning repository from GitHub'
+                git branch: 'main', url: 'https://github.com/Shasipretham/Spyd-main.git'
+            }
+        }
+
+        stage('Build a Docker Image') {
+            steps {
+                echo 'Building Docker image'
+                sh 'docker build -t $DOCKER_REPO:$TAG .'
+            }
+        }
+
+        stage('Build a Docker Container') {
+            steps {
+                echo 'Running Docker container'
+                //sh 'docker stop $CONTAINER_NAME '
+                //sh 'docker rm $CONTAINER_NAME'
+                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub using the credentials
+                    withCredentials([usernamePassword(credentialsId: 'shasi-docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        // Login to Docker Hub
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
+
+                    // Push the Docker image to Docker Hub
+                    echo 'Pushing Docker image to Docker Hub'
+                    sh 'docker push $DOCKER_REPO:$TAG'
+                }
+            }
+        }
+
+        stage('Deleting container and Images') {
+            steps {
+                echo 'Deleting container and images...'
+                sh 'docker rm -f $CONTAINER_NAME || true'
+                sh 'docker rm -f $CONTAINER_NAME_N || true'
+                sh 'docker rmi $DOCKER_REPO:$TAG || true'
+                sh 'docker system prune -af || true'
+            }
+        }
+
+        stage('Pull the Docker image') {
+            steps {
+                echo 'Pulling Docker image from Docker Hub'
+                sh 'docker pull $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Create a New Container') {
+            steps {
+                echo 'Creating a new Docker container'
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 5173:80 $DOCKER_REPO:$TAG'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline succeeded!"
+        }
+
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}
+
+==================================================================================================================
+---
+- name: Automate system and app setup
+  hosts: your_target_host_group  # Replace with your target host group or IP
+  become: yes
+  tasks:
+    
+    - name: Update all system packages
+      yum:
+        name: "*"
+        state: latest
+      tags:
+        - update
+    
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+      tags:
+        - install_git
+    
+    - name: Install Node.js
+      yum:
+        name: nodejs
+        state: present
+      tags:
+        - install_nodejs
+    
+    - name: Install NGINX
+      yum:
+        name: nginx
+        state: present
+      tags:
+        - install_nginx
+    
+    - name: Enable NGINX service
+      service:
+        name: nginx
+        enabled: yes
+        state: started
+      tags:
+        - enable_nginx
+
+    - name: Clone Spyd-main repository
+      git:
+        repo: 'https://github.com/spydtech/Spyd-main.git'
+        version: 'main'  # You can specify a branch or commit hash here
+      tags:
+        - clone_spyd_main
+    
+    - name: Install dependencies for spyd-main
+      command: "cd /root/Spyd-main && npm install"
+      tags:
+        - spyd_main_install
+    
+    - name: Run npm build for spyd-main
+      command: "cd /root/Spyd-main && npm run build"
+      tags:
+        - spyd_main_build
+    
+    - name: Copy dist folder to NGINX html directory
+      copy:
+        src: "/root/Spyd-main/dist/*"
+        dest: "/usr/share/nginx/html/"
+        owner: nginx
+        group: nginx
+        mode: '0755'
+      tags:
+        - copy_dist_to_nginx
+    
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted
+      tags:
+        - restart_nginx
+=====================================================================================================================
+#!/usr/bin/env groovy
+
+def executeCommand(command) {
+    def process = command.execute()
+    process.waitFor()
+    if (process.exitValue() == 0) {
+        println "Command executed successfully: $command"
+    } else {
+        println "Command failed: $command"
+        println "Error: ${process.err.text}"
+    }
+}
+
+// Update all system packages
+println "Updating all system packages..."
+executeCommand("sudo yum update -y")
+
+// Install Git
+println "Installing Git..."
+executeCommand("sudo yum install git -y")
+
+// Install Node.js
+println "Installing Node.js..."
+executeCommand("sudo yum install nodejs -y")
+
+// Install NGINX
+println "Installing NGINX..."
+executeCommand("sudo yum install nginx -y")
+
+// Enable and start NGINX
+println "Enabling and starting NGINX..."
+executeCommand("sudo systemctl enable nginx")
+executeCommand("sudo systemctl start nginx")
+
+// Clone the Spyd-main repository
+def repoUrl = "https://github.com/spydtech/Spyd-main.git"
+def cloneDir = "/path/to/spyd-main"  // Update the path as needed
+println "Cloning repository $repoUrl into $cloneDir..."
+executeCommand("git clone $repoUrl $cloneDir")
+
+// Run npm install and npm run build
+println "Installing npm dependencies and building the project..."
+executeCommand("cd $cloneDir && npm install")
+executeCommand("cd $cloneDir && npm run build")
+
+// Copy dist to NGINX html directory
+println "Copying dist folder to NGINX html directory..."
+executeCommand("sudo cp -r $cloneDir/dist/* /usr/share/nginx/html/")
+
+// Restart NGINX to apply changes
+println "Restarting NGINX..."
+executeCommand("sudo systemctl restart nginx")
+
+println "Script execution completed!"
+===========================================================================================================
+                                                   E-education_WebSite
+=============================================================================================================================================
+Dockerfile
+----------
+# Step 1: Build Stage
+FROM node:latest AS builder
+WORKDIR /E-education_WebSite
+# Ensure package.json and package-lock.json are copied from the build context (current directory)
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the project files
+COPY . .
+RUN npm audit fix
+RUN npm run build
+
+# Step 2: NGINX Stage
+FROM nginx:latest
+COPY --from=builder /E-education_WebSite/build /usr/share/nginx/html
+EXPOSE 80
+EXPOSE 5173
+CMD ["nginx", "-g", "daemon off;"]
+--------------------------------------------------------------------------------------------------------------
+pipeline scripts
+------------------
+
+pipeline { 
+
+    agent any 
+
+ 
+
+    environment { 
+
+        CONTAINER_NAME = 'education' 
+
+        CONTAINER_NAME_N = 'educationnew' 
+
+        IMAGE_NAME = 'image'          // Docker image name 
+
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub) 
+
+        DOCKER_REPO = 'sasipretham/e-education' // Replace with your Docker Hub username/repository 
+
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned) 
+
+    } 
+
+ 
+
+    stages { 
+
+        stage ('Installing dependices'){ 
+
+             steps { 
+
+                echo 'Installing.....' 
+
+                sh 'sudo yum install git -y' 
+
+                sh 'sudo yum install docker -y' 
+
+                sh 'sudo systemctl enable docker' 
+
+                sh 'sudo systemctl start docker' 
+
+                sh 'sudo usermod -aG docker jenkins' 
+
+                //sh 'sudo systemctl restart jenkins' 
+
+            } 
+
+        } 
+
+        stage('Clone From Git') { 
+
+            steps { 
+
+                echo 'Cloning repository from GitHub' 
+
+                git branch: 'main', url: 'https://github.com/Shasipretham/E-education_WebSite.git' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Build a Docker Image') { 
+
+            steps { 
+
+                echo 'Building Docker image' 
+
+                sh 'docker build -t $DOCKER_REPO:$TAG .' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Build a Docker Container') { 
+
+            steps { 
+
+                echo 'Running Docker container' 
+
+                //sh 'docker stop $CONTAINER_NAME ' 
+
+                //sh 'docker rm $CONTAINER_NAME' 
+
+                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Push to Docker Hub') { 
+
+            steps { 
+
+                script { 
+
+                    // Login to Docker Hub using the credentials 
+
+                    withCredentials([usernamePassword(credentialsId: 'eeducation', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) { 
+
+                        // Login to Docker Hub 
+
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin' 
+
+                    } 
+
+ 
+
+                    // Push the Docker image to Docker Hub 
+
+                    echo 'Pushing Docker image to Docker Hub' 
+
+                    sh 'docker push $DOCKER_REPO:$TAG' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Deleting container and Images') { 
+
+            steps { 
+
+                echo 'Deleting container and images...' 
+
+                sh 'docker rm -f $CONTAINER_NAME || true' 
+
+                sh 'docker rm -f $CONTAINER_NAME_N || true' 
+
+                sh 'docker rmi $DOCKER_REPO:$TAG || true' 
+
+                sh 'docker system prune -af || true' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Pull the Docker image') { 
+
+            steps { 
+
+                echo 'Pulling Docker image from Docker Hub' 
+
+                sh 'docker pull $DOCKER_REPO:$TAG' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Create a New Container') { 
+
+            steps { 
+
+                echo 'Creating a new Docker container' 
+
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 5173:80 $DOCKER_REPO:$TAG' 
+
+            } 
+
+        } 
+        
+        stage('Creating Artifacts') { 
+
+            steps { 
+
+                echo 'Creating a Artifactsr' 
+
+                archiveArtifacts artifacts: '*/**', followSymlinks: false, onlyIfSuccessful: true 
+
+            } 
+
+        } 
+
+    } 
+
+ 
+
+    post { 
+
+        success { 
+
+            echo "Pipeline succeeded!" 
+
+        } 
+
+ 
+
+        failure { 
+
+            echo "Pipeline failed!" 
+
+        } 
+
+    } 
+
+} 
+===========================================================================================================================================
+UBUNTU Script
+------------
+pipeline {
+
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'education'
+        CONTAINER_NAME_N = 'educationnew'
+        IMAGE_NAME = 'image'          // Docker image name
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub)
+        DOCKER_REPO = 'jagadishspyd/e-education' // Replace with your Docker Hub username/repository
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned)
+    }
+
+    stages {
+
+        stage('Installing dependencies') {
+            steps {
+                echo 'Installing dependencies...'
+                sh 'apt-get update -y'
+                sh 'apt-get install -y git docker.io'
+                sh 'systemctl enable docker'
+                sh 'systemctl start docker'
+                sh 'usermod -aG docker jenkins'
+                //sh 'systemctl restart jenkins'  // Uncomment if Jenkins needs to be restarted
+            }
+        }
+
+        stage('Clone From Git') {
+            steps {
+                echo 'Cloning repository from GitHub'
+                git branch: 'main', url: 'https://github.com/spydtech/E-education-frontend.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image'
+                sh 'docker build -t $DOCKER_REPO:$TAG .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                echo 'Running Docker container'
+                //sh 'docker stop $CONTAINER_NAME' // Uncomment if you need to stop the existing container
+                //sh 'docker rm $CONTAINER_NAME' // Uncomment if you need to remove the existing container
+                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Pushing Docker image to Docker Hub'
+                sh 'docker push $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Clean up Containers and Images') {
+            steps {
+                echo 'Deleting container and images...'
+                sh 'docker rm -f $CONTAINER_NAME || true'
+                sh 'docker rm -f $CONTAINER_NAME_N || true'
+                sh 'docker rmi $DOCKER_REPO:$TAG || true'
+                sh 'docker system prune -af || true'
+            }
+        }
+
+        stage('Pull Docker Image') {
+            steps {
+                echo 'Pulling Docker image from Docker Hub'
+                sh 'docker pull $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Create New Docker Container') {
+            steps {
+                echo 'Creating a new Docker container'
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 5173:80 $DOCKER_REPO:$TAG'
+            }
+        }
+
+        stage('Create Artifacts') {
+            steps {
+                echo 'Creating Artifacts'
+                archiveArtifacts artifacts: '*/**', followSymlinks: false, onlyIfSuccessful: true
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "Pipeline succeeded!"
+        }
+
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+
+}
+--------------------------------------------------------------------------------------------------------
+sudo rm -rf /var/lib/jenkins/workspace/*
+sudo rm -rf /var/lib/jenkins/jobs/*/builds
+--------------------------------------------------------------------------------------------------------------
+systemctl stop docker.socket
+systemctl stop docker
+rm -rf /var/lib/docker
+systemctl start docker
+ du -sh /var/lib/docker/*
+ ===========================================================================================================================
+pipeline { 
+
+    agent any 
+
+ 
+
+    environment { 
+
+        CONTAINER_NAME = 'education' 
+
+        CONTAINER_NAME_N = 'educationnew' 
+
+        IMAGE_NAME = 'image'          // Docker image name 
+
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub) 
+
+        DOCKER_REPO = 'jagadishspyd/e-education' // Replace with your Docker Hub username/repository 
+
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned) 
+
+    } 
+
+ 
+
+    stages { 
+
+        stage ('Installing dependices'){ 
+
+             steps { 
+
+                echo 'Installing.....' 
+
+                sh 'sudo yum install git -y' 
+
+                sh 'sudo yum install docker -y' 
+
+                sh 'sudo systemctl enable docker' 
+
+                sh 'sudo systemctl start docker' 
+
+                sh 'sudo usermod -aG docker jenkins' 
+
+                //sh 'sudo systemctl restart jenkins' 
+
+            } 
+
+        } 
+
+        stage('Clone From Git') { 
+
+            steps { 
+
+                echo 'Cloning repository from GitHub' 
+
+                git branch: 'main', url: 'https://github.com/spydtech/E-education-frontend.git' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Build a Docker Image') { 
+
+            steps { 
+
+                echo 'Building Docker image' 
+
+                sh 'docker build -t $DOCKER_REPO:$TAG .' 
+
+            } 
+
+        } 
+
+ 
+
+        //stage('Build a Docker Container') { 
+
+      // steps { 
+
+               // echo 'Running Docker container' 
+
+                //sh 'docker stop $CONTAINER_NAME ' 
+
+                //sh 'docker rm $CONTAINER_NAME' 
+
+                //sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG' 
+
+          //  } 
+
+       // } 
+
+ 
+
+        stage('Push to Docker Hub') { 
+
+            steps { 
+
+                script { 
+
+                    // Login to Docker Hub using the credentials 
+
+                    withCredentials([usernamePassword(credentialsId: 'eeducation', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) { 
+
+                        // Login to Docker Hub 
+
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin' 
+
+                    } 
+
+ 
+
+                    // Push the Docker image to Docker Hub 
+
+                    echo 'Pushing Docker image to Docker Hub' 
+
+                    sh 'docker push $DOCKER_REPO:$TAG' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Deleting container and Images') { 
+
+            steps { 
+
+                echo 'Deleting container and images...' 
+
+                sh 'docker rm -f $CONTAINER_NAME || true' 
+
+                sh 'docker rm -f $CONTAINER_NAME_N || true' 
+
+                sh 'docker rmi $DOCKER_REPO:$TAG || true' 
+
+               // sh 'docker system prune -af || true' 
+
+            } 
+
+        } 
+        
+        stage('Cleanup Docker Space') {
+            steps {
+                script {
+                    sh '''
+                    echo "Stopping Docker services..."
+                    sudo systemctl stop docker.socket || true
+                    sudo systemctl stop docker || true
+
+                    echo "Cleaning up Docker data..."
+                    sudo rm -rf /var/lib/docker || true
+
+                    echo "Restarting Docker service..."
+                    sudo systemctl start docker
+
+                    echo "Verifying Docker status..."
+                    sudo systemctl status docker || true
+                    '''
+                }
+            }
+        }
+
+ 
+
+        stage('Pull the Docker image') { 
+
+            steps { 
+
+                echo 'Pulling Docker image from Docker Hub' 
+
+                sh 'docker pull $DOCKER_REPO:$TAG' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Create a New Container') { 
+
+            steps { 
+
+                echo 'Creating a new Docker container' 
+
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 80:80 $DOCKER_REPO:$TAG' 
+
+            } 
+
+        } 
+        
+        stage('Cleanup Dependencies') { 
+            steps { 
+                echo 'Cleaning up all dependencies except Docker images and containers...'
+                sh '''
+                sudo yum remove -y git
+                sudo yum clean all
+                sudo rm -rf /var/cache/yum
+                sudo rm -rf /tmp/*
+                '''
+            } 
+        }
+        
+        stage('Creating Artifacts') { 
+
+            steps { 
+
+                echo 'Creating a Artifactsr' 
+
+                archiveArtifacts artifacts: '*/**', followSymlinks: false, onlyIfSuccessful: true 
+
+            } 
+
+        } 
+
+    } 
+
+ 
+
+    post { 
+
+        success { 
+
+            echo "Pipeline succeeded!" 
+
+        } 
+
+ 
+
+        failure { 
+
+            echo "Pipeline failed!" 
+
+        } 
+
+    } 
+
+} 
+========================================================================================================================================
+
+pipeline { 
+
+    agent any 
+
+ 
+
+    environment { 
+
+        CONTAINER_NAME_B = 'educationback' 
+        CONTAINER_NAME_N = 'educationfront' 
+
+        IMAGE_NAME = 'image'          // Docker image name 
+
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (Docker Hub) 
+
+        DOCKER_REPO = 'jagadishspyd/e-education' // Replace with your Docker Hub username/repository 
+        DOCKER_REPO_B = 
+
+        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned) 
+        TAG_B = "1.0BE"
+
+    } 
+
+ 
+
+    stages { 
+
+        stage ('Installing dependices'){ 
+
+             steps { 
+
+                echo 'Installing.....' 
+
+                sh 'sudo yum install git -y' 
+
+                sh 'sudo yum install docker -y' 
+
+                sh 'sudo systemctl enable docker' 
+
+                sh 'sudo systemctl start docker' 
+
+                sh 'sudo usermod -aG docker jenkins' 
+
+                //sh 'sudo systemctl restart jenkins' 
+
+            } 
+
+        } 
+
+        stage('Clone From Git') { 
+
+            steps { 
+
+                echo 'Cloning repository from GitHub' 
+
+                git branch: 'main', url: 'https://github.com/spydtech/E-education-frontend.git' 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Build a Docker Image') { 
+
+            steps { 
+
+                echo 'Building Docker image' 
+
+                sh 'docker build -t $DOCKER_REPO:$TAG .' 
+
+            } 
+
+        } 
+
+ 
+
+        //stage('Build a Docker Container') { 
+
+      // steps { 
+
+               // echo 'Running Docker container' 
+
+                //sh 'docker stop $CONTAINER_NAME ' 
+
+                //sh 'docker rm $CONTAINER_NAME' 
+
+                //sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG' 
+
+          //  } 
+
+       // } 
+
+ 
+
+        stage('Push to Docker Hub') { 
+
+            steps { 
+
+                script { 
+
+                    // Login to Docker Hub using the credentials 
+
+                    withCredentials([usernamePassword(credentialsId: 'eeducation', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) { 
+
+                        // Login to Docker Hub 
+
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin' 
+
+                    } 
+
+ 
+
+                    // Push the Docker image to Docker Hub 
+
+                    echo 'Pushing Docker image to Docker Hub' 
+
+                    sh 'docker push $DOCKER_REPO:$TAG' 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        stage('Deleting container and Images') { 
+
+            steps { 
+
+                echo 'Deleting container and images...' 
+
+                sh 'docker rm -f $CONTAINER_NAME || true' 
+
+                sh 'docker rm -f $CONTAINER_NAME_N || true' 
+
+                sh 'docker rmi $DOCKER_REPO:$TAG || true' 
+
+               // sh 'docker system prune -af || true' 
+
+            } 
+
+        } 
+        
+        stage('Cleanup Docker Space') {
+            steps {
+                script {
+                    sh '''
+                    echo "Stopping Docker services..."
+                    sudo systemctl stop docker.socket || true
+                    sudo systemctl stop docker || true
+
+                    echo "Cleaning up Docker data..."
+                    sudo rm -rf /var/lib/docker || true
+
+                    echo "Restarting Docker service..."
+                    sudo systemctl start docker
+
+                    echo "Verifying Docker status..."
+                    sudo systemctl status docker || true
+                    '''
+                }
+            }
+        }
+
+ 
+
+        stage('Pull the Docker image') { 
+
+            steps { 
+
+                echo 'Pulling Docker image from Docker Hub' 
+
+                sh 'docker pull $DOCKER_REPO:$TAG' 
+                sh 'docker pull $DOCKER_REPO:$TAG_B'
+
+            } 
+
+        } 
+
+ 
+
+        stage('Create a New Container') { 
+
+            steps { 
+
+                echo 'Creating a new Docker container' 
+
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 80:80 $DOCKER_REPO:$TAG'
+                sh 'docker run -d --name $CONTAINER_NAME_B -p 8082:81 $DOCKER_REPO:$TAG_B'
+
+            } 
+
+        } 
+        
+        stage('Cleanup Dependencies') { 
+            steps { 
+                echo 'Cleaning up all dependencies except Docker images and containers...'
+                sh '''
+                sudo yum remove -y git
+                sudo yum clean all
+                sudo rm -rf /var/cache/yum
+                sudo rm -rf /tmp/*
+                '''
+            } 
+        }
+        
+        stage('Creating Artifacts') { 
+
+            steps { 
+
+                echo 'Creating a Artifactsr' 
+
+                archiveArtifacts artifacts: '*/**', followSymlinks: false, onlyIfSuccessful: true 
+
+            } 
+
+        } 
+
+    } 
+
+ 
+
+    post { 
+
+        success { 
+
+            echo "Pipeline succeeded!" 
+
+        } 
+
+ 
+
+        failure { 
+
+            echo "Pipeline failed!" 
+
+        } 
+
+    } 
+
+} 
+================================================================================================
+# Step 1: Build Stage
+FROM node:20 AS builder  # Use a stable LTS version instead of latest
+WORKDIR /app
+
+# Copy only package.json and package-lock.json first (for better caching)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --omit=dev && npm cache clean --force
+
+# Install Vite and plugin
+RUN npm install vite@latest @vitejs/plugin-react@latest --save-dev
+
+# Copy the rest of the project files
+COPY . .
+
+# Build the React application
+RUN npm run build
+
+# Step 2: NGINX Stage
+FROM nginx:latest
+COPY --from=builder /app/dist /usr/share/nginx/html  # Use 'dist' instead of 'build' (Vite default output)
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+--------------------------------------------------------------------------
+docker exec -it <container_name> mkdir -p /etc/letsencrypt/live/e-education.in/
+docker exec -it <container_name> ls -l /etc/letsencrypt/live/
+docker cp fullchain.pem <container_name>:/etc/letsencrypt/live/e-education.in/fullchain.pem
+docker exec -it <container_name> chmod 644 /etc/letsencrypt/live/e-education.in/fullchain.pem
+docker exec -it <container_name> chmod 644 /etc/letsencrypt/live/e-education.in/privkey.pem
+docker cp <container_name_or_id>:/etc/nginx/nginx.conf ./nginx.conf
+docker cp ./nginx.conf <container_name_or_id>:/etc/nginx/nginx.conf
+docker exec 0684adf8bd1f nginx -t
+
+docker exec <container_name_or_id> nginx -s reload
+http {
+    upstream backend {
+        server 13.126.181.47:8082;
+    }
+
+    server {
+        listen 80;
+        server_name _;
+
+        location / {
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+==========
+utils,systemctl,ping,
+
+docker exec -it 2f9d6c6e6e96 /bin/bash
+docker exec -it educationfront ping 172.20.0.2
+
+------------------------------------------------------
+docker exec -it educationfront apt update -y
+docker exec -it educationfront apt upgrade -y
+---------------------------------------------------------
+version: '3'
+
+services:
+  frontend:
+    image: jagadishspyd/e-education:1.0
+    container_name: educationfront
+    ports:
+      - "3000:80"  # Map host port 3000 to container port 80
+    networks:
+      - my-network
+    environment:
+      - API_BASE_URL=http://educationback:8082  # Use container name for internal communication
+
+  backend:
+    image: jagadishspyd/e-education:1.0BE
+    container_name: educationback
+    ports:
+      - "8082:8082"  # Map host port 8082 to container port 8082
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+------------------------------------------------------------------
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Logging settings
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # Upstream servers
+    upstream frontend {
+        server http://13.126.181.47:3000;  # Frontend service on host port 3000
+    }
+
+    upstream backend {
+        server http://13.126.181.47:8082;  # Backend service on host port 8082
+    }
+
+    # HTTP server block
+    server {
+        listen 80;
+        server_name localhost;
+
+        # Frontend routing
+        location / {
+            proxy_pass http://13.126.181.47:3000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # Backend API routing
+        location /api/ {
+            proxy_pass http://13.126.181.47:8082;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+    # HTTPS server block
+    server {
+        listen 443 ssl;
+        server_name localhost;
+
+        # SSL certificates
+        ssl_certificate /etc/nginx/ssl/your-certificate.crt;
+        ssl_certificate_key /etc/nginx/ssl/your-private-key.key;
+
+        # Frontend routing
+        location / {
+            proxy_pass http://13.126.181.47:3000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # Backend API routing
+        location /api/ {
+            proxy_pass http://13.126.181.47:8082;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+-------------------------------------------------------------------------------
