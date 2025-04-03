@@ -1,0 +1,608 @@
+eksctl create cluster --name e-education-cluster --region ap-south-1 \ 
+  --without-nodegroup 
+ eksctl create nodegroup --cluster e-education-cluster --name e-education-nodes \
+  --node-type t2.large --nodes 2 --nodes-min 1 --nodes-max 3
+  aws eks update-kubeconfig --region ap-south-1 --name e-education-cluster
+eksctl get nodegroup --region=ap-south-1 --cluster=e-education-cluster
+eksctl utils associate-iam-oidc-provider --cluster e-education-cluster --approve
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+ eksctl create iamserviceaccount \
+  --cluster=e-education-cluster \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::476114135533:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+ helm repo add eks https://aws.github.io/eks-charts
+ helm repo update eks
+ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
+  -n kube-system \
+  --set clusterName=e-education-cluster \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=ap-south-1 \
+  --set vpcId=vpc-0fa1e7bde2e755ee8'
+ kubectl get deployment -n kube-system aws-load-balancer-controller
+ kubctl get ingress
+----------------------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:latest  # Replace with your image
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP  # Use LoadBalancer if you want an external IP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb  # Use ALB for EKS
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - host: myapp.example.com  # Replace with your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-app-service
+                port:
+                  number: 80
+-------------------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-education
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: e-education
+  template:
+    metadata:
+      labels:
+        app: e-education
+    spec:
+      containers:
+      - name: e-education
+        image: sasipretham/e-education:1.0
+        ports:
+        - containerPort: 5173
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: e-education-service
+spec:
+  selector:
+    app: e-education
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5173
+  type: NodePort  # Use NodePort because Ingress will manage external access
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: e-education-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: e-education-service
+                port:
+                  number: 80
+====================================================================================
+767397874328   jagadeesh  u@*)TD3'
+curl -X GET http://13.126.181.47:8080/api/hello
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 9442252a9c25 
+docker exec -it 4f5f4eb4ff1d sh
+curl -X GET http://172.17.0.3:8082/api/hello
+
+
+
+
+-----------------------------------------
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'education'
+        IMAGE_NAME = 'sasipretham/educationkuber'
+        TAG = "1.0"
+        AWS_REGION = "ap-south-1"
+        KUBE_NAMESPACE = "default"
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning GitHub repository...'
+                git branch: 'main', url: 'https://github.com/Shasipretham/E-education-frontend.git'
+            }
+        }
+
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker Image...'
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Logging into Docker Hub...'
+                 withCredentials([usernamePassword(credentialsId: 'education', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        echo 'Logging in to Docker Hub...'
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
+                echo 'Pushing Docker Image...'
+                sh 'docker push $IMAGE_NAME:$TAG'
+            }
+        }
+
+       stage('Configure AWS & EKS') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cli']]) {
+                    sh '''
+                    set -x
+                    aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                    aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                    aws configure set region $AWS_REGION
+
+                    aws eks --region $AWS_REGION update-kubeconfig --name e-education-cluster
+                    kubectl get nodes
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
+                    sh '''
+                    set -x
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                    kubectl apply -f k8s/ingress.yaml
+                    '''
+                }
+            }
+        }
+
+        //stage('Deploy to EKS') {
+          //  steps {
+            //    echo 'Applying Kubernetes manifests...'
+              //  sh '''
+                //kubectl apply -f k8s/deployment.yaml
+                //kubectl apply -f k8s/service.yaml
+                //kubectl apply -f k8s/ingress.yaml
+                //'''
+            //}
+        //}
+
+        stage('Verify Deployment') {
+            steps {
+                echo 'Checking Deployment Status...'
+                sh 'kubectl get pods -n $KUBE_NAMESPACE'
+                sh 'kubectl get services -n $KUBE_NAMESPACE'
+                sh 'kubectl get ingress -n $KUBE_NAMESPACE'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment successful!"
+        }
+        failure {
+            echo "❌ Deployment failed. Check logs."
+        }
+    }
+}
+
+ ---------------------------------------------------------------
+ issues faced 
+ ------------
+ aws cli:(NO LOGS FOUND)
+ install plugin in jenkins
+ Aws credentials plugin
+ add secrt key and add id
+ -------------------------------
+ kunernetes configure
+ ----------------------
+ instance create seperate name space
+ kubectl create namespace jenkins
+kubectl create sa jenkins -n jenkins
+kubectl create token jenkins -n jenkins --duration=8760h
+kubectl create rolebinding jenkins-admin-binding --clusterrole=admin --serviceaccount=jenkins:jenkins --namespace=jenkins
+now go to jenkins dashboard->manage jenkins->cloud->select kubertss->kuber url->(instance kubectl config view)
+shows url and copy and paste)
+create creedtails and secrt text annd that created token.
+test connection
+--------------------------------------------------------
+error : jenkins kubectl command not found
+Yes, follow these steps to update the Jenkins PATH so it recognizes kubectl:
+
+🔹 Steps to Add kubectl to Jenkins PATH
+Go to Jenkins Dashboard
+
+Open Jenkins Web UI in your browser.
+Click Manage Jenkins.
+Navigate to Manage Nodes
+
+Click Manage Nodes and Clouds.
+Select the node where your Jenkins jobs run (e.g., Built-in Node or your custom agent).
+Edit Node Configuration
+
+Click Configure (on the left sidebar).
+Scroll down to Node Properties.
+Enable Environment Variables
+
+Check Environment Variables (if not enabled already).
+Click Add → Enter the following:
+Name: PATH
+Value: /usr/local/bin:$PATH
+Save & Restart Jenkins
+
+Click Save.
+--------------------------------------------------------------------------------------
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'education'
+        IMAGE_NAME = 'sasipretham/educationkuber'
+        TAG = "1.0"
+        AWS_REGION = "ap-south-1"
+        KUBE_NAMESPACE = "default"
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning GitHub repository...'
+                git branch: 'main', url: 'https://github.com/Shasipretham/E-education-frontend.git'
+            }
+        }
+
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker Image...'
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Logging into Docker Hub...'
+                 withCredentials([usernamePassword(credentialsId: 'education', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        echo 'Logging in to Docker Hub...'
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
+                echo 'Pushing Docker Image...'
+                sh 'docker push $IMAGE_NAME:$TAG'
+            }
+        }
+
+      stage('Configure AWS & EKS') {
+        steps {
+          script {
+              echo "🔹 Checking AWS CLI version..."
+              sh 'aws --version || echo "AWS CLI not installed"'
+
+              echo "🔹 Checking if AWS credentials are set..."
+              sh 'aws sts get-caller-identity || echo "Invalid AWS credentials"'
+
+              withCredentials([aws(credentialsId: 'aws-cred')]) {
+                  echo "🔹 Configuring AWS CLI..."
+                  sh '''
+                    aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                    aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                    aws configure set region $AWS_REGION
+
+                    echo "🔹 Updating kubeconfig for EKS cluster..."
+                    aws eks --region $AWS_REGION update-kubeconfig --name e-education-cluster || echo "Failed to update kubeconfig"
+
+                    echo "🔹 Checking EKS nodes..."
+                    kubectl get nodes || echo "Failed to get nodes"
+                   '''
+              }
+          }
+      }
+   }
+
+
+        stage('Deploy to EKS') {
+            steps {
+                    sh '''
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                    kubectl apply -f k8s/ingress.yaml
+                    '''
+                
+            }
+        }
+
+        //stage('Deploy to EKS') {
+          //  steps {
+            //    echo 'Applying Kubernetes manifests...'
+              //  sh '''
+                //kubectl apply -f k8s/deployment.yaml
+                //kubectl apply -f k8s/service.yaml
+                //kubectl apply -f k8s/ingress.yaml
+                //'''
+            //}
+        //}
+
+        stage('Verify Deployment') {
+            steps {
+                echo 'Checking Deployment Status...'
+                sh 'kubectl get pods -n $KUBE_NAMESPACE'
+                sh 'kubectl get services -n $KUBE_NAMESPACE'
+                sh 'kubectl get ingress -n $KUBE_NAMESPACE'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment successful!"
+        }
+        failure {
+            echo "❌ Deployment failed. Check logs."
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+server {
+    listen 80;
+    server_name 13.126.181.47;  # Replace with your domain or IP address
+
+    # Serve the React Vite frontend from /usr/share/nginx/html
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Proxy API requests to the Java backend
+    location /api/ {
+        proxy_pass http://13.126.181.47:8082/;  # Replace with your Java backend's address
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    
+}
+--------------------------------------------------------------------------------------------
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log notice;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    server {
+        listen 80;
+        server_name 15.206.164.0;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location / {
+            try_files $uri /index.html;
+        }
+
+        location /api/ {
+            proxy_pass http://localhost:8082/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+            add_header Access-Control-Allow-Origin "*" always;
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE";
+            add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
+            add_header Access-Control-Allow-Credentials "true";
+
+            if ($request_method = OPTIONS) {
+                return 204;
+            }
+        }
+
+        error_page 404 /404.html;
+        location = /404.html {
+            root /usr/share/nginx/html;
+            internal;
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root /usr/share/nginx/html;
+            internal;
+        }
+    }
+}
+-----------------------------------------------------
+
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+
+    listen 80;
+
+    server_name http://13.126.181.47:8082;
+
+    location / {
+
+        root /usr/share/nginx/html;
+
+        index index.html;
+
+        try_files $uri /index.html;
+
+    }
+
+    location /api/ {
+
+        proxy_pass http://13.126.181.47:8082/;
+
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    }
+
+  }
+}
+--------------------------------------------------------------------------------------------------------
+working one
+--------------
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log notice;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    server {
+        listen 80;
+        server_name 3.109.30.200:8082;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location / {
+            try_files $uri /index.html;
+        }
+
+        location /api/ {
+            proxy_pass http://3.109.30.200:8082/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+             # Add CORS headers
+            add_header Access-Control-Allow-Origin "http://3.109.30.200" always;
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization" always;
+            add_header Access-Control-Allow-Credentials "true" always;
+		if ($request_method = OPTIONS) {
+               add_header Access-Control-Allow-Origin "http://3.109.30.200";
+               add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS";
+               add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
+               add_header Access-Control-Allow-Credentials "true";
+               return 204;
+            }
+        }
+
+        error_page 404 /404.html;
+        location = /404.html {
+            root /usr/share/nginx/html;
+            internal;
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root /usr/share/nginx/html;
+            internal;
+        }
+    }
+}
+
