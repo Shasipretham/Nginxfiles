@@ -1,0 +1,40 @@
+Topics Covered
+===============
+1->Why AWS and what we use in OS linux?
+2->Explined about Linux Basics?
+3->Explined about Editors?
+4->How create server and What are the resources
+       ->vpc
+	   ->Subnet
+	   ->Internet gateway
+	   ->Route table
+	   ->ecurity Group
+	   ->NACl
+5->What is vpc and Creation of VPC?
+6->How to create internet gateway and subnet?
+7->How to create route tables?
+8->How to connect route tables to internet gateway?
+9->How to create nacl and Security groups?
+10->What is httpd?explained about how to access basic server?
+11->How to install server by using BASH SCRIPTING?
+12->Expline about how to create volumes and how to mount the volume?
+13->Explinedabout how to unmount the volume?
+14->What is snapshot?How craete the snap shot?how to create AMI->How to louch instance through AMI?
+15->Explined about EFS and NFS port?
+-------------------------------------------------------------------------------------------
+16->Explined about S3 and how to create a basic bucket?
+17->How to upload a file and How open that file through Copy url?
+18->Bucket versioning and life cycle of s3 rules?
+19->Explined about IAM ROLE?(NOT CLEAR)
+20->Explined about MFA and Billing Cost Management?
+21->Explined About Load balancer and Target Group?(NOT CLEAR)
+22->Explined about lunch templet and Auto Scaling?
+23->Explined About Recycle bin?(NOT CLEAR)
+24->Explined About RDS?
+25-> Exlpined about basic creation of RBS?(NOT CLEAR)(PARAMETERS ALSO PENDING)
+26->Explined About Cloud Formation?
+27->Explined About Lambda and How to add a file to these?(NOT CLEAR)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+NOTE: From S3 buckets we want deep explation.Becuase He covered only basic creations from that topic.
+And upto till efs topics he missed any major topics and you can go with that topics also.
+And we have a doute on volume is completed totally or basic we will show that volumes topic what he said.then we know what we learn about that more on volumes.
