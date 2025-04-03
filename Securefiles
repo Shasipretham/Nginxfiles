@@ -1,0 +1,70 @@
+sudo certbot certonly --manual --preferred-challenges=dns --key-type rsa \
+--email sasipretham25@gmail.com \
+--server https://acme-v02.api.letsencrypt.or
+
+
+g/directory --agree-tos -d *.e-education.in
+
+
+
+tiA1EPWFm4Qc67vCLnoj2Uxh1hkwW5p2y58rWRWfcEU
+
+ /etc/letsencrypt/live/e-education.in/fullchain.pem
+  /etc/letsencrypt/live/e-education.in/privkey.pem
+
+
+ NEXT STEPS:
+- This certificate will not be renewed automatically. Autorenewal of --manual certificates requires the use of an authentication hook script (--manual-auth-hook) but one was not provided. To renew this certificate, repeat this same certbot command before the certificate's expiry date.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+
+-----------------------------
+767397874328   jagadeesh  u@*)TD3'
+-----------------------------------
+bucket policy for cors
+-----------------------
+{
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
+    "Statement": [
+        {
+            "Sid": "AllowCloudFrontServicePrincipal",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::e-education.in-2/*",
+            "Condition": {
+                "StringEquals": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::767397874328:distribution/E39OCI9NUVYZ75"
+                }
+            }
+        }
+    ]
+}
+------------------------------------------------------------------------------------------------
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "https://api.e-education.in/*"
+        ],
+        "ExposeHeaders": [],
+        "MaxAgeSeconds": 3000
+    }
+]
+-----------------------------------------------------
+
+
+
+
