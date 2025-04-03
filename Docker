@@ -1,0 +1,43 @@
+DOCKER
+==================
+When we using flipkart we are doing many things like
+payment page
+order page
+delivary page
+therse pages couple off applications
+we can called as micro services
+why we have to create these micro serviecs?
+if any problem in payment page meance it will effect only payment page
+other order,delivary pages will get running only 
+thats why we crearted amicro services.
+
+How to install docker
+create insance->connect it
+sudo yum update -y
+sudo yum install -y docker
+sudo su
+sudo usermod -a -G docker ec2-user
+docker ps
+mkdir dockerDemo
+git clone https://github.com/DEVOPS-WITH-WEB-DEV/spring-cloud-kubernetes.git
+clone that data
+and also install maven
+sudo yum install maven
+on that cloned folder must have that Docker file
+must be done in root user
+mvn clean install -DskipTests(used to installl dependecies for that project)
+diff between mvn clean and mvn compile
+   mvn clean it will clean only target folder
+   mvn compile it will chenk code is in proper structure or not.
+ after it will come build successes
+ ls -lrta(l-long lasting format,-r to reverse the order of out put,-t modification team,-a it show the hidden file.
+ it is used to see target folder is there or not.
+ 
+open that folder and now we can obserer the jar file is there or not
+till here we created a 10gfile to 10mb file usimg with maven
+ now we have to create docker image
+
+
+
+100mb file(covert to 10mb file through maven)
+now 10mb (5mb image convert to 5mb through container) 
