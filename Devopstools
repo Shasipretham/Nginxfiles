@@ -1,0 +1,1666 @@
+launch instance using putty key pair
+->download key pare->install putty in your laptop
+->open that putty->give instance ip address->goto ssh-.auth->credatials-.browes dowladed ppk file-.click open
+-.connect->user name ec2-user
+====================================================================================================================
+Kernal->it is nothing but managing the computer resources like cpu,memory and size
+ex:when we lunch specific game it will analize how much cpu and storage it will concumw
+Shell:all the commands will run by the help of shell.
+1)graphical shell
+2)Command line shell
+Bash is defulat linux shell
+to check the shell
+command is->echo $SHELL
+currently useing shell->echo $0
+
+find->it is used to seach a specfic directory o file in whole instance
+    ex:find / -name shasi.txt type f (it will search all shasi file)
+	     find /opt -type d -perm 777(iwill show files 777 permmision matched files)
+		 find /opt -mmin -30(it will show the 30 min created files)
+		 find / -name shasi.txt -type f -print -exec rm -rf {} \;
+------------------------------------------------------------------------------------
+Corntab:
+---------
+it is used to fix th sheduler for specific action
+*****
+min,hour,day,month,week
+create crontab
+crontab -e
+ write script
+  ***** sudo cp /etc/passwd /opt/passwd.bkp(it used to backup the passwd ebery minuitr)
+  */5**** sudo cp /etc/passwd /opt/passwd.bkp(it used to backup the passwd ebery 5 minits)
+   
+
+======================================================================================================================
+folder structure in linus
+first folder is / folder
+that way we have mention / before some names like /bin ,/root
+in / flder->
+boot
+etc
+proc
+dev
+home
+root
+var
+usr->bin and sbin
+run 
+tmp
+mnt
+opt
+-----------------------------------------------------------
+/bin->all user cammand will stroe in bin folder any user can run
+/sbin->(super bin) also block of commands but it will run only with run commands.
+/etc->all installed apps will store here
+/boot->it will store commads like start the server and stop the server
+/opt(optional)->will store all the 3rd party applications.
+/dev(device)->it will run c]keyboard mouse
+/var(varable files)->lod will created here
+/tmp->temeprort=y files
+===================================================================================
+10 completed.
+===================================================================================
+YUM(yellodog update mof=dify) and RPM(redhavt package management)
+-------------
+yum and rpm both are installerd
+yum->it wiil install along with depencies
+Yum->we installonly specifed app in /etc/yum.repo.d?
+yum->yum remove git*(it will delete inculding depencies)
+----yum info git
+rpm->we have to install deoenacies and we have to insall specifcly
+wget-> it is only for download the soft =ware throufh url
+    ->install that dowloaded app we have to use rpm
+	rpm -i softwarename
+	    -e (uninstall)
+		-u(update)
+tree-. it is used for show the files in detailed struture
+   ->we have to install tree before use
+rpm -qa | grep python-> to specific package installed or not
+========================================================================================
+SSH(Securshell)
+ssh clients->mobxtrem,putty
+windows->linux->we use putty
+linux-linux->ssh
+windos to windows ->rdp
+we connect windows and linux through winscp applications
+
+in linux we have to connect one isnatase to another instandi
+server1 to server-2
+we have to connect password 
+now we have to generate a key from server1 
+ssh-keygen
+it will generate 2key stored in .ssh file
+copy id pub key and and paste it in server2/.ssh/authetiction_key?paste here
+after go to server1:command->ssh ec2-user@ipadressofserver.
+it will connected to another server.
+
+we have to move files one liux server to another linux serrver
+ ->scp -r shasi 13.203.103.98:/home/ec2-user
+  scp 13.203.103.98:/home/ec2-user/file1 /home/ec2-user
+ps->it is used to see process id
+ps -ef
+ps aux
+ps -fU ec2-user
+kill -9 id
+it will close
+
+=======================================================================================
+GIT
+-----
+VCS->version control system->it used to store the code and track the code.all team code will be stord in one place 
+and that is repositry
+CVCS(CENTRAL VERSION CONTROLL SYSTEM):
+DVCS(DISTRUBUTED VERSION CONTROL SYSTEM):
+SCM->source code management
+GIT:
+->Git is software
+->Linux Maintaince GIT
+->Its a command line tool
+GIT HUB:
+----------
+It us a service
+Microsoft Maintains Github
+Graphical Interface
+it is hosted on the web
+
+Now how to install git in several OS:
+windows:download from oogle
+Amzon Linux:sudo yum intsall git
+Ubantu:sudo apt install git
+We have to create username and user email for that to track ckear information. 
+How ot config that username?
+git config --global user.name "Shasi"
+git config --global user.email "shasi.minda@gmail.com"
+to check create or not
+git config --list
+Now we have to create a folder for store the projevt
+mkdir google
+now open that folder
+cd google/
+now we have to run a command
+git init-. to create adefault repositry.
+it will give .git folder which contains 
+branches,configs,hooks,objects,refs
+check ls -al -> it will show all hidden files also
+Now i have to create one java file
+vi app.java
+and file was saved 
+but we have to save the file inside the git
+to save we have to perform some opertions
+git status-. it will show the details fo that file inside the git ostaside tye git
+git add->it will move workig area to stageing area
+ex:git add app.java
+git restore --staged shasi.txt->it will retrive back
+git commit-. it is used to move staging area to local reposity
+ex: git commit -m "this is my first project"
+git log->check histry
+till here we created files and commitred
+now the point is all develppers will store the data in git hub
+how can they push
+Open git hib account
+->create one repositry
+->do above opeeations
+->git remote add origin https://github.com/Shasipretham/DevopsNew.git
+ now we have connected to github accont
+now we have to push the code to github account.
+to push that code we want permmsion 
+so we have to create ssh-keygen because going with ssh protoca;
+if we use https it will ask usser name and password
+ssh-keygen->after genaeration it show file loaction
+copy thet key
+open git hub account goto settings->sshgpg keys->new ssh key->paste that key there andsave
+now open git bash
+enter command to move  file into git*
+git push -u origin master
+========================================================================================
+Now pust the code using Https protocol
+------------------------------------
+we have to same process till commit the file
+when we push the code to github
+to acces account we have to generate a token
+how to generate token?
+github account->settings->developer settings->personal access token->tokens classid->
+run command in git bash
+git remote set-url https://tokenpaste@github.com/username/folder name.git
+Now it will be accee
+==========================================================
+Branches
+---------
+git branch shasi
+git checkout shasi
+git branch -D shasi-> delete branch
+now we have to pust the branch to githubb
+git push origin branch name
+Note: in repositry we must have .git folder.without .git folder is not a repositry.
+What is head?
+it is nothing where you are and last commited files
+=====================================================================================
+.gitignore
+------------
+when we done any operatons on file
+it will create some unimportent files
+to run that
+we havr to create gitignore file
+vi .gitignore
+eneter some rules like
+*.temp
+*.html
+it is nothing but git will ignore that extentions files.
+---------------------------------------------------------------------------------
+==========================================================================================
+Now we completd about Operating system(linux)
+and compled source management(Git hub)
+till here we completd how to take code from git hub
+-------------------------------------------------------------------------------
+================================================================================================================================================================
+                                                                      MAVEN
+===============================================================================================================================================================
+Now we have to build or complie that code
+how to build or comple that code(like Maven build toole)
+Why we have to use Build tool?we cant complie with out build tools?
+it is used to compile a specific java applications
+we also complie with out build tool but some of defeculties we have to face.
+dependecy management-.we we compile peogramm it have to install external libraries
+but in javac it will not install.
+Main thing is we have to do manually.
+and javac is no integrated with other tools.
+but in build tools we cannot face these type of probles.
+
+MAven build tool
+-----------------
+when we compaile code in Maven it will generate jar,war and ear 
+jar-> is nothing but group of classes
+war-> group of jars+.css.htmls 
+
+Dot net build tool 
+Msbuild
+.d11
+
+->mostlt maven is used for java projects.we can also use other like
+kotln
+scala
+groovy
+javascripts ets but we have istall appropreate packeages
+->maven is free of cost belongs to appache
+features
+--------
+->build automation
+->pom(project object model)
+->dependency management
+
+->when install maven in specific server in that server we have to install java and jdk
+
+Basic commansds in maven
+-----------------------
+->mvn --version
+->mvn clean->cleans the projectt by removing files generated during the build process
+->mvn validate-> it will validate all syntaxs or correct or not in pom.xml
+->mvn compile->Compiles the source code of the project like src/main/java
+->mvn test->Runs the test for the project
+->mvn package->package the compiled code into a distubutable formate,such jar or war file
+->mvn verify->verify the integartion chekc
+->mvn install ->intsall the packages project into the local repositry(created in /.m2/repo
+
+->mvn deploy->Deployes the project to a remote repositry.
+
+------------------------------------------------------------------
+Now istall maven in Amazon linux
+
+->sudo yum install java-11-amazon-corretto-headless
+now we install maven
+go to google->apache maven downlod->select 1st tar.gz file ->copy link address-
+->sudo wget https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+now maven was downloaded 
+now it was show one .tar file is nothing like zip file
+now we extract that file
+->tar xvf apache-maven-3.9.9-bin.tar.gz
+now is was extracted
+Now we have to set the path
+open that extracted file->bin->to take path->pwd
+copy that pwd path
+and open 
+->sudo vi /etc/profile
+goto bottom after fi
+->M2_HOME=/home/ec2-user/apache-maven-3.9.9
+  PATH=$PATH:/home/ec2-user/apache-maven-3.9.9/bin
+after saving we have enter these paths
+M2_HOME=/home/ec2-user/apache-maven-3.9.9
+PATH=$PATH:/home/ec2-user/apache-maven-3.9.9/bin
+now check mvn version
+mvn --version
+--------------------------------------------------------------------------------------------------
+now we can build a small project in MAVEN using java file.
+now we have to clone data from github
+if others github account project move to our git hub account
+->open that github project open repos click fork and enter your user name.
+->clone the code from git
+->to build project in MAVEN must we have pom.xml project and src folder in cloned project
+->why src is mandatory because java code must be inide the src folder only.
+
+->mvn package->it will create a jar or war file and it will generate a target folder
+->inside that target folder they will generate .war or jar file
+wget https://archive.apache.org/dist/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz
+Note: When we get any error version is not matching for that java code we have to install what they want.
+Note :i faced a storages issue do iam chnged the t2.medium
+->mvn clean 
+->now run again mvn package 
+->now see the target folder inside that folder we also see the .war file.(why war meanse css.html files are inculded)
+Till here how to build it.
+-------------------------------------------------
+MAVEN-LIFE-CYCLE
+----------------
+we can do some operations in build project
+->mvn clean-> it will delete the target folder
+->mvn validate->it will check all syntax good or not in pom.xml(build succes if all are fine) 
+->mvn compile ->it compile the code now check target folder was created but .war or .jar files are not created.
+->mvn install->then it will generte .war file
+  note:without runinng mvn package we can run mvn installl it will also run the project and gebrate .war files
+   now war files also create in /.m2/projectname/check war file
+Who will create a maven project stuture line src and pom.xml
+it will create by very experieced candiades
+how it will create 
+mvn archetype:generate.
+after run these command it will ask cople of detals.
+maven-archetype-quickstart:1.4
+groupId:com.example .project
+artifactid:vtech
+Snapshot:1.0Snapshot
+com.example.my project
+And these the maven tool
+======================================================================================================
+
+ APPLICATION SERVER-APACHE TOMCAT
+ 
+=============================================================================
+it is a opensourse web server and servlet
+when we install tomcat it will increase the server capabilities.
+
+to depoly our war ot jar files tomacat server is must 
+it will host dyinamic websites
+static website->it is nothing but when we open facebook login page is same for every one.
+Dyinamic webist->after loggin account we can see specifu=ic acounts for every on that is dynamic websites.
+is there only tomcat for java applications?
+No,we have jboss,glass fish,oracle weblogic
+but,tomcat is free of cost mainly used for java servels,jsp's.
+
+for pythons:
+Django with wsgi
+flask with wsgi
+
+To install tomcat we can install java before install of tomat
+but must check the versions for that Tomcat 10 requires java 11 or above.
+port number 8080.
+can we change port number?
+yes we can change in server.xml
+major config files server.xml
+/opt/appache-tomcat/conf/server.xml
+===============================================================
+How to install tomcat?
+Now we can see how manually it will work.
+in realtime we cant do but better to know.
+Now we can install another instance for linux.
+to install java jdk before install tomcat
+->sudo yum install java-11-amazon-corretto-devel
+ now install sepecif version
+ google->tomcat 8.0.52 download->select version
+ sudo wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.52/bin/apache-tomcat-8.0.52-deployer.tar.gz
+ now we got the .tar file
+ now we can untar the file
+ ->tar xvf .tarfile
+ ->tar xvf apache-tomcat-8.0.52-deployer.tar.gz
+ ->now we can add path as like maven.
+ export CATALINA_HOME=/home/ec2-user/apache-tomcat-10.1.34
+export PATH=$PATH:/home/ec2-user/apache-tomcat-10.1.34/bin
+after adding path and 
+enter agin
+tomcat installed
+but in tomcat we have some .sh file to access 
+goto bin folder
+sh version.sh->to se tomacat 
+to start tomcat
+startup.sh
+now we have to check properly installed or not
+copy public id add :8080 port and search
+you can see tomcat welcome page it was installed properly.
+to stop->shutdown.sh
+==================================================================
+How to change port number:
+open apache tomcat->conf->server.hml
+open thet file go down and  see connecter tag there we have to change that port
+once change the port you must stop and start the server.
+==============================================
+How to create a USER?
+open with public ip along with :8080 port number.
+it will disply one page and click on manage app.
+it will show error page
+
+now open 
+vi tomcat-user.xml
+goto last and add these
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<user username="admin" password="admin" roles="manager-gui,manager-script"/> 
+after adding we can stop and start the server.
+Note:
+if you got any 403 error page modify in context.xml file
+file address /path/to/tomcat/webapps/manager/META-INF/context.xml
+first we can see these code
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+       allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1"/>
+if you allow any ip adress modify code to
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+       allow=".*"/>
+if want to allow only one specifice ip
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+       allow="127\.\d+\.\d+\.\d+|::1|192\.168\.1\.100"/>cdcd
+====================================================================
+Now we have to deploy our project in tomcat serer
+perviously what we build in another server. 
+now we connect through mobi xtream
+open mobi xtream->session->ssh->public ip->username->advanced ->add pem file.->connect
+add tomcat instance also
+now i have to build the trust relation both instnce
+maven server->generate key
+->ssh-keygen
+->ls -a(it will create .ssh folder)
+open that id.pubilc open that code and copy.
+goto tomcat server opem .ssh open autherized key and paste
+now restart the sshd
+systemctl restart sshd in every instance
+
+Now we can continue the deployment
+now we have to .war file from maven serevr to tomcat server(past in webapp directory)
+scp petclinic.war ec2-user@52.66.251.86:/home/ec2-user/apache-tomcat-10.1.34/webapps
+now .war file moved to the tomcat ser er
+if deployment is clearly depolyed it will genarate with out war file.
+copy that ip public_ip:app name,
+====================================================================================================================================
+                                                  SONARCUBE
+=============================================================================================================================================
+->it is static code Analisis tools
+->it is opensourse plat form
+->it will check the cod quality like with out bugs,vunerbilities and code smells.
+->it supports multiple programming languages.
+->with out SONARCUBE (basically developer will write line by line code but senior debveloper will verify)
+->it will maintain a high code quality for deveops environments.
+->Competitors for sonar->clod climet,veracode,coverity,checkmarx,find bugs /spotbugs
+->it will  suppoets morethan 25 programming langusges
+->some are free of cost
+->they are 
+java
+jsptypescript
+c/c++
+python
+gophp
+kotlin
+ruby
+scala
+html
+depedency is java 17
+->we have to install java version for sonarqube compiring sonar-
+-> supported databases Msql,microsofy sql,oracle,postgreSQL
+Hardeware requires
+-------------------
+memory ->ram 2gb,
+cpu ->multicore
+diskspace ->1gb for sonar cube
+sonar is graphical tool and CLI tool
+sonar scanner for maven->maven build process
+sonarScanner for MSBuild:.net project in conjuction with MS BUILD
+-----------------------------------------------------------------------------------
+Now we have create instance with t2.medium'
+->create instancet login ssh clinet
+->soarcube will run on 9000 port number
+->we have to install java 17 first
+-->sudo yum install java-17-amazon-corretto-devel
+(if yu install rpm file(rpm -i shasi.rpm)
+->Now we have to install sonarcube
+->google->sonarcube downlosd->select version
+->hostoricql downloads
+we have to install these in opt older
+cd /opt/
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.5.1.90531.zip
+Now we see zip file created
+Now unzip that file
+Now we have to create one user to use sonarcube
+we cant use ec2-user or root user for that
+sudo useradd sonaradmin
+sudo passwd sonaradmin
+Now we have to chnage the own ship for sonarfile
+sudo chown -R sonaradmin:sonaradmin sonarqube-10.5.1.90531
+sudo su sonaradmin 
+to change user
+Now have to start service to start
+cd /opt/sonarfile/bin
+open linux folder
+to start
+sh sonar.sh start
+now openn in browser
+pulic ip:9000
+it will ask usrname password
+admin ,admin
+now it will open 
+sonaeqube dashboard
+----------------------------------------------------------------------------------
+Real-time-usecases of SONARCUBE
+------------------------
+1.Dupicate code->if developer write same line of code again and again 
+2.Coding stanads->quailty of code
+3.unit tests
+4.complex code
+5.bugs
+6.not enough and too many and increect comments
+---------------------------------------------------
+Now we can test the code using sonarcube
+step-1:we have to setup scanner(mvn)
+now swith to sonaruser
+sudo su sonaradmin
+clone that backed project
+now we have to setup 
+click on create project
+give name and create
+it will show all opetions from which we have to run
+we going withothers
+gerante token to authenticate to instance
+continue
+select maven for java code
+it will display some commands
+run that commads into cloned folder like inside the spydmain
+mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=Spyd-main \
+  -Dsonar.projectName='Spyd-main' \
+  -Dsonar.host.url=http://15.206.159.179:9000 \
+  -Dsonar.token=sqp_310157509169088309191179d78f81e8ec9fbaa4
+ it will build that file
+ it will updated on that sonarqube 
+ you check that in dashboard
+-------------------------------------------------------------------------
+Rule
+----
+it will deside code is in right or not
+Qualty profile
+collection of rules
+Quality gates
+if code is 80% code will correct it move it will deside ny qualty gates
+How to see those in sonarqube dashboard
+rules
+qualty profile
+now we havet to create quality profile
+open quality profile->create profile->
+now add rules
+goto-rules->bulk chnages->activate->quality name.
+now open that qualty profile
+->java see u created qualty profile. 
+Now create qualty rates
+----------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+Copmponets for sonarqube
+1.Rules
+2.Database
+3.Webinterface
+-------------------------
+installation
+--------------
+step-1:create instance with t2.medium
+step 2:install java 
+step 3: it will not run with root user we have to create another user.
+       sudo useradd sonaradmin
+	   id sonaradmin->to check
+	   chown -R sonaradmin:sonaradmin sonarqube-10.7.0.96327
+	   
+step-4: install sonar qube in /opt folder
+step-5:open that sonarqube file
+step-6: bin->linux->to start->./sonar.sh start->./sonar.sh status(it will not run)
+       ->chnage user to sonarqube admin->su sonaradmin->now start opetations
+	   getting error->see logs->
+
+=============================================================================================================================================
+                                                        JENKINS
+--------------------------------------------------------------------------------------------------------------------------------------------
+It is CI/CD tool it is set of practicess automet the software deployment and deployment proceess
+advantages->CI
+Early bug detection
+improve code quality
+faster development
+reduce integration issues
+quick feedback
+Advantages -CD
+Faster time to market
+Reduced Risk
+Easier rollbacks
+Enchanced Collabaration
+Continus Feedback
+-------------------------------------------------------------------------------------------
+Now we have to create a project in jenkins
+we have to do on Java based application
+we have to install maven
+goto->manage jenkins->tools->maven->apply
+open ceate new project
+now give name
+selct free style
+give discription
+selct git
+add git link
+We have to change branch according to gi hub code
+and Goto build steps
+open maven targets
+chmage default to maven
+and goal(nothing like maven life cycle validate,paln,package)
+go with package it will create a war file
+save and click build now
+After building successfully
+in work space they will create war files.
+---------------------------------------------
+Trigger from git(Automat the build)
+Now we have to add that features
+open perivous project
+select config
+see options like build trigger
+select github hooks
+open github account
+open project
+goto settngs
+goto webhook
+give our jenkins pubilc ip /github-webhook thier
+----------------------------------------------------------
+Now i want to get a notification when build code is success or failed
+first we have to out gmail accout
+->manage your account->security->searcj=h app password->create it will show one password
+nao goto jenkins
+Manage jenkins->syatem->go down u can see gmail->goto advanced->smtp->enter gmailid->select ssl port 65
+->apply save
+now open that build project->godown post build actions->email->enter->apply and save
+------------------------------------------------------------------------------------------
+Slack Notification
+-----------------
+diff between
+email and slack
+email will send to client manager or teamlead
+salck will sento developers testes
+first we have to install slack in windows
+-------------------------------------------------------------------------------------------------
+Jenkins Master and Slaves
+------------------------=
+first install for master in instance
+Second install for slave in intance2
+install java in slave intsnce also
+java version must be same in two instances
+now open that jenkins dasboard to configure slaves
+->manages jenkins->nodes and clouds->create new node->
+----------------------------------------------------------------------
+step-1:we have to create instance and install jenkins
+step-2:open vi /etc/passwd->jenkins :/bin/bash
+step-3:jenkins user will create automatically->sudo passwd jenkins
+step-4:sudo visudo->add->jenkins ALL=(ALL)  NOPASSWD: ALL
+step-5:open vi /etc/ssh/sshd_config->change password authentcation to yes(for encrypt the data)
+step-6: restart the ssh_config->sudo systemctl restart sshd
+step-7:now create slave instance dont install jenkins in these 
+step-8:create user jenkins ->sudo useradd jenkins->sudo passwd jenkins
+step-9:sudo visudo->add->jenkins ALL=(ALL)  NOPASSWD: ALL
+step-10:open vi /etc/ssh/sshd_config->change password authentcation to yes(for encrypt the data)
+step-11: restart the ssh_config->sudo systemctl restart sshd
+step-12:now we have to connect that master to slave
+step-13:now master instance go to jenkins user->su - jenkins
+step-14: it will move to jenkins user->ssh keygen ->enter enter it will genarate
+step-15:ssh-copy-id jenkins@localhost->yes->give jenkins password and enter
+step-16:ssh 'jenkins@localhost'->to check local host connected or not
+step-17:to connect slave ssh-copy-id jenkins@slaveintance ip address
+step-18: ssh 'jenkins@slaveip'
+step-19:you can connect slave 2 also same process
+
+==========================================================================================================================================
+                                                           ANSIBLE
+================================= ===============================================================================
+What is ansible?
+it is open source tool
+provison like createion on computer resources
+Configuration management->if we have to server we have to install dependices.
+Applicatio  deployement-service
+Oracasation->one server will handel number of servers
+Key feauturee
+->Agent less archive
+->playbooks
+->Ansible galaxy
+->Ansible tower
+->Dynamic inverioes
+->Ansible vault
+-----------------------------------------------
+Installation of ansible
+it will not istalled in windows
+only in RHEL
+->google->ansible installation
+ sudo yum update
+$ sudo yum install software-properties-common
+$ sudo add-apt-repository --yes --update ppa:ansible/ansible
+$ sudo yum install ansible
+   or
+sudo yum install ansible
+amsible devolped by python
+Now i have to create a another node(instnce)
+we can connect with that node.
+connect that node server also.
+Now we have to build trust relation
+ssh-keygen in Ansible master
+open that ip pubilc copy and paste it in Node instaned autherozed key
+sudo mv /home/ec2-user/shasimumbai.pem /root/
+
+after that we have connect with anisible
+open
+cd /etc/anisibe
+you can see host file
+Host is noting but invertory
+open that file
+vi hosts
+add ip adderss
+[web]
+89.0.0.01
+add these like
+---------------------------------------------------------------------------------------------------------------
+Create one instance.
+goto opt folder
+cd /opt
+install ansible
+sudo yum install ansible
+sudo git clone https://github.com/praveen1994dec/Ansible.git
+Now we have to create ine ansible classes
+-----------------------------------------------------------------------------------------------------------------------
+Basic Ansible playbooks
+-----------------------
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Apache (httpd)
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+        update_cache: yes
+
+    - name: Copy index.html to Apache root directory
+      ansible.builtin.copy:
+        src: index.html
+        dest: /var/www/html/
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Start and enable Apache service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+now we have to create inventory.ini file
+add [webserves]
+55.77.99.0
+55.88.00.3
+now excute that yaml file 
+ansible playbook
+
+														   
+==========================================================================================================================================================================
+                                       DOCKER
+=======================================================================================================================
+Docker is a open-source containerzation platform which pack your application
+what is conatiner?
+A container is like a small ,portable box that holds everything an application need to run 
+this includes
+the app it self
+all depedencies(librires,tools,and configuration)
+that container is uses like it run in any operating system like linux,windows,mac
+------------------------------------------------------------------------------------------------------
+DOCKER IN DETAILED
+-----------------
+perivous days we want to deploye one peoject we have only one hard ware ane applicatiom
+->To over come that we used Vm ware using these we can launch number applications with diff application
+->but here OS stoareg is wasted because every application we have specifuic os's so storage wasteage.
+->To over come that Docker is realese single os it will run number of applications
+--------------------------------------------------------------------------
+Docker installation
+---------------------
+now we have to install docker in Linux
+->create instance
+->now go to google->docker install on linux
+ ->sudo yum install -y docker
+ ->sudo systemctl enable diocker
+ ->sudo systemctl start docker
+ ->sudo usermod -a -G docker ec2-user
+ ->sudo docker ps->to see docker container(only running commands)
+ ->sudo docker ps -a(it will show all containers)
+ ->sudo docker images-> to see images
+ ->docker info
+-> it will install client and Daemon 
+->docker asks client asks daemon
+--------------------------------------------------------------------------
+Docker Arcituure
+------------------
+When we install docker it will install two componnets 
+clinet and daemon
+if i want to run tomact
+->docker run tomcat->client-< askt through API->Daemon
+->daemon will thick tomcat image there or not.
+->it will search tomcat is there or not in docker registry
+->it it will create container and it will pull image from docker
+->if you give docker pull tomacat(it will only pull the image)
+->if you give docker rum tomcat(it will pull and run the images)
+
+Now checkc
+sudo docker rum -d tomcat 
+->sudo docker images-> to checkc
+->sudo docker ps->to check comtainer
+CONTAINER ID   IMAGE     COMMAND             CREATED         STATUS              PORTS      NAMES
+3e490e0cd2f7   tomcat    "catalina.sh run"   2 minutes ago   Up About a minute   8080/tcp   stoic_raman
+i have to change name
+sudo docker run -d --name mytomcat tomcat(d meanse detach)
+->sudo docker stop id/name -> to stop containers
+->sudo docker start id/name
+->sudo docker rm id/name -> to delete container
+->sudo docker rmi imageid/name -> to delete image
+--------------------------------------------------------
+to pull specfi version of tomcat
+->sudo docker pull tomcat:8.0.52
+->now run that
+->check with public ip with 8080 port number
+->will not work
+->to work tomcat we have to some operation
+->sudo docker run -d --name tomcat -p 8080:8080 imagename(-d ->run in detach mode)
+->sudo docker exec -it tomcat-3(server name) /bin/bash(it will open that server)
+->sudo docker log container name-> it will show logs of that container.
+->sudo docker stop $(docker ps -q)-> it will stop all containers at a time
+->sudo docker rm $(docker -a -q)->delete all at a time
+->sudo docker rmi $(docker images -q)-> remove images
+->sudo docker inspect container name-> it will show all details like ip
+till here we launched a inbuilt images now we have to create own images.
+-----------------------------------------------------------------------------
+Example:
+we run nginx in docker
+->docker pull nginx
+->docker run -d nginx->container will created but we browse it was not wort
+->to work that nginx server we have to port that
+->docker run -d 80:80 nginx
+-.now check it will work on browser
+example:
+we run direct
+docker run -d nginx
+first it will check images is there or not
+if nginx is not there it will goto search in docker hud
+if it is there in docker hub it pull image directly and it create contaier
+
+now point is we install httpd and nginx in serever it will run ins same port number or not
+it will not run in same port number.
+docker run -d 80:80 nginx
+docker run -d 8080:80 httpd _.for ec2 instanceport:container port(EXPOSE port number will apply here)
+=============================================================================================
+tio create our own image we have to creaet docker file
+what is docker file?
+Docker cam build images automatically by reading the instrections from Docker file
+
+now open instance
+->create docker file
+->sudo vi dockerfile
+->write coad
+->FROM alpine:latest
+LABEL maintainer="shasi.minda@gmail.com"
+RUN apk update
+RUN apk add apache2
+EXPOSE 80
+CMD ["httpd", "-D", "FOREGROUND"]
+now save the file and build it
+to run that and create a container
+->docker run -d --name apchshasi -p 80:80 c52b14e89dcb
+---------------------------------------------------------------------------------------------
+Now create our own image and how to move Elasctic container service
+---------------------------------------------------------------------------------------------
+deploy nginx server
+create Dockerfile
+FROM nginx:latest
+COPY index.html /usr/share/nginx/html/
+expose:80
+cmd ["nginx", '-g', 'demon off']
+
+to create image
+docker build -t nginx:latest
+docker run -d -p 80:80 nginx
+
+It is not experprise level
+Using ECR(ELASTIC CONTAINER REGISTRY]
+we have to run from here
+aws dasboards->ecr->create repos->give name ->create
+open that repositry
+click on push commands 
+it will show some commands 
+excute first command it will show some error like login issues
+
+then we create one role permmision for registy full access and attach that role to ec2
+after excuting those commads
+ image will pushed to ecr.
+ now you can see the image
+ 
+Now i have to run that image.
+
+we have to run these images in Ecs(Elastic container service)
+
+Now open ECS->create->give name ->serverless and amazon ec2->monetring enable->create cluster
+
+what is serverlesss -.it will go pay as you go model
+-.after creating cluster open it and we have to run the tasks
+
+now we have to create task definationa
+what is task defination?
+when launch doker image what capabilities want to run that image
+like storgare 
+-.name->select server->cpu and gb->add role->container detail add url(find in ecr cluster)->selects the the option futures u want->create
+
+now task defination is created using these we have to create task.
+Open that ECS cluster and open cluster
+add new task
+open cluster->tasks->create task->it will show exiting task->select capacity prov or launche(you dont cpamcity got 1st oprtion)
+->select task defination->select task how many task have to run->also add vpc aloso->create task
+now goto tasks and open that taskes ->copy public ip and past it in google it will run in browaser.
+------------------------------------------------------------------------------------------------------------------------------------
+Now i want to integaret these task with AUTO SACLING GROUPS
+
+Now we have to create LOAD BALANCER
+->first we have to create target group
+->create target group->select ip addrees(for cluster)->add name->port->create
+now create a loadbalancer
+create load balancer.
+now create a service in ecs
+open that cluster goto task we see a service option
+open ->create service->lunch type->select service->select task defiantion->give name-.select vpc->
+select load balancer->select exiting load balancercreate->service auto scaling->add policy name->and create
+now check task it is creating what you as per desire values
+
+how to check in browser meanse
+goto loadbalancer select dns name and see.Docker image was runned here.
+here we created how to use
+
+STRUCTURE
+---------
+ECR->crete custer pull docker image to cluster
+ECS->Create conatiner->task diffination->create task
+to scaling operatios we have to create loadbalancer and autoscaling group.
+------------------------------------------------------------------------------------------------------------------------------------------
+now i want to automate my [process with code pipeline in AWS
+->open code pipeline->->cod commit->create reposity->give name and ->create
+now we have to send code from ec2 to these reposity
+to do that we have to give to create role for code commit full access
+
+
+
+-------------------------------------------------------------------------
+Docker registry
+---------------
+to store the images and also share thae images
+now i have to move created images to the repositry
+now we have to create docker hub account.
+and create one reposity
+->now we have to login in instance
+->docker login
+->it will generate one link browse that lint and add code.
+        or
+		give gmail and password
+docker tag local-image:tagname new-repo:tagname
+ex:docker tag imagerepo:tag shasipreham:1.0
+docker push sasipretham/apachealpine:tagname 
+
+docker tag apache:1.0 sasipretham/apachealpine:1.0
+docker push sasipretham/apachealpine:1.0
+it was pushed to dockerhub
+
+docker tag local-image:tagname new-repo:tagname
+docker push sasipretham/spydmain:tagname
+----------------------------------------------------------------------------------------
+# Use Amazon Linux 2023 as the base image
+FROM amazonlinux:2023
+
+# Set the maintainer label
+LABEL maintainer="shasi.minda@gmail.com"
+
+# Update the system and install dependencies
+RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
+RUN yum install -y nodejs
+RUN yum install nginx -y
+RUN systemctl enable nginx
+RUN yum install git -y
+RUN npm cache verify
+
+# Clone the repository and build the project
+RUN git clone https://github.com/spydtech/Spyd-main.git /Spyd-main
+WORKDIR /Spyd-main
+RUN npm install
+RUN npm run build
+
+# Copy the built files to Nginx's default web directory
+RUN 0
+
+# Expose port 80 for the web server
+EXPOSE 80
+
+# Start Nginx and keep it running in the foreground
+CMD ["nginx", "-g", "daemon off;"]
+--------------------------------------------------------------------------
+if you can add your fromfrom instance to doocker file
+ADD shasi.html /usr/shasi
+================================================================================================================================
+Now we have to do one thing 
+
+I watnt to convert jenkins file to docker imahe
+github->jenkins file->docker
+--------------------------------------------------------------------------------------------------------------------------------------
+We have to deploy sypd-main project from jenkenkis using docker
+first open jenkins dashboard
+install depences
+->Docker,Git,node.js
+Now we have to config
+goto global tool configuration
+=====================================================================================================
+# Stage 1: Build the Node.js application
+FROM amazonlinux:2023 as builder
+
+# Install Node.js and npm
+RUN yum update -y
+RUN yum install -y nodejs npm
+
+# Set the working directory
+ADD /Spyd-main .
+WORKDIR /Spyd-main
+
+# Add your application code to the container
+
+
+# Install dependencies
+RUN npm install
+RUN npm cache verify
+RUN npm run build
+
+# Stage 2: Set up Nginx
+FROM nginx:latest
+
+# Copy built app files from the builder stage
+COPY --from=builder /Spyd-main/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Run Nginx
+CMD ["nginx", "-g", "daemon off;"]
+--------------------------------------------------------------------------------------------------------------
+Docker Additional Commands
+---------------------------
+docker --version
+docker login
+docker search imagename
+docker inspect image name-> it will show all detais about images
+docker create imagename->only it will create container it will not run the container
+docker start container-> it will start
+docker network ls-> to see nerwork for docker
+it will show bridge,host,none
+docker network inspect bridge-> it will show whats containers running in brighe
+---------------------------------------------------
+Docker networking
+------------------
+if we deployed one project 
+we have for front end on container and for back end we have another container
+how to communicate both continers.
+Bridge networking ->it will runs on same ip adderss but diff port numberss
+host
+none
+to see these 
+docker network ls
+if you create conatiner it will created on bridge network by default
+if you want do innspecfic network like host
+docker run -d --name shahsi --net host imagename
+it will run with out port number but we cant run another container
+-----------------------------------------------------------------------------------
+docker volumes
+----------------
+volumes i snothing like databases
+
+docker volumes -ls-. to see volumes
+
+docker volume inspect voulmeid-> it will show same details about volume
+
+default loction for volume :var/lib/docker/volume
+docker volume prune -> it will delete all volumes whats containers should not in use
+docker volume rm volume id
+docker volume create test1->  to create avolume
+docker run -it --name=shasi --mount source=test1,destination=/data centOs
+=====================================================================================================================
+Project on Docker using two containers.
+========================================
+create instance 
+install docker
+sudo yum install docker -y
+sudo systemctl enble docker
+sudo systemctl start docker
+sudo yum install git -y
+sudo git clone https://github.com/narayanacharan/mern_docker_demo.git
+now we have to create serperate network for tee project
+docker network create library-mern-api
+docker network ls
+docker volume create mongodb-data
+docker volume ls
+set up over 
+now we have to create a image
+first we have to create on container
+======================================================================
+Muilty stage docker files
+-----------------------------
+it will reduce the size of docker file
+--------------------------------------------------------------------
+Deploy django applications
+-------------------------
+
+===============================================================================================================================================
+                                       KUBERNETES
+									   
+==================================================================================
+Kubernetes is an open source platform helps to manage and automate containers
+Kubernetes alternatives
+->kubernates,docker swarm,red hat openshift,Rancher
+Challanges with docker
+->Container Scaling->in docker if traffic high it not create another container with kubrntes it work
+->load balancing->it app1 is running ina 3 container docker will balance the loads
+->Service Discovry->it will not communicat both continers									   
+->Fault Tolerance->if connter will stop immedeateio it is not creaet another container
+->Deployment complexity->if app2.0 is running gets any problem again it dont move to the App 1.0
+THOSE ALL PROBLES WILL SOLVED BY THE KUBERNETIES
+
+----------------------------------------------------------
+We can manage Kubernetes in AWS with EKS
+ti setuop eks we want 2gb ram 2 cpu and 10bg
+t2.micro is not work
+create instance for kubernetes we have enable memober of ports
+We have to setup for kubernetes
+1_>aws cli installation
+->google->aws cli install->open->linux
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+
+2->I have to create IAM user
+goto instnace
+->IAM->frisrt create group->with adim access->crea user and add in that group
+->now we have genarte acces key
+Now we have to login with Amazon CLI
+commdsa
+->aws configure
+ask access id and accesskey
+region:ap-sount-1
+format json
+3-> install kubectl
+->googel->kubectl in aws linux2023->select linux
+->select version
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.32.0/2024-12-20/bin/linux/amd64/kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.32.0/2024-12-20/bin/linux/amd64/kubectl.sha256
+sha256sum -c kubectl.sha256
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc(optional)
+wi
+4->EKSCTL
+->google->eks ctl amazon linux 20233->
+# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo mv /tmp/eksctl /usr/local/bin
+->click enter
+Now we have to create cluster
+eksctl create cluster --name=eksdemo1 \
+                      --region=ap-south-1 \
+					  --zones=ap-south-1a,ap-south-1b
+					  --without-nodegroup
+it will take 10 to 15 min time
+to check 
+eksctl get cluster
+eksctl delete cluster --name eksdemo1 --region ap-south-1
+Now we have to create node group
+first we have to create a pem file and
+move that file into these istance
+it was located in /home/ec2-user
+move to root mv shasi.pem /root/
+
+structre for eks node group
+
+eksctl create nodegroup \
+  --cluster=eksdemo2 \
+  --region=ap-south-1 \
+  --name=eksdemo2-ng-public1 \ #Name of the node group you're creating.
+  --node-type=t2.medium \      #Specifies the EC2 instance type for the nodes in the group (e.g., t2.medium).
+  --nodes=2 \                  # Specifies the initial number of nodes in the node group.
+  --nodes-min=2 \              #Specifies the minimum number of nodes in the group (to ensure scaling down happens).
+  --nodes-max=4 \              #Specifies the maximum number of nodes that can be scaled up to
+  --node-volume-size=8 \       #The size of the volume (in GB) attached to each node.
+  --ssh-access \               # Enables SSH access to the nodes.
+  --ssh-public-key=shasivini \     #The SSH public key to access the nodes. (Make sure this key is available in your AWS EC2 SSH key pair list).
+  --managed \                  #Specifies that the node group will be managed by EKS (i.e., EKS manages the lifecycle of the nodes).
+  --asg-access \                # Grants the node group access to Auto Scaling Group
+  --external-dns-access \       #Grants access to manage external DNS.
+  --full-ecr-access \           #Grants full access to Amazon Elastic Container Registry (ECR)
+  --appmesh-access \            #Grants access to AWS App Mesh service.
+  --alb-ingress-access          #Grants access to manage the AWS ALB (Application Load Balancer) ingress controller.
+
+to check nodes created or not
+->kubectl get nodes
+
+till here set up completed
+---------------------------------------------------------------------------------------------------------------------
+Kubernetes Arctricuture
+------------------------
+Kubernetes is avilable in UI and CLI also
+UI/CLI ->Kubernetes master(api server,sheduler,contriller manager,etcd)->node1(docker,kubelet kube-proxy)
+Api server->communication between user and cluster
+       acts as entry point of every node
+etcd->store cluster configuration
+Scheduler->Decides which node runs a new pod(decide in wich node pod will create)
+contriller manager:if user create to 4ponds if one pond will stop immediatly it will create another
+Node componets->every work will done in nodes like pods
+Kublet->containers are running on the node
+it is avilable in every node
+Kube proxy->in pod we have application to run that we want intebet it will take care of that
+container runtime:Runs containers
+-------------------------------------------------------------------------------------
+Now we can create pod
+first see nodes created or not
+->kubectl get nodes
+if you to see total info of nodes
+->kubectl get nodes -o wide
+check is pods are ther or not
+kubectl get pods
+Now create a pod
+kubectl run shasipod --image sasipretham/spydmain:1.0
+pod was created
+now we have to check we have 2 nodes i which the pod is created 
+kubectl get pods -o wide
+kubectl run shasipod --image sasipretham/spydmain:1.0
+when we run these command it will run some operatins
+pod will created
+pull the docker repo
+continer will be created
+and it will start
+->kubectl describe pod shasipod
+it is used for get any error we have to trubleshoot that then it will be use
+show in thw form of events
+kubectl logs shasipod
+kubectl logs -f shasipod->to check live logs
+kubectl exec -it shasipod -- /bin/bash ->to open pod
+kubectl delete pod shasipod
+now we also create with pod.yml code
+->google->pod yamal file
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+add these
+kubectl apply -f pod.yml
+kubectl get pods -n namespacename -w(to see in live creation)
+---------------------------------------------------------------------------------------------------------------------------
+Now we have to disscuss about 2 objects
+-Replicaset
+-Service
+What is Replicaset?
+if in pod one App1 is running if traffics is high 
+then pod was not create another pod to level the traffice.
+->Replicaset is handel the Pods we have to give desired set 4 it create 4
+->it will take resposiblity to run based on desired set.
+->saclabity also avilable
+Now we have to create replicaset folder
+create file 
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replicaset
+  namespace: default
+spec:
+  replicas: 3  # Number of replicas (pods) you want to run
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest  # Use the NGINX image from Docker Hub
+          ports:
+            - containerPort: 80
+save that file
+kubectl create -f rs.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: default
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080  # Define the nodePort you want to expose (e.g., 30080)
+  type: NodePort      # Exposes the service outside the cluster
+
+kubectl get replicaset
+now check pods
+kubectl get pods
+Now my point is if traffic is high we have increase repplicas
+go to /yml file change the number and save
+->kubctl replace -f rs.yml
+these about service.
+create service
+kubectl create -f service.yml
+->kubectl get service
+now they generated a one port address like 300080
+copy that port
+take any piublic ip attach the port number and see it will display the page.
+==========================================================================================================
+Deployment
+-----------
+What is use of deployment
+it 2 verions of app is running like Appv1 and Appv2
+iif app v2 have any problem immedity it will launch appv1
+we also upate the versions
+kubectl create deployment spyd --image:sasipretham/spydmain:tagname
+replica set is created automatically
+checkc
+kubectl get replicaset
+now i want to increase replicas
+kubectl scale --replicas=20 deployment/deploy name
+to access browser we have to creaete service
+->kubectl expose deployment deploy-name --type=NodePort --port=80 --target-port=80 --name=my-deployement-service
+it is deceivteve model->Nodeport will come random ly we cannot ccreate specific
+it will avilable on impretive mode wecan give our own node port
+
+
+->now i want to update the version
+kubectl set image deployment/deployment name kubenginx=imageurl:2.0
+it was updated to 2.0 version
+now i want to run perious version 1.0
+kubectl rollout undo deployment/deployment name
+it will roll back to periouvs version
+kubectl rollout undo deployment/deployment name --to-revision=3
+it will rollback to specific version
+------------------------------------------------------------------------------------------------------------------------
+EKS WITH FARAGATE Service
+----------------------------
+eksctl create cluster --name cluster1 --region ap-south-1 --faragate
+aws eks update-kubeconfig --name clustername --region name
+create fargate profile
+->eksctl create fargateprofile \
+  --cluster cluster name
+  --region ap-south-1
+  --name alb-sample-app \
+  --namespace game-2048
+https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/day-22
+eksctl utils associate-iam-oidc-provider --cluster clustername --approve 
+========================================================================================================================
+========================================================================================================================
+What are worker componets?
+Kube-proxy->genearting ip address load balancing
+kubelet->createions pods
+conatiner runtime->to run docker container
+what are master componets?
+Api
+sheduler
+etcd for data and keyvalues
+controll managese
+cloud control manager
+what distubuition you used?
+Amazon linux and EKS
+------------------------------------
+install kunernetes in two steps like
+install minikube
+install kubectl
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.30.1/minikube-linux-amd64
+sudo install minikube-linux-arm64 /usr/local/bin/minikube && rm minikube-linux-arm64
+uname -m
+chmod +x minikube
+sudo mv minikube /usr/local/bin/
+minikube start
+Now we have to install kubectl
+curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+chmod +x kubectl
+kubectl version --client
+kubectl get po -A
+----------------------------------------------------------------------------------------------------------------------------------------
+if we have to manage 100 cluster we have to use one tool
+->KOPS(Kuberneties opertaions)
+Kubernete installing using kops on ec2
+curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+chmod +x kops
+sudo mv kops /usr/local/bin/kops
+aws cli
+and confugure that
+ now we have to create a s3 bucker for kops because all 100 clusters informaion will store in s3.
+->aws s3api create-bucket --bucket kops-shasi --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+Now we have to to create cluster
+kops create cluster --name=demok8.local --state=s3://kops-shasi --zones=ap-south-1a --node-count=1 --node-size=t2.micro --master-size=t2.micro --master-volume-size=8 --node-volume-size=8
+kops edit cluster demok8.k8s.local
+if get any error
+export KOPS_STATE_STORE=s3://kops-shasi-storage
+after editing
+kops update cluster --name demok8.k8s.local --yes --admin
+=======================================================================================================================================================================================================
+kubectl with minikube
+--------------------------
+create instance
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version ->to check version
+install minicube
+curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+oinstall docker
+minikube start
+minikube start --memory=4096 --driver=docker
+to see node
+it you getting start problem
+minikube start --force
+kubectl get nodes
+
+now we have to create pods
+google ->kubernetes pod->you can see pod struture
+create file pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2(we can give opver own image name)
+    ports:
+    - containerPort: 80(we can change port number based on applicationa)
+	
+	now we have to create pod
+	
+	kubectl create/apply -f pod.yml
+	
+	now check it create dor not
+	
+	kubectl get pods
+	if you want full details
+	kubectl get pods -o wide
+	to check pod is working or not
+	minikube ssh
+	it will login lo docker diervtory
+	curl 10.244.0.3 ip addressit will show htm script
+	(if you want search commnds od kubectl go to kubectl cheat sheet)
+	kubectl delete pod podname
+	it will delete pod.
+	kubectl get pods -w
+	kubectl logs podname (to see errors)
+	kubectl describe pod podname
+	-----------------------------------------------------------------
+	What is diff between container and pod and deployment
+	container->we have to run with docker run -d name -p80:80 -voume ss -nretwork
+	pod -> same opetions we will write in pod.yml
+	depoly->we have to do auto healing and scaling in deploy in pod it not work
+    replicaset is nothing kuberntes controlle pods will decrese and increase
+	
+	how do you list out the pod,deploy,service at timw
+	kubectl get all -A
+in deployment also we can creat by pod yaml file
+   for pod yaml file structure we have to go goolge and kubernetes deployment
+   apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spyd-app
+  labels:
+    app: spyd-app
+spec:
+  replicas: 3 (it assume like how many pods ahve to  create)
+  selector:
+    matchLabels:
+      app: spyd-app
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: spyd-main
+        image: ahsi/spyd-main:1.0
+        ports:
+        - containerPort: 5173
+
+->kubectl apply -f deployment.yaml
+->kubectl get rs(to see replicaset)
+->kubectl get pods -v=7 ->to see the information
+in realtime we dont create pod directly we have to creat deployment
+-------------------------------------------------------------------------------------------
+Kubernetes Service
+-------------------
+from here we created pods
+and created deployment to create pod
+we also over come problem like replicas
+again why we have to create service
+it pods are auto healit will change the ip address for every new pod creation
+to over come that problem we have to use service it will load balced.
+loadbalancer
+service discovry
+practical manner
+-----------------
+create file like service.yml
+for syntax google:kubernetes service
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: Nodeport
+  selector:
+    app: MyApp(give name what tou eneter in deplpoyment file(templet block)
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80(applicatio  running port 8082,5173)
+	  nodePort: 30007
+save the file
+kubectl apply -f service.yml
+kubectl get svc -v=9-> it will show all details of serviive file
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Kubernetes Ingress
+-------------------
+Kubernetes Ingress is used to manage external access to services within a Kubernetes cluster.
+ It provides a way to expose HTTP and HTTPS 
+routes to services and enables features like load balancing, SSL termination, and name-based virtual hosting
+simply we say like
+Kubernetes Ingress manages external access to services, 
+providing load balancing, routing, SSL termination, and cost efficiency.
+
+->it will provide more security and load balacing operations
+->using loadbalancer with service they will charage every ip address
+->comming to ingress it will not happen
+create a ingress file
+go to google->kubernetes ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wildcard-host(give name as per you)
+spec:
+  rules:
+  - host: "foo.bar.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/bar"
+        backend:
+          service:
+            name: service1(give here service name)
+            port:
+              number: 80
+->kubectl apply -f ingress.yaml
+to doing these it will not work
+kucbectl get ingress
+if you check adress feild is empty
+we have to do ingress controller
+google ->kubrnetes ingress->serch side
+minicube addons enable ingress
+after installing ingress controller
+you can check they will have one ip adress
+after that add ingres ip adress foo.bar.com
+in vi /etc/hosts
+-----------------------------------------------------------------------------------------------------
+When to Choose What?
+
+Use a managed service (EKS, GKE, AKS) if you want ease of use and less maintenance.
+Use self-managed solutions (Kops, Kubeadm, Rancher) if you need full control over Kubernetes clusters.
+1. Control Plane Costs
+EKS: Costs $0.10 per hour (~$72/month per cluster) just for the control plane.
+Kops: No direct control plane costs since you run Kubernetes masters on EC2 instances.
+2. EC2 Instance Costs
+EKS: Requires worker nodes only, no need to manage control plane instances.
+Kops: You need to run control plane instances (typically 3 for HA setup), increasing EC2 costs.
+3. Load Balancing & Networking
+EKS: Uses AWS Load Balancer Controller, which may create multiple AWS ALBs/NLBs, adding costs.
+Kops: Allows using self-managed HAProxy/Nginx Ingress, reducing AWS LB expenses.
+4. Operational Costs
+EKS: Fully managed, reduces DevOps overhead.
+Kops: Requires engineers to manage upgrades, security, scaling, and maintenance.
+Overall Cost Savings
+✅ Kops can be 30-50% cheaper than EKS in raw infrastructure costs.
+🚨 But EKS saves DevOps time, which could be more valuable in the long run.
+
+Would you like a detailed cost breakdown for your specific use case? 🚀
+==============================================================================
+Steps to KUBERNETES
+-----------------------
+step-1 :install kubectl
+step-2 : install eksctl
+step-3 :create eksctl without node
+step-4 :create eksctl nodegroup
+step-5 :write yaml script in for deploy,service,ingress
+step-6 :run that yaml file
+step-7 : after we have to setup ingress
+step-8 :IAM OIDC provider
+       eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve(change cluster name)
+step-8 :create iam policy
+       curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
+	   aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+	(no chnages hove to done it is from auto load balncer documetaion)
+	)note: if you get already exits go to iam and delete that policy)
+step-9 :create role
+       eksctl create iamserviceaccount \
+  --cluster=<your-cluster-name> \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::<your-aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+  (if you get any error try again)
+ step-10: curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+ helm repo add eks https://aws.github.io/eks-charts
+ step-11:helm repo update eks
+ step-12:helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
+  -n kube-system \
+  --set clusterName=<your-cluster-name> \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=<region> \
+  --set vpcId=<your-vpc-id>'
+  (to delete helm delete name -n namespacename)
+ step-13: kubectl get deployment -n kube-system aws-load-balancer-controller(to check alb created or not)
+ step-14: if not created we have to check
+         kubectl edit deploy/aws-load-balancer-controller
+		 add to iamserveice account
+		        eksctl create iamserviceaccount \
+  --cluster=<your-cluster-name> \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::<your-aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+  --override-existing-serviceaccounts
+  (if you want to delete goto slaks and delete it)
+ step-15:kubctl get ingress it will show dns id
+=============================================================================================================================== 
+		 
+
+
+
+
+
+
