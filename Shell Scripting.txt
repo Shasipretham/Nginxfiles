@@ -1,0 +1,174 @@
+SHELL SCRIPTING
+================
+It is nothing but we have write script for daily useing work
+ex: we have install few server every day in every server then we write that commads in script form
+    it will install automatically.
+-. it is excute line by line
+
+
+022 - assign permissions so that you only had read/write perssion for files & search access to your directories
+002 - assign permissions you & other members also had read/write perssion for files & search access to your directories
+
+to find even number the script is
+
+echo "Check the number EVEN or ODD"
+read -p "Enter the number :" num
+if [ $(num % 2) == 0 ];
+then
+        echo "$num IS AN EVEN NUMBER"
+else
+        echo "$num IS AN ODD NUMBER"
+echo "THANK YOU!"
+fi
+-------------------------------------------------------------------------------------
+echo "TOO REGESTER YOUR GENDER"
+read -p "ENTER YOUR GENDER IN CAPITAL LETTERS : " gen
+if [ $gen == "MALE" ];
+then
+        echo "YOU ARE A MALE"
+elif [ $gen == "FEMALE" ];
+then
+        echo "YOU ARE A FEMALE"
+elif [ $gen == "OTHER" ]
+then
+        echo "YOU ARE A OTHER"
+else
+        echo "PLZ ENTER VALID GENDER!"
+fi
+--------------------------------------------------------------------------------------
+echo "Know your GRADE According to your markes"
+read -p "Enter your markes : " mark
+if [ $mark -ge 75 -a $mark -le 100 ];then
+        echo "YOUR GRADE IS ' A ' "
+elif [ $mark -ge 50 -a $mark -le 74 ];then
+
+        echo "YOUR GRADE IS ' B ' "
+elif [ $mark -ge 35 -a $mark -le 49 ];then
+        echo "YOUR GRADE IS ' C '"
+else
+        echo "YOUR OR FAIL!"
+fi
+----------------------------------------------------------------------------------
+echo "Know your GRADE According to your markes"
+read -p "Enter your markes : " mark
+if [ $mark -ge 75 -a $mark -le 100 ];then
+        touch agradefile.txt
+        echo "A  GRADE FILE IS CREATED"
+elif [ $mark -ge 50 -a $mark -le 74 ];then
+
+        touch bgradefile.txt
+        echo "B  GRADE FILE IS CREATED"
+elif [ $mark -ge 35 -a $mark -le 49 ];then
+        touch cgradefile.txt
+        echo "C  GRADE FILE IS CREATED"
+else
+        echo "YOUR OR FAIL!"
+fi
+-------------------------------------------------------------------------------------------
+#!/bin/bash
+# Define variables and perform arithmetic operations
+sum=$((3 + 4))
+product=$((5 * 6))
+division=$((100 / 5))
+# Print the results
+echo "3 + 4 = $sum"
+echo "5 * 6 = $product"
+echo "100 / 5 = $division"
+-------------------------------------------------------------------------
+cntrl + x = quit
+cntrl + s = save the Nano file
+sudo yum update -y -> t
+------------------------------------
+#!/bin/bash
+day="Monday"
+case "$day" in
+    Monday)
+        echo "Start of the work week."
+        ;;
+    Friday)
+        echo "End of the work week."
+        ;;
+    *)
+        echo "It's just another day."
+        ;;
+esac
+-----------------------------------------------------
+#!/bin/bash
+for file in *.txt; do
+    if [ -f "$file" ]; then
+        echo "Processing file: $file"
+        while IFS= read -r line; do
+            echo "Line: $line"
+        done < "$file"
+    else
+        echo "$file does not exist."
+    fi
+done
+----------------------------------------------------------------------
+#!/bin/bash
+# Define variables
+DIRECTORY="prime-minister"
+FILE="india.txt"
+DATE_FILE="date_info.txt" # Not used, but reserved for future use
+# Create a directory
+if [ ! -d "$DIRECTORY" ]; then
+    mkdir "$DIRECTORY"
+    echo "Directory '$DIRECTORY' created."
+else
+    echo "Directory '$DIRECTORY' already exists."
+fi
+# Create a file and add some lines of text
+echo "Creating file '$FILE' in directory '$DIRECTORY'..."
+echo "This is the first line of the file." > "$DIRECTORY/$FILE"
+echo "This is the second line of the file." >> "$DIRECTORY/$FILE"
+# Print the contents of the file
+echo "Contents of '$FILE':"
+cat "$DIRECTORY/$FILE"
+# Print the old date (e.g., year 2023)
+OLD_DATE="2023-01-01"
+echo "Old date: $OLD_DATE"
+-------------------------------------------------------------------------------
+4. Examples of Symbolic Link Use Cases
+Convenience: Create shortcuts to frequently accessed files or directories
+ in more convenient locations.
+Compatibility: Make it easier to support different
+ versions of software or configurations without changing the underlying paths.
+Version Control: Link to different versions of files or 
+directories, such as libraries or configuration files, while keeping a
+ consistent interface.
+ 
+ 
+ ln -s  ~/[sourcepath] /  ~/[destination path]/
+ 
+ example:ln -s ~/myproject/config.txt ~/myproject/config_link.txt
+-------------------------------------------------------
+mkdir sample_dir
+cd sample_dir
+echo "This is a text file." > file1.txt
+echo "Another text file." > file2.txt
+echo "Yet another text file." > file3.txt
+zip sample.zip file1.txt file2.txt file3.txt
+
+
+unzip -l sample.zip
+unzip -n filename.zip
+
+grep : It is command line tool that search for specific files or text
+find . -type f -name '*.txt[0-9]*'
+
+# Write specific content to file1.txt
+echo "1. Bangalore is the coolest place" > file1.txt
+echo "2. DevOps is now high demand technology in the present market" >> file1.txt
+----------------------------------------------------------------------------
+# Create a file with numerical expressions
+echo -e "a = 4\nb = 5\nc = 7\n\na + b = $(expr 4 + 5)\nc + b = $(expr 7 + 5)\na + c = $(expr 4 + 7)" > math_expressions.txt
+# Create a file with a text sentence
+echo "Today is Monday" > day_of_week.txt
+-------------------------------------------------------------------------------------
+sudo dd if=/dev/zero of=/swapfile bs=1G count=1
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+swapon --show
+----------------------------------------------------
