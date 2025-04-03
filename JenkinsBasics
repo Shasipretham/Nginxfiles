@@ -1,0 +1,515 @@
+Jenkins
+------------
+=====================================================================================================
+jenkins repo
+jenkins keys
+java11
+git
+maven
+jenkins
+
+====================================================================================================
+it is help to perform automatic testing like continues initigration and continues deployement
+_>continoues integration is nothing but we developers written a code in sub part we can comabin all the code here
+   _.code-.build->integrationn->continue inegration
+   ->code deployement->code-.build->integration->UAT(user acceptance test)-> Continudeployement
+   
+Why CI?
+before CI 
+3 developer code will store in git hub repositry then->move to integration-> testing
+After CI 
+We created one server that is only CI server
+3devlopers code will store in git hub then it will rul all the funtions at atime like build test deployement
+-----------------------------------------------------
+What is pipeline
+it is nithing but step by step excution
+verion cotrol(github code will stored hree)
+build(take that code and build it to conver jar file or war file)
+unit test(testi g will done here is thre any error it will go back and again build the code till success)
+deploy
+auto testdeploy to production
+after it will give production feedback
+---------------------------------------------------------------------------------------
+Workflow
+--------
+we can attach git,mavin,selenium,Aritifactry plugins to jenkins.thats why we have to install git maven java
+once developer put the code github jenkines will pull the code and send to maven to build
+once build the code and jenkins will pul that code and sent to selinum for testing
+once testing is done.jenkins pull the cosde and send to arctifactory
+we can also deploy with jenkins
+
+jenkins master is divide the work to slaves
+to give commuication between master and slaves we have to install some keys
+According to lables the work will be assign
+like l1->slave1 l2->slave 2
+
+------------------------------------------------------------------
+it is open sources and build in java
+developed by sun microsystems.(saled to oracle)
+jenkins based on plugin tooles,there are1000+ plugins in jenkins
+it also support the cloud based architure.
+ow to install jenkins using with yum ?
+Create a instance _. connect->
+First we have to check jenkins is there in our package or not
+how we can check
+
+ 
+
+
+go to the yum.repo.d directory
+cd /etc/yum.repos.d/
+to check our linux details the command is
+->cat /etc/os-release
+
+after checking that
+before installing jenkins we have to install java
+when in server we didt have amazon-linux -extras
+we can use these command
+sudo dnf install -y java-11-amazon-corretto-devel
+after that install jenkins'
+and enter that passwords and install all plugins
+
+Basic -> project->go to new item->free projeect->excute 
+
+Now we have to install jenkins?
+first we have to install java
+to install java it is avilable in amazon-linux-extras
+but extras packeage only avilabale in Amazon linux 2 only..not avilable in Amazon linux  2023
+To install java _>sudo amazon-linux-extras install java-openjdk11 -y
+next step is 
+Now we have to enable the epel-relase
+sudo amazon-linux-extras install epel
+after thet we hve to move the file to yum.repos.d/
+sudo curl -o /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+now we have to install jenkins
+sudo yum install jenkins -y
+-----------------------------------------------------------------------------------------------
+Now coming to 2023 Amazon linux proxcess isc
+ create ec2 instance and connect-
+ google -> jenkins->download with redhat links->
+first we have to download a repositry  
+
+->sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repos
+
+after that we have to create a key
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+after that we have to install java with these link 
+sudo dnf install -y java-11-amazon-corretto-devel
+
+to check that java installed or not
+java -version
+after we have to install git in server jenkins
+after we also install maven
+Now we have to instal jenkins
+sudo yum install jenkins 
+to check that
+ sudo systemctl status jenkins
+ to enable the service
+ sudo systemctl enable jenkins
+ 
+now it is ready to use
+goo to google
+and paste ip address and along ith port number 8080
+they give some password address
+copy that path and past in cmd
+password will come.
+
+======================================================================================================================================================
+Now how to connect jenkins masteer to slaves
+using labels master will assign to slaves
+why we have to use?
+ to avoid a work load 
+how to create that lables.
+first we have install jenkins and tooles after that connect to dashboard
+we have t change bin/false to bin/bash
+sudo vim /etc/passwd
+_. edit and save thatb file.
+now we have to check user 
+sudo cat /etc/passwd
+there will show the jenkins user
+ now we have to give passwd for that user
+ sudo passwd jenkins
+ it will ask create a password 
+->now we have to all permmisions have root user  to jenkins 
+sudo visudo
+edit that
+add content root permmisions
+jenkins ALL(ALL) NOPASSWD : ALL
+
+->now we have to config in sshd(all incoming requested is recived by the ssh and send to sshd )
+sudo vim /etc/ssh/sshd_config
+edit that password authetication YES
+Now all the data is encrypted
+note:for every modifictation in ssh_config we have to restart the server compulsary
+----------------
+Now we have to login to slave?
+first we have to create seperate instance and comnect
+these istance is slave instance
+we have add user jenkins
+sudo useradd jenkins(we have to create manullly)
+create password
+sudo passwd jenkins
+password created
+after that proces
+sudo visudo
+give permmisions to created user
+jenkins ALL=(ALL) NOPASSWD:ALL
+edir pass word authentication in
+sudo etc/ssh/ssh_config
+When we chose that slave concept meanse
+i code writeen ina
+1 java and 2 .net
+on that time we have to go that.
+another point is
+if arctitucutre is big meance then go to slaves
+to decrease the prize.
+example
+if project is getting to 16gb ram it get more cost
+then we have to go and create a slave for 8gb
+in master we manages uat and devel
+in slave proud
+all information will be on master jenkins
+first we have to check what coad we have to excute
+java appliction ->MAVEN
+.net ->.net code
+anugalr-.node
+python->python
+those onfo will give from develops
+to remove authentivationa
+sudo vi /var/lib/jenkins/config.xm
+l
+ 
+====================================================================
+Now go back to master and connect
+
+login to jenkins
+ sudo su - jenkins
+ ------------------------------------------
+ALL THE JENKINS SET UP IS DONE TILL HERE
+----------------
+Deloper will push that code to source code management(git hug,git)
+after that we have to test
+afyet we havr to build
+usinf ci tool we have to deployement
+first we have to integrate sourse code management (GIT)
+
+How to integrate git hub?
+open that jenkins dashboard
+->create new item-
+->select free project
+->git
+->enter git link
+->in credetioan we have to give our credential.
+_.branch specifer->git hub coade branceh.
+_.save and build now
+now checkout pur
+now all the files will be cloned in jenins
+check in my workspace
+------------------------------------------------------
+Freestyle job
+    ->template job
+Maven job->only java application
+Pipeline job
+71b33558fd57432caf2352cb1eab80c1
+-------------------------------------------
+jenkins is not only for take a code (SCM)
+it also set the order to run the code
+general->we cant acesse when n disble
+  ->discard old builds
+    ->log rotations_.multi ples bills are going on 
+	  it will deside how many days the bill be in veiw
+	  ex;we have to give cleaned we have to set that time
+	->paarametaized->singel job we have to use multiple environement UAT,Dev etc
+  ->Build steps: what have to do going in same
+    ->excute shell->mkdir class shasi
+	it will well create a folder whwn we donw build now
+	_>to check that we can go to work space it will be visible
+ ->build trigger
+   _>poll SCm-> is used to i  which time the next trigger will perform
+   ->it will be seduled with the help on CORNTAB site
+ ->post build actiona->after the build of project what should they do is mention in the post biuild action
+===============================================================================================
+all the builded jobs will be stored i these path o nly
+And the Jenkins Home directory is /var/lib/jenkis
+=============================================================================================
+NOW WE HAVE TO RUN ON JAVA CODE
+----------------------------------
+to run java code we have to follow some rule like maven lifecycles
+
+MAVEN LIFE CYCLE
+----------------
+Validate
+Compile
+test
+package
+integration test
+verify
+install
+deploy
+---------------------------------
+Now we have to install apachenmaven repo and key
+sudo wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+sudo yum install -y apache-maven
+mvn --version
+https://github.com/jilu407/test-maven.git(java 11)
+
+we have to give build steps
+Excute shell-
+ mvn --version
+ mvn install
+ mvn test
+ mvn compile
+ mvn package
+if you find any null in console the problem is java version is the problem.
+then chnage the version and build again
+sudo /usr/sbin/alternatives --config java
+enter a number which version: +3
+build it will be run
+
+===========================================================================
+we have to install maven plug in jenkins
+jenkins dasboard->manage jenkins-> plugin->Avilable-> maven integrationa
+check new item it will show maven project
+By using these also we can deploy
+new item
+select maven project
+git ur
+set maven path
+save 
+and build
+
+till now we deployed java project using
+free style job
+maven plugin job
+=====================================================================================================
+Now what is the pipeline job
+ in  free style all will done in manually
+ but in pipeline it eill be run using script
+ declarative pipeline
+ scripted pipeline
+ syntsx:
+ pipeline{
+ ageny any
+ stages{
+ stage('stage1'){
+ commands
+ }
+ ]
+ 
+ }
+ Scripted pipeline
+ node{
+ stage('stage'){
+ command
+ }
+ 
+ 
+ 
+ 
+ 
+ diff to run script we have to go script pipe line
+ ============================================================
+ pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('first') {
+            steps {
+                echo 'Hello first'
+            }
+        }
+        stage('secound') {
+            steps {
+                echo 'Hello second'
+            }
+        }
+    }
+}
+===================================================================
+now we have to do some operations
+pipeline {
+    agent any
+
+    stages {
+        stage('scm') {
+            steps {
+                git 'https://github.com/jilu407/test-maven.git'(we can build these code using help of piplesyntax)
+            }
+        }
+        stage('install') {
+            steps {
+                sh "mvn install"
+            }
+        }
+        stage('test') {
+            steps {
+                sh "mvn test"
+            }
+        }
+        stage('compile') {
+            steps {
+                sh "mvn compile"
+            }
+        }
+        stage('package') {
+            steps {
+                sh "mvn package"
+            }
+        }
+    }
+}
+these is the basic script and tis is the form of creating pipeline
+it is nothing like process will do step by step.
+=============================================================================================
+Now we can see the scripted pipe line
+node {
+    
+    stage('SCM') { 
+        git 'https://github.com/jilu407/test-maven.git'
+    }
+    stage('install') {
+        sh "mvn install"
+        
+    }
+    stage('test') {
+        sh "mvn test"
+        
+    }
+    stage('compile') {
+        sh "mvn compile"
+        
+    }
+    stage('package') {
+        sh "mvn package"
+        
+    }
+}
+==================================================================================================
+Another way to excute pipeline script
+
+first we have to write pipeline script save in git hub
+now goto pipeline select pipeline scm
+and give the repositry link and enter thst file name and buildit
+it will work
+till here we have completed compiling 
+===============================================================================================
+Deploy without CD/CI
+deploy with tomactserver
+now we first we install tomcat
+select AMI-linux-2
+aws->create instance->connect
+sudo yum update
+yum install java-1.8.0-openjdk11
+(phaseing any problem sudo amazon-linux-extras enable java-openjdk11)
+
+goto google
+download apache tomcat 10
+goto browse
+and select linus file->goto bin->
+exampe:https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.31/bin/apache-tomcat-10.1.31-fulldocs.tar.gz
+ls
+you an see tar file 
+to extract that tar file 
+->tar -xvf(x-xtrat v-verbose f-file) apache-tomcat-10.1.31-fulldocs.tar.gz
+->tomcat folder will be shown
+now move that tomact file /opt/ folder
+because all third party file will store in that folder only
+->sudo mv tomcat-10.1-doc /opt/
+now i want to start my tomcat server
+got tomact folder open bin-
+in bin folder
+->sh startup.sh
+-.now tomcat was started
+now copy ip addres add 8080 port number
+it will open default tomcat server 
+now all the operations will done Manage APP
+but we have to do some configration
+enter command
+vi /opt/tomcat/webapps/manager/META-INF/context.xml
+
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+ allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+ 
+seletct above paragraph and comment it.
+
+Now we have to create Tomcate users.
+sudo vi /opt/tomcat/conf/tomcat-users.xml
+
+we have to write script for that
+<role rolename="manager-gui"/>(to create roles)
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+now we have to create user and assig those roles.
+<user username="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
+<user username="deployer" password="deployer" roles="manager-script"/>
+<user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+now save that
+and agai  start the tomcat
+sh startup.sh
+it will ask login details.
+
+now we have to deploy than
+ gotp perviues jenkins profile ec2
+ jenkins dashboard ->manage jenkins->plugin->avilable plugins->deploy to container
+ istall it
+ open job
+ confige
+ select post build acctions
+ and selevte Deploy war.ear files container
+ enter **/*.war (to check war file)
+ select container
+ tomcat 9.x
+ give tomcat url
+ and generate credentials.
+ save and build now.
+ the peoject will shown i  tomcat page
+ 
+ if we can edit the code in git must we can do commit
+ 
+ after commit the file then we can click again build now
+ other wise we can also shedule that.
+ cofige job->build triggr-.poll scm-.*****
+ 
+ ======================================================================================================
+d43fadfec0234a2997f0b772f12171f4
+
+system configration
+system
+-------
+excuters max jobs to run
+node
+====
+it ise nthing when we running multiple jobs at a time
+we have to  create node and redirect that files.
+create thoise file in tomcat
+sudo mkdir /opt/jenkins-node/
+also we have to install git we installsatl plugins in jenkins node 
+give these path in root direcory.
+select web socket
+save
+when you create a project 
+then select 
+Restrict where this project can be run
+
+=======================================================================================================================================
+Now we have to do one project
+u8zeywthhuylkoi7sds54
+
+
+10gb file will convert to 10mb done by maven
+10mb file convert into container is done by docker.
+
+
+
+
+
