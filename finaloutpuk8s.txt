@@ -1,0 +1,139 @@
+Final output
+------------------
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: e-education-cluster
+  region: ap-south-1
+  version: "1.28"
+
+managedNodeGroups:
+  - name: e-education-nodes
+    instanceType: t2.medium
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 4
+    volumeSize: 20
+    labels:
+      role: worker
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        albIngress: true
+        autoScaler: true
+        cloudWatch: true
+----------------------------------------------------------------------------------------------------
+eksctl create cluster -f cluster.yaml
+
+aws eks update-kubeconfig --region ap-south-1 --name e-education-cluster
+
+eksctl get nodegroup --region=ap-south-1 --cluster=e-education-cluster
+eksctl utils associate-iam-oidc-provider --cluster e-education-cluster --approve
+eksctl create iamserviceaccount \
+  --cluster=e-education-cluster \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::767397874328:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+----------------------------------------------------------------------------------------
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=e-education-cluster \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=ap-south-1 \
+  --set vpcId=vpc-07b9dc159f5e0ee62 \
+  --set image.repository=602401143452.dkr.ecr.ap-south-1.amazonaws.com/amazon/aws-load-balancer-controller
+
+---------------------------------------------------------------------------------------------------------
+---
+# Namespace (if not already created)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: e-education-backend
+
+---
+# Java Backend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-backend
+  namespace: e-education-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-backend
+  template:
+    metadata:
+      labels:
+        app: java-backend
+    spec:
+      containers:
+        - name: java-backend
+          image: spydshasi/e-education:1.0
+          ports:
+            - containerPort: 8082
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+# Java Backend Service (maps 80 -> 8082)
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-backend-service
+  namespace: e-education-backend
+spec:
+  selector:
+    app: java-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8082
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: java-backend-ingress
+  namespace: e-education-backend
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:767397874328:certificate/726c7c0a-d4a0-4937-8d46-79127778661d
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-port: "8082"
+spec:
+  ingressClassName: alb
+  rules:
+    - host: api.e-education.in
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: java-backend-service
+                port:
+                  number: 80
+
+-----------------------------------------------------------------------------------
+
