@@ -1,0 +1,11 @@
+| HTTP Status | Meaning               | Likely Cause                                                            | Source                 |
+| ----------- | --------------------- | ----------------------------------------------------------------------- | ---------------------- |
+| **403**     | Forbidden             | IAM role, bucket policy, or security group misconfigured                | S3, ALB, API Gateway   |
+| **404**     | Not Found             | Misrouted traffic, wrong path, ALB config, or static files not deployed | ALB, Nginx, CloudFront |
+| **408**     | Request Timeout       | Target group not responding or under-provisioned backend                | ALB, CloudFront        |
+| **409**     | Conflict              | Usually from version control or CI/CD system (e.g., S3 upload conflict) | CodePipeline, Git      |
+| **429**     | Too Many Requests     | Rate limiting (WAF, API Gateway throttle, CloudFront)                   | Deployment config      |
+| **500**     | Internal Server Error | Server misconfiguration, env vars missing, build failures               | App or backend server  |
+| **502**     | Bad Gateway           | Target service is down, wrong port, container failed                    | ALB, Nginx             |
+| **503**     | Service Unavailable   | Target group has no healthy targets, service not ready                  | ECS, ALB, EKS          |
+| **504**     | Gateway Timeout       | Target service is unreachable, slow response, or VPC routing issue      | ALB, NLB               |
