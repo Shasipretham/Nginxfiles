@@ -1,0 +1,78 @@
+helm is a package manager for kubernetes.
+->Example:
+we are using yun for linux and apt for Ubuntu
+In the same way helm for kubernetes.
+we have to install controls like ingresss,grfana,promethious,alert manager,ingress controlleer
+step-1: we have to create repository
+step-2: we can install packege like helm install ingress.
+instead of these why we have to use helm
+if we have to install prometious or grfana we have to create sperate names space ,seperate service account all we have to do seperately
+But when we use helm it will create automatically those things.
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+how to install helm in server?
+Browser->install helm->it will display official site open that and go to installtion.
+sudo dnf install helm
+if we have 3 eks clusters for which cluster that helm was connected?
+helm was connected to the current cluster.
+How to see that current cluster?
+->kubectl config current-context
+helm repo add bitnami https://charts.bitnami.com/bitnami
+to check that
+->helm search repo bitnami
+bitnami is couple of services 
+->if we want to install nginx using bitnami
+->helm search repo bitnami | grep nginx
+What is the diff between Charts and Repo?
+Charts is bundel of an application.
+All charts will store in repo
+when we download a prometous to install that we have to so namespace and policy all are in stored in Charts
+For example:we are using bitnami repo in that we have lot of charts like prometous,grafana and nginx.
+how to install those charts using bitnami?
+helm install nginxv1 bitnami/nginx(nginxv1 is nothing like name thats it)
+Now check nginx was installed or not
+kubectl get pods 
+it will show pods.
+Now i want install prometous
+first we have to check that promethoues was there or not in bitnami
+helm search repo bitnami | grep promethues
+if that package was not avilable in bitnami what we have to do?
+we have to install alb it was not in bitnami repository
+browser->install alb with helm->open aws documentaion and file commad and run.
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update eks
+Now check load balancer was there that eks repo or not
+helm search repo eks | grep -i load
+i want to see installed packegs using helm
+helm list
+To unistall package
+helm unistall nginxv1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+if we want to crete our own repo
+like we are working on e-comm website
+one cluster for payments->create chart
+one cluster for shipping->create chart
+pust to charts into that repo.
+create two dirctory
+mkdir -p bestecomm/{payment,shiping}
+cd bestecpmm
+and create
+helm create payments
+helm create shipping
+Now you open that payments folder
+cd payments
+ls ltr
+now you can see that chart.yml,values and templtes like files.
+in chart.yml it will have all metadata like owner name.
+in templets it will store deployment.yml files. we have to store all deployments.yml files.
+in values.yaml is used to customize the files inside the templets.
+do modifications in those files and bundel it like create a chart
+helm package shipping
+helm package payment
+it will create one zip file.
+helm repo index .
+helm add repo
+to see the values in another repo'
+helm show values eks/nginx
+
+
+
