@@ -73,6 +73,8 @@ helm repo index .
 helm add repo
 to see the values in another repo'
 helm show values eks/nginx
+------------------------------------------------------------------------------------------------------------------
+reffer from these link :https://github.com/iam-veeramalla/helm-zero-to-hero.git
 
 
 
