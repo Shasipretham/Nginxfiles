@@ -1,0 +1,98 @@
+Monitoring tools
+----------------
+There is some best ways to monitor the tools
+Prometheus->to monitor docker/k8s integartion
+Node-exporter-> to see system level matrics(CPU,RAM,DISK,NETWORK)
+cAdvisor->to see container level matrics(CPU,MEMORY,DISK as per Container)
+Nginx Exporter->to see manual deployments.
+MySQL/MongoDB Exporter->to see data base matreiss.
+-------------------------------------------------------------------------------------------------------
+installations:
+----------------
+create file like
+sudo vi prometheus 
+--------------------------------
+global:
+  scrape_interval: 15s     #to take merices for every secound
+
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']   # Node Exporter
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['localhost:8080']   # cAdvisor
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['localhost:9113']   # Nginx Exporter
+-------------------------------------------------------------------------------
+install prometues
+-----------------
+docker run -d --name=prometheus \
+  -p 9090:9090 \
+  -v /path/to/prometheus.yml:/etc/prometheus/prometheus.yml \
+  prom/prometheus
+----------------------------------------------------------------------------
+install node-exporter
+--------------------
+docker run -d \
+  --name=node-exporter \
+  -p 9100:9100 \
+  prom/node-exporter
+---------------------------------------------------------------------------
+install cAdvisor
+----------------
+docker run -d \
+  --name=cadvisor \
+  --network=host \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  gcr.io/cadvisor/cadvisor:latest
+-----------------------------------------------------------------------------------------------
+to check those are working or not
+httpsL//ipaddresss:portnumber/mertics
+
+
+those tools show the matrices but i will show like i theory way
+->to see those results in grafical way we have to install 
+---------------------------------------------------------------------------
+install grafana
+------------------
+docker run -d \
+  -p 3000:3000 \
+  --name=grafana \
+  grafana/grafana
+-----------------------------------------------------------------------------------------------------
+after installation of grafana
+enter username: admin
+password: admin
+and change it
+now we have to add prometues
+left side
+->Data Source->add source->select prometouse->add enter prometious url likr https://ipadress:port numner->save and test
+------------------------------------------------------------------------------------------------------------------
+Now we have to add exporters
+->right side you can see + symble
+->cleck that one and import dashboard.
+Enter the dashboard ID from Grafana.com, then click Load.
+
+Node Exporter Dashboard → ID 1860
+Docker / cAdvisor Dashboard → ID 193
+Nginx Dashboard → ID 9614
+Choose your Prometheus data source → click Import.
+You’ll now see live dashboards for host, Docker containers, and Nginx.
+-------------------------------------------------------------------------
+Still here the setup is done.
+=====================================
+to see performance->got to Data sources select exported and see the result is graphycal way.
+if you wwant to see prometioues matrics opeb expolre->select prometous and you can see.
+
+
+
+
+
+
+
+
