@@ -1,0 +1,89 @@
+Kubernetes
+------------------------------------------------------------------------
+What  is the diff between Deployment and statefulSet in kubernetes?
+deployment is used stateless aplication and if you dont want any statble storage and pod identity
+statefulset is used for stable storaage setup and if you care about pod identity.
+---------------------------------------------------------------------------------------------------------------
+2.what are the statefull apps and stateless apps?
+📦 Stateless App Examples
+These apps do not store data between requests. If they crash, you can just spin up a new instance.
+✅ Examples:
+Nginx / Apache (web server)
+Frontend SPA (React, Angular apps)
+REST APIs that talk to external DBs
+Microservices that don’t store session or user data
+🗂️ Stateful App Examples
+These apps need to remember data across sessions. They often use disk or memory to persist data.
+✅ Examples:
+Databases: MySQL, PostgreSQL, MongoDB
+Message Queues: Kafka, RabbitMQ
+Key-Value Stores: Redis (in persistent mode), etcd
+Storage systems: MinIO, Ceph
+These need stable storage and consistent identity, which is why you use StatefulSet in Kubernetes.
+---------------------------------------------------------------------------------------------------------------
+3.when should you use a statefullset insted of deploymet?
+When your application want statble identity then you go with statefull sets.
+in these the pod with maintaind stables names and stable volumes if restart or recreated it will lunch with same names.
+pods names like ->pod-0,pod-1,pod-2.......
+Each pod is addressable via predictable DNS like:
+pod-0.service-name.namespace.svc.cluster.local
+--------------------------------------------------------------------------------------------------------------------------
+4.can you attach a volume to the deployment?if yes how it is differ from a statefull sets?
+Yes, you can attach a volume to a Deployment — but there's a big difference in how volumes behave in Deployment vs StatefulSet.
+You can attach volumes like:
+emptyDir – temporary storage, deleted when pod dies
+hostPath – mounts a directory from the node (not portable)
+PVC (PersistentVolumeClaim) – connects to persistent storage like EBS, NFS, etc.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+        volumeMounts:
+        - name: my-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: my-volume
+        persistentVolumeClaim:
+          claimName: my-pvc
+Deployment + Volume → Good for read-only shared data, not safe for per-pod write-heavy data.
+StatefulSet + Volume → Good for per-pod persistent data, like databases, where each pod needs its own isolated storage.
+--------------------------------------------------------------------------------------------------------------------------------
+5.what could cause a statefullsets pod to fail when reshedule to different avilability zone?
+When a StatefulSet pod is rescheduled to a different Availability Zone (AZ) (e.g., due to node failure or scaling),
+it can fail to start or crash repeatedly. This usually happens due to volume-related issues.
+Why meanse presistent volume is zone based volume all cloud servivces like aws or azure they well create EBS in specific zone only
+thats way it come volume relatable issue.
+-----------------------------------------------------------------------------------------------------------------------------------
+6. how do pv/pvc behave across zones in eks or kubernetes in general?
+Great question! In Kubernetes (including EKS), PersistentVolume (PV) and PersistentVolumeClaim (PVC) behavior across Availability Zones (AZs) is a critical topic 
+— especially for stateful workloads like databases.
+By default, PVs are AZ-bound: a volume is tied to one zone.
+PVCs inherit the AZ of the PV they bind to.
+If a pod is scheduled in a different AZ, it cannot use that volume.
+You need to carefully manage StorageClass and volume binding to ensure cross-AZ compatibility.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp3
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
