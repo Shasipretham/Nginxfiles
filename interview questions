@@ -84,6 +84,16 @@ parameters:
   type: gp3
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
+7.what is deamon set and when did you use it
+A DaemonSet is a Kubernetes controller that runs exactly one pod per node (or per selected node pool).
+✅ Key Features:
+Automatically runs a pod on all nodes (or matching nodes)
+Adds pods when new nodes are added
+Deletes pods when nodes are removed
+Can target specific nodes using labels, selectors, taints, etc.
+Use DaemonSet when you need one pod per node (e.g., for monitoring or logging).
+Use Deployment when you want to run a replicated application (e.g., multiple instances of a web app).
+------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
