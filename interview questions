@@ -1,3 +1,63 @@
+-------------------------------------------------------------------------------------------------------------------------------------------
+JENKINS:
+------------
+1.Explain your CI/CD setup?
+There is many CI/CD tools but i consider Jenkins 
+CI/CD is a process of continues intigration and continues deployement.i will github for source code.
+we can set up for multiple staages
+like build,test and Deploy stage
+2.How you handel secrets in jenkins?
+Store the Secret:
+Navigate to Manage Jenkins > Manage Credentials.
+You'll see a list of "Stores." The default is the Jenkins provider store, which encrypts secrets and stores them in $JENKINS_HOME/secrets/.
+Click on (global), then Add Credentials.
+Choose the correct Kind:
+Secret text: For API tokens, single-use passwords.
+Username and password: For traditional login pairs.
+SSH Username with private key: For SSH keys (you can paste the key directly or load it from a file on the Jenkins controller).
+Secret file: For entire files that contain secrets (e.g., a Kubernetes kubeconfig file).
+Certificate: For PKCS#12 certificates.
+Give it a meaningful ID (or let Jenkins generate one). A descriptive ID is best for clarity in your Pipelines.
+For most use cases: Start with the Built-In Credentials System and the withCredentials step in your pipelines.
+For Infrastructure-as-Code setups: Use JCasC with secrets provided via environment variables or a separate secrets file.
+For enterprise-grade, centralized secret management: Integrate with HashiCorp Vault or a cloud provider's secret manager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=========================================================================================================================================================
+============================================================================================================================================
 Kubernetes
 ------------------------------------------------------------------------
 What  is the diff between Deployment and statefulSet in kubernetes?
