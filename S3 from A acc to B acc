@@ -1,0 +1,23 @@
+My requirement is i want to access my A accont s3 Bukent in B Accont
+Now create one s3 bucket
+goto iam role in Account A->custom trust policy->after entering role arn->add s3full acesss and create
+now got to acconut B open created iam role and remove s3 full acess and click add policies
+servis->sts
+Actions->assume role
+resoruce->specific
+paste that Account A arn here
+create sts -> open ec2 in Accont-b
+aws sts assume-role --role-arn:<arn of accont A iam role> --role-session-name:<anyname>
+then it will provide Access key and secrt key and session token
+aws configure->add credentials
+now
+la -al
+open .aws->open credentials add sessions token there->aws sesssion token = <token>
+now check 
+aws s3 -al
+it will show Accont A s3 bucket in Account B
+Now show one script
+first we have to create iam role in Account b
+iamrole->ec2->s3full access->and attach to that account ec2
+and now taken that role arn from Accont B
+paste it in the script where you see the prinicipal tab
