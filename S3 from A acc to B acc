@@ -21,3 +21,7 @@ first we have to create iam role in Account b
 iamrole->ec2->s3full access->and attach to that account ec2
 and now taken that role arn from Accont B
 paste it in the script where you see the prinicipal tab
+-------------------------------------------------------------------
+Now create one file and send file to Account A s3 bucker
+vi shasi.txt
+aws s3 cp shasi.txt s3:// <bucken name>
