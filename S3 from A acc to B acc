@@ -25,3 +25,5 @@ paste it in the script where you see the prinicipal tab
 Now create one file and send file to Account A s3 bucker
 vi shasi.txt
 aws s3 cp shasi.txt s3:// <bucken name>
+to copy from s3 to instamce
+aws s3 cp s3://<bucketname>/<filename> .
