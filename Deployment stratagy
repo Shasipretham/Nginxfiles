@@ -1,0 +1,57 @@
+1.Deployment stratagy is are
+Rollback updates version
+Canary and bluegreen both are supported in kubernetes only
+we can use ingress controller for both.
+2.Why we have to use Deployment startagy?
+When we working on project the troject we deployed v1 now we have to move v2
+generally what we have to removw that v1 and we can deploy v2
+But what was the problem is to delete v1 and deploy v2 it will take nearly 10 to 15min
+then server goes 10 to 15min downtime thats why we have to use Deployemnt staratagy.
+Now coming to kubernetes there have optio like Rolling updates with zero time.
+3.what the Rolling update will do?
+if one version is running well with replicas r1,r2,r3,r4
+if you deolployed version V2 it will not remove old version first it will take 25% space to check it will work well than 
+it was move to r4,r3,r2,r1 slowly it will replace ..if v2 is failed without downtime v1 is work well.
+How you know we to give 25% for first replica?
+when we writing rolling updates we have to mention max unavilable:25%(how replica we have to take to check) and max surge:25%(to replace)
+
+Now we can see practically?
+create deployemnt
+->kubctl create deploy nginx --image=nginx
+->kubctl get pods ->to check deployment is running or not
+now we can update replica set
+->kubctl edit deploy nginx-> change replica set too 4
+Now check pods are running or not
+->kubctl get pods -w (to watch live)
+Now you can give wrong image name and check
+->kubctl edit deploly nginx 
+change image name and redeploy
+it will replace pods one by one if it work will.
+why we have to use canary and blue green?
+Canary:
+in our organisation to deploy project like
+vat ->qa->pre-production->production
+when we upgrading to v2 to we cam check in vat,qa,pre-production till here its working well coming to producation it was not woking
+to solve that problem Canary was solution
+when you deploy v2 in production
+we have to tell loadbalancer move 90% traffic to v1 and only 10% traffic to v2
+Doute:
+Diff between Rolling update and Canary
+when comming to rolling update it will update replicas in one buy one with in minites of v2 it there is problem in v2 all the people will face the issue
+now comming to Canary
+if we deployed v2 we have to manage loadbalancer like share traffic 90% v1 and 10% for v2 of there is problem 10% people only face the issue
+they continue 2 -3 days or 1week if there is problen with v2 they will v1 for 100% if v2 is working will slow decresce the count for v1 and increase the count v2
+Practicaly way
+when we running v1 we can run deploy,service and ingress
+for version v2 also same deploy,service and ingress
+for version v1->4 replicals
+for v2->1 replicase
+both of the ingress file same but we have add v2 ingress file like annocation for how space v2 to have to 25%
+then ingress file will tell to loadbalner send traffic 75% to v1 and 25% to v2
+
+Now Commming to blue/green deploymem]nt statagy it was safest statagy and costly
+we have to create v1 ->r1,r2,r3,r4->serapte service s1
+we have to create v2 ->r1,r2,r3,r4->seperate service s2
+if we want to usee v1 in ingress we havr written s1 than loadbalancer will move traffic to v1
+if we want to use v2 in ingress service s2 than load balancer will move traffic to v2
+
