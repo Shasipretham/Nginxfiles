@@ -1,1 +1,61 @@
-
+1.What is Docker?
+it is open source Containerizion platform and 
+it enables developers to package application into containers.
+2.How containers was differ from Virtual machins?
+Containers have light weigth because there dont have complete os (it have minimal files and folers)
+for vm we have OS it was take high storage(it will store all the files and folders)
+3.Docker life cycle?
+First we have to write a docker file with set commands after completing Docker file
+we have to build that docker file it was turn to Docker image to create a container we have run that commmnd,
+to create docker image ->docker build -t <filename> .
+to run image ->docker run -d -p 8080:8080 <image name >
+4.What are different componets in docker?
+When we use docker we have to install the docker we can call as docker demon
+when we run commands like docker build or docker then Docker Demon will understand ok we have to build file or run
+when you use docker pull Docker will understands there asking image we have to search in our registry.
+5.What is the diff b/w docker ADD and Docker Copy?
+Doocker add is used for copy the files from url.
+Docker copy it will copy the files from our host system
+6.What is the diff between CMD and ENtrypoint?
+When you use CMD like
+CMD ["echo","shasi"]->if write these cmd command and build
+if you want output ->docker run shasiimage
+output: shasi
+if you run command like ->docker run shasiimage "DOCKER"
+output: DOCKER->it will over ride the content.
+Now i want to print both like shasi Docker togeather
+we have to use ENTRYPOINT
+ENTRYPOINT ["echo","SHAS"]
+now run->docker run shasiimage "DOCKER"
+output :SHASI DOCKER
+if you dont enter parametor along with command we want default value then we have use both CMD and Entrypoint
+CMD ["Pretham"]
+ENTRYPOINT ["echo" "Shasi]
+now run it ->docker run shasiimage 
+output shasi pretham
+CMD sets default command and parameters, which can be overwritten when running the container.
+ENTRYPOINT sets the main command that always runs, making the container behave like an executable.
+Combination: ENTRYPOINT defines the executable, CMD provides default arguments that can be overridden.
+7.What are the networking types in docker and what is default?
+Default network is Bridge network 
+also we can change the networks like Bridge,Overlay,Host,Macvlan
+Bridge->first it will access the host after eithernetwork it will access application inside the container
+host->user can acess the application using the host network
+overlay->it is used for multiple host at time
+8.Can you explain how to isolating networking between the containers?
+if you deployed on application running in default docker zero network in web
+if we havw payments application we have run with another networking type like my_bridge in payments
+if web was hacked your payments will safe.
+9.What are the  muiltstage building in docker?
+To decrease the container size we have use muiltystage
+Builder stage: Installs dependencies only
+Final stage: Uses smaller alpine base image
+Production-only: npm ci --only=production avoids dev dependencies
+Smaller image: Final image only contains runtime dependencies
+Better caching: Dependency installation is separate from code changes
+Finally there will be two stages in muilti stage builder stage all the depenceces will done secont stage we can take alpain it
+small os it will take less storage.
+in final images only contains a runtime dependency.
+10:what are the distro less images in docker?
+it will store only your application and it runtime dependencies with very minimak operating systems
+it will not conatin any package manageers.they are very kight weight images.
