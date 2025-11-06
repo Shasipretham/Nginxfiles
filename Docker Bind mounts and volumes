@@ -5,3 +5,18 @@ and another problem container was not read a files in host server
 to solve that problem Bind mounts
 Blind mounts do if container will delete also i will blind the folder it will store on host server
 after when re reun the container it will automatically mounts to that container.
+volumes also same like blinds mounts but it have life cycles
+for volumes we can creeate volumes of every were like another ec2,s3 ...
+volumes are to share one container to another container
+to check docker volumes
+docker volumes ls
+docker volume create shasi
+now u can use volume one or two continers 
+you want details about volume 
+docker volue inspect sasi
+docker volume rm shasi
+to mount volume
+docker run -d --mount source:shasi,target=/app imagename
+now we can inspect the container
+docker inspect continaer name
+now you can check in mount section
