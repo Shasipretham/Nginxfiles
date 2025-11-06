@@ -1,0 +1,7 @@
+Why Bind mounts and volumes?
+when we run a conatiner it will not store the log files in backgroud
+if container will down all the logs files also deleted
+and another problem container was not read a files in host server 
+to solve that problem Bind mounts
+Blind mounts do if container will delete also i will blind the folder it will store on host server
+after when re reun the container it will automatically mounts to that container.
