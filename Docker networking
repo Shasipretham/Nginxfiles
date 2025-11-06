@@ -1,0 +1,27 @@
+Why we have to use netwoking?
+When we run the two continer like c1->front-end c2-backend
+server was runs on seperate network ip and docker continer will runs on sperate ip
+to build communication between both containers and host server that is called bridge networl
+Bridge network is default network it will created automatically when you run the containers
+there was a problem like c1 and c2 will runs same network ip if c1 is hacker there is chance to hack c2
+Host network:containers will with the host nerwork ip only so we not prffer these.
+overlay network:it will use on kubenetes
+Finally, we have chance like custom bridge network
+custome bridge network:useing these we can create custom bridge network and we can mouth to specific container
+docker network ls
+docker network create shasi-secure
+docker run -d login imagename
+docker run -d logout imagename
+both login and logout contianers was running on bridge network
+docker run -d --network shsi-secure payments images
+paymets was running in custum bridge net work
+how can i check may custime brigh network was secure or not
+inspect login and logout conatiner
+docker inspect logout
+they will provide one ip adresss
+open login container
+docker exec -t /bin/bash/
+apt-get installs iputils-ping
+ping <log out ip address>it will run communicating eachother
+now try with payments image ip
+if it works not was not secure,if it is dont work it is secure
