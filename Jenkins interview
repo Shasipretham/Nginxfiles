@@ -7,3 +7,10 @@ quality check: using sonarqube we can check our quality.
 create conatiner:after that we have to create container using docker.
 check container: to check container quality we can use trivy for that
 run container:after that we can run container.
+2. What are differnt ways to trigger jenkins?
+These can be done in many ways
+build triggers:we have configure in jenkins for every minute on every 10min it will go and run those commands if there is change in code 
+it will automatically run.
+poll scm: it will run pipeline when you fix specific time..if you set anty 1:45am every day at 1.45am it will run pipeline.
+webhooks: we have to create webhook in git and add jenkins ip there when developer is commited code it automatically trigger the code.
+3.How to backup jenkins?
