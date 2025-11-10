@@ -1,0 +1,161 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = 'beta-cred'
+        DOCKERHUB_USER = 'spydshasi'
+        IMAGE_NAME = "spydshasi/livycobackend"
+        CONTAINER_NAME = "livyco-backend"
+        PORT_MAPPING = "5000:5000"
+        TAG = "${env.BUILD_NUMBER}"  // Use build number instead of 'latest'
+        // New environment variables
+        SONARQUBE_SCANNER_HOME = tool 'SonarQubeScanner'
+        KUBERNETES_NAMESPACE = "livyco-${env.BRANCH_NAME == 'main' ? 'prod' : 'staging'}"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/spydtech/Backend-Livyco.git'
+            }
+        }
+
+        // NEW: Code Quality Gate
+        stage('Code Quality Check') {
+            steps {
+                withSonarQubeEnv('SonarQube-Server') {
+                    sh '''
+                        ${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=livyco-backend \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_AUTH_TOKEN}
+                    '''
+                }
+            }
+        }
+
+        // NEW: Wait for Quality Gate
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        // NEW: Run Tests (if you have any)
+        stage('Run Tests') {
+            steps {
+                sh 'mvn test'  // or 'npm test' or './gradlew test' depending on your stack
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'  // Publish test results
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:$TAG -t $IMAGE_NAME:latest .'
+            }
+        }
+
+        // NEW: Security Scan
+        stage('Security Scan') {
+            steps {
+                sh '''
+                    # Install trivy if not available
+                    which trivy || (wget https://github.com/aquasecurity/trivy/releases/download/v0.50.0/trivy_0.50.0_Linux-64bit.deb && sudo dpkg -i trivy_0.50.0_Linux-64bit.deb)
+                    
+                    # Scan image for critical vulnerabilities
+                    trivy image --exit-code 1 --severity CRITICAL $IMAGE_NAME:$TAG
+                    
+                    # Scan for high vulnerabilities (but don't fail build)
+                    trivy image --exit-code 0 --severity HIGH $IMAGE_NAME:$TAG
+                '''
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                        echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
+                        docker push $IMAGE_NAME:$TAG
+                        docker push $IMAGE_NAME:latest
+                    '''
+                }
+            }
+        }
+
+        // NEW: Deploy to Staging Environment
+        stage('Deploy to Staging') {
+            when {
+                branch 'develop'  // Only deploy to staging from develop branch
+            }
+            steps {
+                sh '''
+                    # Deploy to staging VPS
+                    ssh deploy@staging-server "docker pull $IMAGE_NAME:$TAG && docker stop $CONTAINER_NAME || true && docker rm $CONTAINER_NAME || true && docker run -d --restart always --name $CONTAINER_NAME -p $PORT_MAPPING $IMAGE_NAME:$TAG"
+                '''
+            }
+        }
+
+        // NEW: Manual Approval for Production
+        stage('Approve Production Deployment') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input message: 'Deploy to Production?', 
+                      ok: 'Deploy', 
+                      submitterParameter: 'approver'
+            }
+        }
+
+        // ENHANCED: Production Deployment
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh '''
+                    # Deploy to production VPS
+                    ssh deploy@production-server "docker pull $IMAGE_NAME:$TAG && docker stop $CONTAINER_NAME || true && docker rm $CONTAINER_NAME || true && docker run -d --restart always --name $CONTAINER_NAME -p $PORT_MAPPING $IMAGE_NAME:$TAG"
+                '''
+            }
+        }
+
+        // NEW: Health Check
+        stage('Health Check') {
+            steps {
+                retry(3) {
+                    sh '''
+                        # Wait for application to be healthy
+                        sleep 30
+                        curl -f http://your-production-domain.com:5000/health || exit 1
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean workspace
+            cleanWs()
+            // Always logout from Docker
+            sh 'docker logout'
+        }
+        success {
+            // Send success notification
+            slackSend channel: '#deployments', message: "✅ Deployment Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+        }
+        failure {
+            // Send failure notification
+            slackSend channel: '#deployments', message: "❌ Deployment Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+        }
+    }
+}
