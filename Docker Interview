@@ -57,5 +57,5 @@ Finally there will be two stages in muilti stage builder stage all the depencece
 small os it will take less storage.
 in final images only contains a runtime dependency.
 10:what are the distro less images in docker?
-it will store only your application and it runtime dependencies with very minimak operating systems
-it will not conatin any package manageers.they are very kight weight images.
+it will store only your application and it runtime dependencies with very minimal operating systems
+it will not conatin any package manageers.they are very light weight images.
