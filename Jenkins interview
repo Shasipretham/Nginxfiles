@@ -14,3 +14,41 @@ it will automatically run.
 poll scm: it will run pipeline when you fix specific time..if you set anty 1:45am every day at 1.45am it will run pipeline.
 webhooks: we have to create webhook in git and add jenkins ip there when developer is commited code it automatically trigger the code.
 3.How to backup jenkins?
+open jenkins ->manage jenkins->install tool time->toolnaem:Backup and install it
+when you istall the plugin Backup->in manage jenkins you see option like Backup manager
+open that->setup->give name where to back up:/opt->zip format->filename jenkins backup
+->save
+comback one step->down of the set up see option like Build
+click that one it will automatically download
+if you get permission dened
+give permission to that backup store folder:/opt
+chmod -R 777 /opt
+Now click backed it will be backedup
+there is another plugin also 
+ThinBackup
+how to rstore?
+there is option like restore click that one and select backup folder and run it.
+4.How do you store secure and handek secrets in jenkins?
+there also many way to store the secrets like credentials plugin in jenkins,hash-corp-valute,
+5.What is the latest version of jenkins?
+2.528 (LTS)	1 month and 3 weeks ago
+(17 Sep 2025)
+6.What is shared modules in jenkins?
+it is noting but the collection of reusable code and resorces that can be shared across muiltiple jobs.
+share modules can be use like libraries,jekines file,plugin and globle varables.
+7.can you use jenkins to build applications with muiltiple programming languages using diff agents in diff stages?
+yes we can  to with docker agents.
+8.how to setup auto scaling group for jenkins in aws?
+create ec2->crete lunch conf in auto scaling->create auto scaling group->configure scaling policy.->loadbalab=ncer and connect to jenkins.
+9.How to add new worker node in jenkins?
+Login to jenkins master node->manage jenkins->manage node->create new->give name for node->select permenrt->configure ssh and click on lunch.
+10.how do you istall plugins?
+using CLI:jenkins -jar jenkins-cli.jar install plugin <PLUG_NAME>
+using UI:->manage jenkins->install plugins
+11.What is JNLP?why should using jenkins?
+jnlp is used to allow the agnets also the slave nodesto be launch and manage remotly by the je kis master node.
+what it does?
+when you lunch the jnlp.it connets to jenkins master and recive the build tasks,whicj it then excutes.
+12.what are the common plugins that you see in jenkins?
+
+https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero/blob/main/Interview_Questions.md
