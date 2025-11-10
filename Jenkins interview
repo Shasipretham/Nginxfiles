@@ -1,0 +1,9 @@
+1.Can you explain the process of cicd  in your current process?
+in my current project we are using jenkins tool for CI CD
+Code commit:when the developers commited a code there
+jenkins trigger: jenkins pipeline trigger automatically
+build: to build the code we have to use maven tools
+quality check: using sonarqube we can check our quality.
+create conatiner:after that we have to create container using docker.
+check container: to check container quality we can use trivy for that
+run container:after that we can run container.
